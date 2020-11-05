@@ -27,7 +27,7 @@ router.route('/')
 //METHOD FOR http://localhost:3000/responses/:examID/multiple API END POINT
 router.route('/:examId/multiple')
 .get( async( req, res, next) => {
-    let response = await Response.findOne({ exam: req.params.examId})
+    let response = await Response.findOne({ examId: req.params.examId})
     if( response ) {
         res.send(response);
     }
@@ -51,10 +51,10 @@ router.route('/:examId/multiple')
         } 
 
         newResponse = await newResponse.save()
-        res.send(newResponse);
+        res.send("Response created..........");
     }
 })
-.post( async ( req, res, next ) => {
+.post( async (req, res, next ) => {
 
     res.status(403).send("Not Supported");
 })
