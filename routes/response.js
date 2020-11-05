@@ -58,11 +58,18 @@ router.route('/:examId/multiple')
 
     res.status(403).send("Not Supported");
 })
+.put( async( req, res, next) => {
+    res.status(403).send("Not Supported");
+})
+.delete( async( req, res, next ) => {
+    res.status(403).send("not supported");
+})
 
 //METHOD FOR http://localhost:3000/responses/:examID/multiple/:mcqId API END POINT
 router.route('/:examId/multiple/:mcqId')
 .get( async ( req, res, next) => {
-    res.status(403).send("Get Method not supported");
+
+    res.status(403).send("Not supported");
 })
 .post( async (req, res, next) => {
 
@@ -70,12 +77,17 @@ router.route('/:examId/multiple/:mcqId')
     if( !response ) return res.status(404).send("Not found");
 
     let mcqQuestion = response.mcq.find( q => q.id === req.params.mcqId ) ;
-
     if( !mcqQuestion ) return res.status(404).send("MCQ not found");
 
     mcqQuestion.response = req.body.response;
     await response.save();
     res.send(mcqQuestion);
+})
+.put( async( req, res, next) => {
+    res.status(403).send("Not Supported");
+})
+.delete( async( req, res, next ) => {
+    res.status(403).send("not supported");
 })
 
 module.exports = router;
