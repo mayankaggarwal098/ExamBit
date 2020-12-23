@@ -1,12 +1,17 @@
-import './App.css';
+import React from 'react';
+import { BrowserRouter, Route } from 'react-router-dom'
+import Header from './component/Header'
+import TeacherRegister from './component/TeacherRegister';
 
-function App() {
+const App = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        
+    <BrowserRouter>
+      <header>
+        <Header />
+        <Route path="/register/teacher" component={TeacherRegister} />
+        <Route path="/register/student" />
       </header>
-    </div>
+    </BrowserRouter>
   );
 }
 
