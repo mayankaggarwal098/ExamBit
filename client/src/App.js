@@ -1,15 +1,16 @@
 import React from 'react';
 import { BrowserRouter, Route } from 'react-router-dom'
 import Header from './component/Header'
-import TeacherRegister from './component/TeacherRegister';
+import Register from './component/Register';
+import Login from  './component/Login'; 
 
 const App = () => {
   return (
     <BrowserRouter>
       <header>
         <Header />
-        <Route path="/register/teacher" component={TeacherRegister} />
-        <Route path="/register/student" />
+        <Route path="/register" component={Register} />
+        <Route path="/login" component={Login} />
       </header>
     </BrowserRouter>
   );
