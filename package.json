@@ -1,0 +1,19 @@
+{
+  "name": "interview_prep",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mayankaggarwal098/online-exam-system.git"
+  },
+  "author": "Mayank",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mayankaggarwal098/online-exam-system/issues"
+  },
+  "homepage": "https://github.com/mayankaggarwal098/online-exam-system#readme"
+}
