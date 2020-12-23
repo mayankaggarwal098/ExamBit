@@ -1,8 +1,8 @@
 import React from 'react';
 import { BrowserRouter, Route } from 'react-router-dom'
 import Header from './component/Header'
-import Register from './component/Register';
-import Login from  './component/Login'; 
+import Register from './screen/Register';
+import Login from  './screen/Login'; 
 
 const App = () => {
   return (
