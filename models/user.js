@@ -14,7 +14,7 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  type: {
+  category: {
     type: String,
     required: true,
   },
@@ -31,7 +31,7 @@ function validateUserSignup(user) {
     name: Joi.string().max(50).required(),
     email: Joi.string().max(255).required().email(),
     password: Joi.string().min(5).max(255).required(),
-    type: Joi.string().required(),
+    category: Joi.string().required(),
   });
   return schema.validate(user);
 }
