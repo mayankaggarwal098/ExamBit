@@ -17,7 +17,7 @@ router.post("/", async (req, res) => {
   const validPassword = await bcrypt.compare(req.body.password, user.password);
   if (!validPassword) return res.status(400).send("Invalid email or password");
 
-  if (user.type === "SUPERVISOR" && user.supervisorPerm === false) {
+  if (user.category === "SUPERVISOR" && user.supervisorPerm === false) {
     return res.status(403).send("Access Denied");
   }
 
@@ -25,13 +25,12 @@ router.post("/", async (req, res) => {
 
   res.json({
     token,
-    user: {
-      _id: user._id,
-      name: user.name,
-      email: user.email,
-      type: user.type,
-    },
-  });
+    _id: user._id,
+    name: user.name,
+    email: user.email,
+    category: user.category,
+    }
+  );
 });
 
 module.exports = router;
