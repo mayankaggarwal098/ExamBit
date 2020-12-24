@@ -11,18 +11,18 @@ router.post("/", async (req, res) => {
   const { error } = validateSignup(req.body);
   if (error) return res.status(400).send(error.details[0].message);
 
-  const { name, email, password, type } = req.body;
+  const { name, email, password, category } = req.body;
 
   let user = await User.findOne({ email: req.body.email });
   if (user) return res.status(400).send("User already registered");
 
-  user = new User({ name, email, password, type });
+  user = new User({ name, email, password, category });
 
   const salt = await bcrypt.genSalt(10);
   user.password = await bcrypt.hash(user.password, salt);
 
   await user.save();
-  res.send("Successfully signed up");
+  res.send('successfully signin');
 });
 
 module.exports = router;
