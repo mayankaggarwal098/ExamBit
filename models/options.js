@@ -1,15 +1,15 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 const optionSchema = new mongoose.Schema({
-    option: {
-        type: String,
-        required: true
-    },
-    isAnswer : {
-        type: Boolean,
-        required: true,
-        default: false
-    }
-})
-
-exports.optionSchema = optionSchema;``
+  optionBody: {
+    type: String,
+    required: true,
+  },
+  isAnswer: {
+    type: Boolean,
+    required: true,
+    default: false,
+  },
+});
+const Options = mongoose.model("Options", optionSchema);
+module.exports = Options;
