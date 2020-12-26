@@ -1,4 +1,4 @@
-import axios from 'axios';
+import http from '../component/httpService';
 import { toast } from 'react-toastify';
 import { 
     USER_LOGIN_FAIL, 
@@ -7,19 +7,15 @@ import {
     USER_LOGOUT, 
     USER_REGISTER_FAIL, 
     USER_REGISTER_REQUEST, 
-    USER_REGISTER_SUCCESS 
+    USER_REGISTER_SUCCESS
 } from "../constants/userConstanst"
 
-export const userRegister = ( name, email, password, category ) => async(dispatch) => { 
-    try {
+export const userRegister = ( name, email, password, category ) => async( dispatch ) => { 
 
+    try {
         dispatch({ type: USER_REGISTER_REQUEST})
 
-        const config = {
-            headers: { 'Content-Type': 'application/json'}
-        }
-
-        await axios.post('/api/signup', { name, email, password, category}, config )
+        await http.post('/api/signup', { name, email, password, category} )
 
         dispatch({ 
             type : USER_REGISTER_SUCCESS,
@@ -28,7 +24,11 @@ export const userRegister = ( name, email, password, category ) => async(dispatc
         toast.success('Successfully Register')
 
     } catch (error) {
-        toast.error('Invalid Input')
+
+        if (error.response && error.response.status === 400) {
+            toast.error(error.response.data);
+          }
+
         dispatch({
             type: USER_REGISTER_FAIL,
             payload: error.response && error.response.data.message ? error.response.data.message : error.message
@@ -37,27 +37,25 @@ export const userRegister = ( name, email, password, category ) => async(dispatc
 
 }
 
-export const login = ( email, password ) => async(dispatch) => { 
-    try {
+export const login = ( email, password ) => async( dispatch) => { 
 
+    try {    
         dispatch({ type: USER_LOGIN_REQUEST })
 
-        const config = {
-            headers: { 'Content-Type': 'application/json'}
-        }
-
-        const { data } = await axios.post('/api/login', { email, password }, config )
+        const { data } = await http.post('/api/login', { email, password } )
 
         dispatch({ 
             type : USER_LOGIN_SUCCESS,
             payload: data
         })
 
-        toast('Successfully login')
+        toast.success('Successfully login')
         localStorage.setItem('userInfo', JSON.stringify(data));
         
     } catch (error) {
+
         toast.error('Invalid Email id or Password')
+
         dispatch({
             type: USER_LOGIN_FAIL,
             payload: error.response && error.response.data.message ? error.response.data.message : error.message
