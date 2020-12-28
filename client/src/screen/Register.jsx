@@ -13,15 +13,16 @@ const Register = ({history}) => {
     const[ confirmPassword, setConfirmPassword ] = useState('');
     const[ category, setCategory ] = useState('');
 
-    const { loading, success, error } = useSelector( state => state.register )
+    // const { loading, success, error } = useSelector( state => state.register )
 
     const dispatch = useDispatch();
 
-    useEffect( () => {
-        if( success ){
-            history.push('/login');
-        }
-    }, [history, success]);
+    // useEffect( () => {
+
+    //     if( success ){
+    //         history.push('/login');
+    //     }
+    // }, [history, success]);
 
     const submitHandler = (e) => {
         e.preventDefault();
@@ -29,6 +30,7 @@ const Register = ({history}) => {
             toast.error('Invalid Input')
         } else{
             dispatch( userRegister( name, email, password, category ));
+            history.push('/login');
         }
     }
 
@@ -67,8 +69,8 @@ const Register = ({history}) => {
                             onChange={ e => setCategory(e.target.value)}
                             >
                                 <option value=''>Select Category</option>
-                                <option value='Supervisor'>Supervisor</option>
-                                <option value='Student'>Student</option>
+                                <option value='SUPERVISOR'>Supervisor</option>
+                                <option value='STUDENT'>Student</option>
                         </Form.Control>
                     </Form.Group>
 

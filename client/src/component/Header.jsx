@@ -3,12 +3,14 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Nav, Navbar, Container, NavDropdown} from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
 import { logout } from '../actions/userAction'
+import { useEffect } from 'react';
+
 const Header = () => {
 
     const dispatch = useDispatch();
 
     const { userInfo } = useSelector( state => state.userLogin )
-  
+
     const logOutHandler = () => {
       dispatch(logout());
     }
@@ -22,33 +24,52 @@ const Header = () => {
                 </LinkContainer>
                 <Navbar.Toggle aria-controls="responsive-navbar-nav" />
                 <Navbar.Collapse id="responsive-navbar-nav">
-                <Nav className="mr-auto">
-                    {/* <Nav.Link href="#features">Features</Nav.Link>
-                    <Nav.Link href="#pricing">Pricing</Nav.Link> */}
-                </Nav>
-                <Nav>
-                    { userInfo ? (
-                        <NavDropdown title={userInfo.name.toUpperCase()} id="username">
-                            <LinkContainer to='/profile'>
-                                <NavDropdown.Item>PROFILE</NavDropdown.Item>
-                            </LinkContainer>
-                            <NavDropdown.Item onClick={logOutHandler}>LOGOUT</NavDropdown.Item>
-                      </NavDropdown>
-                    ) : (
-                        <>
-                            <LinkContainer to="/login">
-                                <Nav.Link>Login</Nav.Link>
-                            </LinkContainer>
-                
-                            <LinkContainer to="/register">
-                                <Nav.Link>Sign Up</Nav.Link>
-                            </LinkContainer>
-                        </>
-                    )}
+                    <Nav className="mr-auto">
+                        { userInfo && (userInfo.category === 'SUPERVISOR' ? (
+                            <>
+                                <LinkContainer to="/questions">
+                                    <Nav.Link href="#features"><i className="fas fa-list" />&nbsp;All Questions</Nav.Link>
+                                </LinkContainer>
+                                <LinkContainer to="/tests">
+                                    <Nav.Link href="#pricing"><i className="fas fa-list"/>&nbsp;All Test</Nav.Link>
+                                </LinkContainer>
+                                
+                            </>
+                            ) : (
+                            <>
+                                <Nav.Link href="#features"><i className="fas fa-list"/>&nbsp;All Test</Nav.Link>
+                                <Nav.Link href="#pricing">Pricing</Nav.Link>
+                            </>
+                            ))}
                     
-                </Nav>
+                    </Nav>
+                    <Nav>
+                        { userInfo ? (
+                            <NavDropdown title={userInfo.name.toUpperCase()} id="username">
+                            
+                                <LinkContainer to='/profile'>
+                                    <NavDropdown.Item><i className="fas fa-user" />&nbsp;PROFILE</NavDropdown.Item>
+                                </LinkContainer>
+
+                                <LinkContainer to='/login'>
+                                    <NavDropdown.Item onClick={logOutHandler}><i className="fas fa-sign-out-alt" />&nbsp;LOGOUT</NavDropdown.Item>
+                                </LinkContainer>
+                            
+                        </NavDropdown>
+                        ) : (
+                            <>
+                                <LinkContainer to="/login">
+                                    <Nav.Link><i className="fas fa-sign-in-alt" />&nbsp;Login</Nav.Link>
+                                </LinkContainer>
                 
-            </Navbar.Collapse>
+                                <LinkContainer to="/register">
+                                    <Nav.Link><i className="fas fa-user-plus" />&nbsp;Sign Up</Nav.Link>
+                                </LinkContainer>
+                            </>
+                        )}
+                    
+                    </Nav>
+                </Navbar.Collapse>
             </Container>
             </Navbar>
         </header>

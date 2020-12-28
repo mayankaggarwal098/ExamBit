@@ -11,3 +11,8 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.my-modal {
+    width: 80vw;   /* Occupy the 90% of the screen width */
+    max-width: 90vw;
+}

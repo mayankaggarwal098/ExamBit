@@ -20,7 +20,6 @@ const Login = ({ history }) => {
 
   const submitHandler = (e) => {
     e.preventDefault();
-    //console.log(login(email, password));
     dispatch(login(email, password));
   };
 
