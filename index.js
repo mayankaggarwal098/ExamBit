@@ -7,6 +7,7 @@ const app = express();
 const login = require("./routes/login");
 const signup = require("./routes/signup");
 const question = require("./routes/question");
+const testpaper = require("./routes/testPaper");
 
 const PORT = process.env.PORT || 3900;
 mongoose
@@ -18,6 +19,7 @@ app.use(express.json());
 app.use("/api/login", login);
 app.use("/api/signup", signup);
 app.use("/api/questions", question);
+app.use("/api/test", testpaper);
 //createadmin();
 
 app.listen(PORT, () => console.log(`Listening on port ${PORT}...`));
