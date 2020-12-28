@@ -28,17 +28,17 @@ const Header = () => {
                         { userInfo && (userInfo.category === 'SUPERVISOR' ? (
                             <>
                                 <LinkContainer to="/questions">
-                                    <Nav.Link href="#features"><i className="fas fa-list" />&nbsp;All Questions</Nav.Link>
+                                    <Nav.Link><i className="fas fa-list" />&nbsp;All Questions</Nav.Link>
                                 </LinkContainer>
                                 <LinkContainer to="/tests">
-                                    <Nav.Link href="#pricing"><i className="fas fa-list"/>&nbsp;All Test</Nav.Link>
+                                    <Nav.Link><i className="fas fa-list"/>&nbsp;All Test</Nav.Link>
                                 </LinkContainer>
                                 
                             </>
                             ) : (
                             <>
-                                <Nav.Link href="#features"><i className="fas fa-list"/>&nbsp;All Test</Nav.Link>
-                                <Nav.Link href="#pricing">Pricing</Nav.Link>
+                                <Nav.Link><i className="fas fa-list"/>&nbsp;All Test</Nav.Link>
+                                <Nav.Link>Pricing</Nav.Link>
                             </>
                             ))}
                     

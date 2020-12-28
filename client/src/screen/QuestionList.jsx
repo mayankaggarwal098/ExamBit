@@ -92,7 +92,7 @@ const QuestionList = ({history}) => {
             </tbody>
         </Table>
         </Container>
-        { questions && (
+        { questions && questions[pos] && (
             <Modal
                 show={show}
                 onHide={() => setShow(false)}
