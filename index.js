@@ -8,6 +8,7 @@ const login = require("./routes/login");
 const signup = require("./routes/signup");
 const question = require("./routes/question");
 const testpaper = require("./routes/testPaper");
+const student = require("./routes/student");
 
 const PORT = process.env.PORT || 3900;
 mongoose
@@ -20,6 +21,7 @@ app.use("/api/login", login);
 app.use("/api/signup", signup);
 app.use("/api/questions", question);
 app.use("/api/test", testpaper);
+app.use("/api/student", student);
 //createadmin();
 
 app.listen(PORT, () => console.log(`Listening on port ${PORT}...`));
