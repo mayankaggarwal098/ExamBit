@@ -7,17 +7,21 @@ import Register from './screen/Register';
 import Login from  './screen/Login'; 
 import QuestionList from './screen/QuestionList';
 import QuestionCreate from './screen/QuestionCreate';
+import TestList from './screen/TestList';
+import TestCreate from './screen/TestCreate';
 
 const App = () => {
   return (
     <BrowserRouter>
       <header>
         <Header />
-        <ToastContainer />
+        <ToastContainer autoClose={1500}/>
         <Route path="/register" component={Register} />
         <Route path="/login" component={Login} />
         <Route path="/questions" component={QuestionList} exact/>
         <Route path="/questions/create" component={QuestionCreate} />
+        <Route path="/tests" component={TestList} exact/>
+        <Route path="/tests/create" component={TestCreate} />
       </header>
     </BrowserRouter>
   );

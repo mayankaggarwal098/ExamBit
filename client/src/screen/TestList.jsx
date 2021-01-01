@@ -13,55 +13,24 @@ import { getAllQuestions } from '../actions/questionAction';
 import { deleteQuestion } from '../actions/questionAction';
 import Loader from '../component/Loader';
 
-const QuestionList = ({ history }) => {
-  const [show, setShow] = useState(false);
-  const [pos, setIndex] = useState(0);
-
-  const { loading, questions } = useSelector(state => state.questionList);
-  const { loading: loadingCreate, success: successCreate } = useSelector(
-    state => state.createQuestion
-  );
-
-  const { loading: loadingDelete, success: successDelete } = useSelector(
-    state => state.questionDelete
-  );
-
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    if (!questions) {
-      dispatch(getAllQuestions());
-    }
-  }, [questions, dispatch]);
-
+const TestList = ({ history }) => {
   const createHandler = () => {
-    history.push('/questions/create');
-  };
-
-  const deleteHandler = id => {
-    if (window.confirm('Are you sure ')) {
-      dispatch(deleteQuestion(id));
-    }
-  };
-
-  const set = index => {
-    setShow(true);
-    setIndex(index);
+    history.push('/tests/create');
   };
 
   return (
     <>
-      {loadingCreate && <Loader />}
+      {/* {loadingCreate && <Loader />}
       {loadingDelete && <Loader />}
-      {loading && <Loader />}
+      {loading && <Loader />} */}
       <Container>
         <Row className="align-items-center">
           <Col>
-            <h3>All Questions</h3>
+            <h3>All Tests</h3>
           </Col>
           <Col className="text-right">
             <Button className="my-3" onClick={createHandler}>
-              <i className="fas fa-plus"></i>&nbsp;&nbsp;Add New Question
+              <i className="fas fa-plus"></i>&nbsp;&nbsp;Create New Test
             </Button>
           </Col>
         </Row>
@@ -69,13 +38,14 @@ const QuestionList = ({ history }) => {
           <thead>
             <tr>
               <th>SUBJECT</th>
-              <th>QUESTION</th>
-              <th>WEIGHTAGE</th>
+              <th>TITLE</th>
+              <th>DURATION</th>
+              <th>MAX. MARKS</th>
               <th>&nbsp;&nbsp;ACTION&nbsp;&nbsp;</th>
             </tr>
           </thead>
           <tbody>
-            {questions &&
+            {/* {questions &&
               questions.map((question, index) => (
                 <tr key={question._id}>
                   <td>{question.subject}</td>
@@ -99,11 +69,11 @@ const QuestionList = ({ history }) => {
                     </Button>
                   </td>
                 </tr>
-              ))}
+              ))} */}
           </tbody>
         </Table>
       </Container>
-      {questions && questions[pos] && (
+      {/* {questions && questions[pos] && (
         <Modal
           show={show}
           onHide={() => setShow(false)}
@@ -172,9 +142,9 @@ const QuestionList = ({ history }) => {
             </ListGroup>
           </Modal.Body>
         </Modal>
-      )}
+      )} */}
     </>
   );
 };
 
-export default QuestionList;
+export default TestList;

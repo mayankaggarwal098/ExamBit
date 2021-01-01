@@ -22,6 +22,7 @@ const testSchema = new mongoose.Schema({
   isTestBegins: {
     type: Boolean,
     required: true,
+    default: false
   },
   createdBy: {
     type: mongoose.Schema.Types.ObjectId,
@@ -30,14 +31,17 @@ const testSchema = new mongoose.Schema({
   isRegistrationAvailable: {
     type: Boolean,
     required: true,
+    default: false
   },
   isTestConducted: {
     type: Boolean,
     required: true,
+    default: false
   },
   isResultGenerated: {
     type: Boolean,
     required: true,
+    default: false
   },
 });
 
