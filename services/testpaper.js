@@ -106,6 +106,23 @@ const checkTestName = async (req, res) => {
   }
 };
 
+const changeRegistrationStatus = async (req, res) => {
+  const { id, status } = req.body;
+  const paper = await TestPaper.find({
+    _id: id,
+    isTestConducted: false,
+    isTestBegins: false,
+  });
+  if (!paper) {
+    return res.status(401).send("Invalid Request");
+  }
+  await TestPaper.findByIdAndUpdate(
+    { _id: id },
+    { isRegistrationAvailable: status }
+  );
+  res.send("Registration status changed");
+};
+
 module.exports = {
   createEditTest,
   getTest,
@@ -115,4 +132,5 @@ module.exports = {
   endTest,
   maxMarks,
   checkTestName,
+  changeRegistrationStatus,
 };

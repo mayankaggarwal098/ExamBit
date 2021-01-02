@@ -12,5 +12,5 @@ router.post("/begin", auth, test.beginTest);
 router.post("/end", auth, test.endTest);
 router.get("/maxmarks", auth, test.maxMarks);
 router.get("/check-test-name", auth, test.checkTestName);
-
+router.post("/change-registration-status", auth, test.changeRegistrationStatus);
 module.exports = router;
