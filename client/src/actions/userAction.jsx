@@ -9,6 +9,8 @@ import {
   USER_REGISTER_REQUEST,
   USER_REGISTER_SUCCESS,
 } from '../constants/userConstanst';
+import { getAllQuestions } from './questionAction';
+import { getTestPaperList } from './testAction';
 
 export const userRegister = (
   name,
@@ -27,7 +29,10 @@ export const userRegister = (
 
     toast.success('Successfully Register');
   } catch (error) {
-    if (error.response && error.response.status === 400) {
+    if (
+      error.response &&
+      (error.response.status >= 400 || error.response.status <= 500)
+    ) {
       toast.error(error.response.data);
     }
 
@@ -54,8 +59,15 @@ export const login = (email, password) => async dispatch => {
 
     toast.success('Successfully login');
     localStorage.setItem('userInfo', JSON.stringify(data));
+    dispatch(getAllQuestions());
+    dispatch(getTestPaperList());
   } catch (error) {
-    toast.error('Invalid Email id or Password');
+    if (
+      error.response &&
+      (error.response.status >= 400 || error.response.status <= 500)
+    ) {
+      toast.error(error.response.data);
+    }
 
     dispatch({
       type: USER_LOGIN_FAIL,

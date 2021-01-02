@@ -10,8 +10,9 @@ import {
 } from 'react-bootstrap';
 import { useSelector, useDispatch } from 'react-redux';
 import { getAllQuestions } from '../actions/questionAction';
+import { createTest } from '../actions/testAction';
 
-const TestCreate = () => {
+const TestCreate = ({ history }) => {
   const [show, setShow] = useState(false);
   const [title, setTitle] = useState('');
   const [subject, setSubject] = useState('');
@@ -41,7 +42,8 @@ const TestCreate = () => {
 
   const submitHandler = e => {
     e.preventDefault();
-    console.log(selectQuestion);
+    dispatch(createTest({ title, subject, duration, selectQuestion }));
+    history.push('/tests');
   };
 
   return (
@@ -97,7 +99,11 @@ const TestCreate = () => {
           </Button>
           <br />
           <br />
-          <Button variant="primary" type="submit">
+          <Button
+            variant="primary"
+            type="submit"
+            disabled={selectQuestion.length ? false : true}
+          >
             Submit
           </Button>
         </Form>

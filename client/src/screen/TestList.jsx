@@ -7,22 +7,47 @@ import {
   Button,
   Container,
   Modal,
-  ListGroup,
+  Tab,
+  Tabs,
 } from 'react-bootstrap';
-import { getAllQuestions } from '../actions/questionAction';
-import { deleteQuestion } from '../actions/questionAction';
+import { getTestPaperList, testPaperDelete } from '../actions/testAction';
 import Loader from '../component/Loader';
+import QuestionPaper from '../component/QuestionPaper';
+import QuestionDetails from '../component/QuestionDetails';
 
 const TestList = ({ history }) => {
+  const [show, setShow] = useState(false);
+  const [pos, setIndex] = useState(0);
+
+  const { loading, error, testPapers } = useSelector(
+    state => state.getTestPaper
+  );
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (!testPapers) {
+      dispatch(getTestPaperList());
+    }
+  }, []);
+
+  const set = index => {
+    setShow(true);
+    setIndex(index);
+  };
+
   const createHandler = () => {
     history.push('/tests/create');
   };
 
+  const deleteHandler = id => {
+    if (window.confirm('Are you sure')) {
+      dispatch(testPaperDelete(id));
+    }
+  };
+
   return (
     <>
-      {/* {loadingCreate && <Loader />}
-      {loadingDelete && <Loader />}
-      {loading && <Loader />} */}
+      {loading && <Loader />}
       <Container>
         <Row className="align-items-center">
           <Col>
@@ -39,18 +64,17 @@ const TestList = ({ history }) => {
             <tr>
               <th>SUBJECT</th>
               <th>TITLE</th>
-              <th>DURATION</th>
-              <th>MAX. MARKS</th>
+              <th>DURATION(in minute)</th>
               <th>&nbsp;&nbsp;ACTION&nbsp;&nbsp;</th>
             </tr>
           </thead>
           <tbody>
-            {/* {questions &&
-              questions.map((question, index) => (
-                <tr key={question._id}>
-                  <td>{question.subject}</td>
-                  <td>{question.questionBody}</td>
-                  <td>{question.weightage}</td>
+            {testPapers &&
+              testPapers.map((test, index) => (
+                <tr key={test._id}>
+                  <td>{test.subject}</td>
+                  <td>{test.title}</td>
+                  <td>{test.duration}</td>
                   <td>
                     <Button
                       variant="primary"
@@ -63,17 +87,17 @@ const TestList = ({ history }) => {
                     <Button
                       variant="primary"
                       className="btn-sm"
-                      onClick={() => deleteHandler(question._id)}
+                      onClick={() => deleteHandler(test._id)}
                     >
                       <i className="fas fa-trash"></i>
                     </Button>
                   </td>
                 </tr>
-              ))} */}
+              ))}
           </tbody>
         </Table>
       </Container>
-      {/* {questions && questions[pos] && (
+      {testPapers && testPapers[pos] && (
         <Modal
           show={show}
           onHide={() => setShow(false)}
@@ -82,67 +106,45 @@ const TestList = ({ history }) => {
         >
           <Modal.Header closeButton>
             <Modal.Title id="example-custom-modal-styling-title">
-              QuestionID: {questions[pos]._id}
+              TestID: {testPapers[pos]._id}
             </Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <ListGroup variant="flush">
-              <ListGroup.Item>
-                <strong>
-                  <b>SUBJECT</b>
-                </strong>{' '}
-                : {questions[pos].subject}
-              </ListGroup.Item>
-              <ListGroup.Item>
-                <strong>
-                  <b>WEIGHTAGE</b>
-                </strong>{' '}
-                : {questions[pos].weightage}
-              </ListGroup.Item>
-              <ListGroup.Item>
-                <strong>
-                  <b>QUESTION</b>
-                </strong>{' '}
-                : {questions[pos].questionBody}
-              </ListGroup.Item>
-              <ListGroup.Item>
-                <strong>
-                  <b>OPTIONS</b>
-                </strong>
-                <br></br>
-                {questions[pos].options.map((opt, index) => (
-                  <>
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                    <strong>{index + 1}</strong>: {opt.optionBody}
-                    <br></br>
-                  </>
-                ))}
-              </ListGroup.Item>
-              <ListGroup.Item>
-                <strong>
-                  <b>Answer:</b>{' '}
-                </strong>
-                {questions[pos].options.map((opt, index) => (
-                  <>
-                    {opt.isAnswer && (
-                      <>
-                        <strong>Option{index + 1}</strong>: {opt.optionBody}
-                        ,&nbsp;
-                      </>
-                    )}
-                  </>
-                ))}
-              </ListGroup.Item>
-              <ListGroup.Item>
-                <strong>
-                  <b>EXPLANATION</b>
-                </strong>{' '}
-                : {questions[pos].explanation}
-              </ListGroup.Item>
-            </ListGroup>
+            <Tabs defaultActiveKey="details" id="uncontrolled-tab-example">
+              <Tab
+                eventKey="details"
+                title={<i className="fas fa-info-circle"> Details</i>}
+              >
+                <QuestionDetails testPapers={testPapers} pos={pos} />
+              </Tab>
+              <Tab
+                eventKey="questions"
+                title={<i className="fas fa-question-circle"> Question</i>}
+              >
+                <QuestionPaper testPapers={testPapers} pos={pos} />
+              </Tab>
+              <Tab
+                eventKey="trainee"
+                title={<i className="fas fa-user"> Trainees</i>}
+              >
+                rawat
+              </Tab>
+              <Tab
+                eventKey="statistics"
+                title={<i className="fas fa-chart-bar"> Statistics</i>}
+              >
+                rawat
+              </Tab>
+              <Tab
+                eventKey="feedback"
+                title={<i className="fas fa-comments"> FeedBack</i>}
+              >
+                rawat
+              </Tab>
+            </Tabs>
           </Modal.Body>
         </Modal>
-      )} */}
+      )}
     </>
   );
 };

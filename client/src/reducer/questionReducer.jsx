@@ -8,8 +8,6 @@ export const createQuestionReducer = (state = {}, action) => {
       return { loading: false, success: true };
     case question.QUESTION_CREATE_FAIL:
       return { loading: false, error: action.payload };
-    case question.QUESTION_CREATE_RESET:
-      return { success: false };
     default:
       return state;
   }
@@ -36,8 +34,6 @@ export const questionDeleteReducer = (state = {}, action) => {
       return { loading: false, success: true };
     case question.QUESTION_DELETE_FAIL:
       return { loading: false, error: action.payload };
-    case question.QUESTION_DELETE_RESET:
-      return {};
     default:
       return state;
   }
