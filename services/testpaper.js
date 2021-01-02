@@ -6,15 +6,17 @@ const createEditTest = async (req, res) => {
     return res.status(401).send("Permission not granted");
   }
   const _id = req.body._id || null;
-  const { title, questions } = req.body;
+  const { title, selectQuestion } = req.body;
   if (_id != null) {
     await TestPaper.findOneAndUpdate({ _id }, { title, questions });
     res.send("Successfully Updated");
   } else {
-    const { title, questions, duration } = req.body;
+    const { title,subject, duration, selectQuestion } = req.body;
+
     const paper = new TestPaper({
       title,
-      questions,
+      subject,
+      questions: selectQuestion,
       duration,
       createdBy: req.user._id,
     });
@@ -39,12 +41,12 @@ const getTest = async (req, res) => {
 
 const getAllTests = async (req, res) => {
   const papers = await TestPaper.find({ createdBy: req.user._id })
-    .populate("questions", "questionBody")
+    .populate("questions")
     .populate({
       path: "questions",
       populate: {
         path: "options",
-        model: Options,
+        // model: Options,
       },
     });
   res.send(papers);

@@ -15,9 +15,8 @@ const createQuestion = async (req, res) => {
     explanation,
   } = req.body;
 
-  console.log(option)
   const op = await Options.insertMany(option);
-  console.log(op);
+
   const rightAnswers = [];
 
   op.map((o) => {
@@ -46,6 +45,8 @@ const deleteQuestion = async (req, res) => {
   if (!ques) {
     return res.status(400).send("Invalid Question Id");
   }
+
+  await Options.deleteMany({_id: ques.options})
   await ques.remove();
   res.send("Deleted Successfully");
 };
@@ -61,7 +62,7 @@ const getAllQuestions = async (req, res) => {
   //   );
   //   res.send(allques);
   // } else {
-    const allques = await Question.find({}).populate("createdBy options");
+    const allques = await Question.find({ createdBy: req.user._id}).populate("createdBy options");
     res.send(allques);
   // }
 };
