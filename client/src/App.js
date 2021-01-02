@@ -9,6 +9,7 @@ import QuestionList from './screen/QuestionList';
 import QuestionCreate from './screen/QuestionCreate';
 import TestList from './screen/TestList';
 import TestCreate from './screen/TestCreate';
+import StudentRegistered from './screen/StudentRegistered';
 
 const App = () => {
   return (
@@ -22,6 +23,7 @@ const App = () => {
         <Route path="/questions/create" component={QuestionCreate} />
         <Route path="/tests" component={TestList} exact/>
         <Route path="/tests/create" component={TestCreate} />
+        <Route path="/student/test" component={StudentRegistered} />
       </header>
     </BrowserRouter>
   );
