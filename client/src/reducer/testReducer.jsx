@@ -1,4 +1,4 @@
-import * as test from '../constants/testConstant';
+import * as test from "../constants/testConstant";
 
 export const testCreateReducer = (state = {}, action) => {
   switch (action.type) {

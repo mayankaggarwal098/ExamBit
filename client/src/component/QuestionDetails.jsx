@@ -1,5 +1,5 @@
-import React from 'react';
-import { Col, ListGroup, Row } from 'react-bootstrap';
+import React from "react";
+import { Col, ListGroup, Row } from "react-bootstrap";
 
 const QuestionDetails = ({ testPapers, pos }) => {
   return (

@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import React, { useState, useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import {
   Table,
   Row,
@@ -9,38 +9,36 @@ import {
   Modal,
   Tab,
   Tabs,
-} from 'react-bootstrap';
-import { getTestPaperList, testPaperDelete } from '../actions/testAction';
-import Loader from '../component/Loader';
-import QuestionPaper from '../component/QuestionPaper';
-import QuestionDetails from '../component/QuestionDetails';
+} from "react-bootstrap";
+import { getTestPaperList, testPaperDelete } from "../actions/testAction";
+import Loader from "../component/Loader";
+import QuestionPaper from "../component/QuestionPaper";
+import QuestionDetails from "../component/QuestionDetails";
 
 const TestList = ({ history }) => {
   const [show, setShow] = useState(false);
   const [pos, setIndex] = useState(0);
 
   const { loading, error, testPapers } = useSelector(
-    state => state.getTestPaper
+    (state) => state.getTestPaper
   );
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (!testPapers) {
-      dispatch(getTestPaperList());
-    }
+    dispatch(getTestPaperList());
   }, []);
 
-  const set = index => {
+  const set = (index) => {
     setShow(true);
     setIndex(index);
   };
 
   const createHandler = () => {
-    history.push('/tests/create');
+    history.push("/tests/create");
   };
 
-  const deleteHandler = id => {
-    if (window.confirm('Are you sure')) {
+  const deleteHandler = (id) => {
+    if (window.confirm("Are you sure")) {
       dispatch(testPaperDelete(id));
     }
   };

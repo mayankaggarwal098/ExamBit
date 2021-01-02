@@ -1,8 +1,8 @@
-import * as question from '../constants/questionConstant';
-import http from '../component/httpService';
-import { toast } from 'react-toastify';
+import * as question from "../constants/questionConstant";
+import http from "../component/httpService";
+import { toast } from "react-toastify";
 
-export const addQuestion = newQuestion => async (dispatch, getState) => {
+export const addQuestion = (newQuestion) => async (dispatch, getState) => {
   try {
     dispatch({ type: question.QUESTION_CREATE_REQUEST });
 
@@ -12,11 +12,11 @@ export const addQuestion = newQuestion => async (dispatch, getState) => {
 
     const config = {
       headers: {
-        'x-auth-token': `${userInfo.token}`,
+        "x-auth-token": `${userInfo.token}`,
       },
     };
     const { data } = await http.post(
-      '/api/questions/create',
+      "/api/questions/create",
       newQuestion,
       config
     );
@@ -48,11 +48,11 @@ export const getAllQuestions = () => async (dispatch, getState) => {
 
     const config = {
       headers: {
-        'x-auth-token': `${userInfo.token}`,
+        "x-auth-token": `${userInfo.token}`,
       },
     };
 
-    const { data } = await http.get('/api/questions/details/all', config);
+    const { data } = await http.get("/api/questions/details/all", config);
 
     dispatch({
       type: question.QUESTION_LIST_SUCCESS,
@@ -69,7 +69,7 @@ export const getAllQuestions = () => async (dispatch, getState) => {
   }
 };
 
-export const deleteQuestion = id => async (dispatch, getState) => {
+export const deleteQuestion = (id) => async (dispatch, getState) => {
   try {
     dispatch({ type: question.QUESTION_DELETE_REQUEST });
 
@@ -79,7 +79,7 @@ export const deleteQuestion = id => async (dispatch, getState) => {
 
     const config = {
       headers: {
-        'x-auth-token': `${userInfo.token}`,
+        "x-auth-token": `${userInfo.token}`,
       },
     };
 

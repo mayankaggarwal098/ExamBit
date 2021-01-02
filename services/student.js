@@ -31,4 +31,18 @@ const registerStudent = async (req, res) => {
   res.send("Successfully Registered Check your mail");
 };
 
+const getTestQuestions = async (req, res) => {
+  const paper = await TestPaper.findById(req.params.id)
+    .populate("createdBy", "name")
+    .populate("questions", "questionBody")
+    .populate({
+      path: "questions",
+      populate: {
+        path: "options",
+        model: Options,
+      },
+    });
+  res.send(paper);
+};
+
 module.exports = { registerStudent };

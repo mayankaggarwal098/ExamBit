@@ -1,5 +1,5 @@
-import React from 'react';
-import { ListGroup, Row, Col } from 'react-bootstrap';
+import React from "react";
+import { ListGroup, Row, Col } from "react-bootstrap";
 
 const QuestionPaper = ({ testPapers, pos }) => {
   return (
@@ -7,8 +7,8 @@ const QuestionPaper = ({ testPapers, pos }) => {
       <ListGroup.Item>
         <Row
           style={{
-            width: '200px',
-            margin: 'auto',
+            width: "200px",
+            margin: "auto",
           }}
         >
           <h3>Test Paper</h3>
@@ -17,19 +17,19 @@ const QuestionPaper = ({ testPapers, pos }) => {
           <Col md={10}>
             <strong>
               <b>SUBJECT</b>
-            </strong>{' '}
+            </strong>{" "}
             : {testPapers[pos].subject}
             <br />
             <br />
             <strong>
               <b>TITLE</b>
-            </strong>{' '}
+            </strong>{" "}
             : {testPapers[pos].title}
           </Col>
           <Col>
             <strong>
               <b>DURATION</b>
-            </strong>{' '}
+            </strong>{" "}
             : {testPapers[pos].duration}
           </Col>
         </Row>
