@@ -1,4 +1,4 @@
-import * as question from "../constants/questionConstant";
+import * as question from '../constants/questionConstant';
 
 export const createQuestionReducer = (state = {}, action) => {
   switch (action.type) {
@@ -16,7 +16,7 @@ export const createQuestionReducer = (state = {}, action) => {
 export const questionListReducer = (state = {}, action) => {
   switch (action.type) {
     case question.QUESTION_LIST_REQUEST:
-      return { laoding: true };
+      return { loading: true };
     case question.QUESTION_LIST_SUCCESS:
       return { loading: false, questions: action.payload };
     case question.QUESTION_LIST_FAIL:
