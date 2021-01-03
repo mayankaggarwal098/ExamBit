@@ -16,7 +16,6 @@ export const createTest = (testPaper) => async (dispatch, getState) => {
 
     const { data } = await http.post("/api/test/create", testPaper, config);
 
-    console.log(data);
     dispatch({
       type: test.TEST_CREATE_SUCCESS,
       //payload: data,
@@ -82,8 +81,12 @@ export const testPaperDelete = (id) => async (dispatch, getState) => {
 
     dispatch({ type: test.TEST_DELETE_SUCCESS });
 
+    dispatch({
+      type: test.TEST_LIST_SUCCESS,
+      payload: data,
+    });
+
     toast.success(data);
-    dispatch(getTestPaperList());
   } catch (error) {
     if (error.response && error.response.status === 401) {
       toast.error(error.response.data);
