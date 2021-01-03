@@ -22,7 +22,7 @@ const createQuestion = async (req, res) => {
   op.map((o) => {
     if (o.isAnswer) rightAnswers.push(o._id);
   });
-  const data = new Question({
+  let data = new Question({
     questionBody,
     explanation,
     subject,
@@ -31,8 +31,8 @@ const createQuestion = async (req, res) => {
     weightage,
     rightAnswers,
   });
-  await data.save();
-  res.send("New question created");
+  data = await data.save();
+  res.send(data);
 };
 
 const deleteQuestion = async (req, res) => {

@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import React, { useState, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import {
   Table,
   Row,
@@ -8,41 +8,43 @@ import {
   Container,
   Modal,
   ListGroup,
-} from "react-bootstrap";
-import { getAllQuestions } from "../actions/questionAction";
-import { deleteQuestion } from "../actions/questionAction";
-import Loader from "../component/Loader";
+} from 'react-bootstrap';
+import { getAllQuestions } from '../actions/questionAction';
+import { deleteQuestion } from '../actions/questionAction';
+import Loader from '../component/Loader';
 
 const QuestionList = ({ history }) => {
   const [show, setShow] = useState(false);
   const [pos, setIndex] = useState(0);
 
-  const { loading, questions } = useSelector((state) => state.questionList);
+  const { loading, questions } = useSelector(state => state.questionList);
   const { loading: loadingCreate, success: successCreate } = useSelector(
-    (state) => state.createQuestion
+    state => state.createQuestion
   );
 
   const { loading: loadingDelete, success: successDelete } = useSelector(
-    (state) => state.questionDelete
+    state => state.questionDelete
   );
 
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(getAllQuestions());
+    if (!questions) {
+      dispatch(getAllQuestions());
+    }
   }, []);
 
   const createHandler = () => {
-    history.push("/questions/create");
+    history.push('/questions/create');
   };
 
-  const deleteHandler = (id) => {
-    if (window.confirm("Are you sure ")) {
-      dispatch(deleteQuestion(id));
+  const deleteHandler = id => {
+    if (window.confirm('Are you sure ')) {
+      dispatch(deleteQuestion(questions, id));
     }
   };
 
-  const set = (index) => {
+  const set = index => {
     setShow(true);
     setIndex(index);
   };
@@ -118,19 +120,19 @@ const QuestionList = ({ history }) => {
               <ListGroup.Item>
                 <strong>
                   <b>SUBJECT</b>
-                </strong>{" "}
+                </strong>{' '}
                 : {questions[pos].subject}
               </ListGroup.Item>
               <ListGroup.Item>
                 <strong>
                   <b>WEIGHTAGE</b>
-                </strong>{" "}
+                </strong>{' '}
                 : {questions[pos].weightage}
               </ListGroup.Item>
               <ListGroup.Item>
                 <strong>
                   <b>QUESTION</b>
-                </strong>{" "}
+                </strong>{' '}
                 : {questions[pos].questionBody}
               </ListGroup.Item>
               <ListGroup.Item>
@@ -148,7 +150,7 @@ const QuestionList = ({ history }) => {
               </ListGroup.Item>
               <ListGroup.Item>
                 <strong>
-                  <b>Answer:</b>{" "}
+                  <b>Answer:</b>{' '}
                 </strong>
                 {questions[pos].options.map((opt, index) => (
                   <>
@@ -164,7 +166,7 @@ const QuestionList = ({ history }) => {
               <ListGroup.Item>
                 <strong>
                   <b>EXPLANATION</b>
-                </strong>{" "}
+                </strong>{' '}
                 : {questions[pos].explanation}
               </ListGroup.Item>
             </ListGroup>

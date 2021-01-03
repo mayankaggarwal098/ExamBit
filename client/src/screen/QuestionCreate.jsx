@@ -1,23 +1,25 @@
-import React, { useState, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { Form, Button, Col, Container } from "react-bootstrap";
-import { addQuestion } from "../actions/questionAction";
+import React, { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { Form, Button, Col, Container } from 'react-bootstrap';
+import { addQuestion } from '../actions/questionAction';
 
 const QuestionCreate = ({ history }) => {
-  const [questionBody, setQuestion] = useState("");
-  const [explanation, setExplanation] = useState("");
-  const [subject, setSubject] = useState("");
+  const [questionBody, setQuestion] = useState('');
+  const [explanation, setExplanation] = useState('');
+  const [subject, setSubject] = useState('');
   const [weightage, setWeightage] = useState(1);
-  const [opt1, setOpt1] = useState({ optionBody: "", isAnswer: false });
-  const [opt2, setOpt2] = useState({ optionBody: "", isAnswer: false });
-  const [opt3, setOpt3] = useState({ optionBody: "", isAnswer: false });
-  const [opt4, setOpt4] = useState({ optionBody: "", isAnswer: false });
+  const [opt1, setOpt1] = useState({ optionBody: '', isAnswer: false });
+  const [opt2, setOpt2] = useState({ optionBody: '', isAnswer: false });
+  const [opt3, setOpt3] = useState({ optionBody: '', isAnswer: false });
+  const [opt4, setOpt4] = useState({ optionBody: '', isAnswer: false });
 
   const dispatch = useDispatch();
 
   const { loading, success, error } = useSelector(
-    (state) => state.createQuestion
+    state => state.createQuestion
   );
+
+  const { questions } = useSelector(state => state.questionList);
 
   // useEffect( () => {
   //     if( questionAdded ){
@@ -25,13 +27,19 @@ const QuestionCreate = ({ history }) => {
   //     }
   // },[ questionAdded, history]);
 
-  const submitHandler = (e) => {
+  const submitHandler = e => {
     e.preventDefault();
     const options = [opt1, opt2, opt3, opt4];
     dispatch(
-      addQuestion({ questionBody, explanation, subject, weightage, options })
+      addQuestion(questions, {
+        questionBody,
+        explanation,
+        subject,
+        weightage,
+        options,
+      })
     );
-    history.push("/questions");
+    history.push('/questions');
   };
 
   return (
@@ -44,7 +52,7 @@ const QuestionCreate = ({ history }) => {
             placeholder="Question Description..."
             type="text"
             value={questionBody}
-            onChange={(e) => setQuestion(e.target.value)}
+            onChange={e => setQuestion(e.target.value)}
           />
         </Form.Group>
 
@@ -56,7 +64,7 @@ const QuestionCreate = ({ history }) => {
             as="textarea"
             row={3}
             value={explanation}
-            onChange={(e) => setExplanation(e.target.value)}
+            onChange={e => setExplanation(e.target.value)}
           />
         </Form.Group>
 
@@ -68,7 +76,7 @@ const QuestionCreate = ({ history }) => {
               type="text"
               placeholder="Subject"
               value={subject}
-              onChange={(e) => setSubject(e.target.value)}
+              onChange={e => setSubject(e.target.value)}
             />
           </Form.Group>
 
@@ -79,7 +87,7 @@ const QuestionCreate = ({ history }) => {
               type="number"
               placeholder="Select.."
               value={weightage}
-              onChange={(e) => setWeightage(e.target.value)}
+              onChange={e => setWeightage(e.target.value)}
             />
           </Form.Group>
         </Form.Row>
@@ -92,12 +100,12 @@ const QuestionCreate = ({ history }) => {
               type="text"
               placeholder="option..."
               value={opt1.optionBody}
-              onChange={(e) => setOpt1({ ...opt1, optionBody: e.target.value })}
+              onChange={e => setOpt1({ ...opt1, optionBody: e.target.value })}
             />
             <Form.Check
               type="checkbox"
               checked={opt1.isAnswer}
-              onChange={(e) => setOpt1({ ...opt1, isAnswer: e.target.checked })}
+              onChange={e => setOpt1({ ...opt1, isAnswer: e.target.checked })}
             />
           </Form.Group>
 
@@ -108,12 +116,12 @@ const QuestionCreate = ({ history }) => {
               type="text"
               placeholder="option..."
               value={opt2.optionBody}
-              onChange={(e) => setOpt2({ ...opt2, optionBody: e.target.value })}
+              onChange={e => setOpt2({ ...opt2, optionBody: e.target.value })}
             />
             <Form.Check
               type="checkbox"
               checked={opt2.isAnswer}
-              onChange={(e) => setOpt2({ ...opt2, isAnswer: e.target.checked })}
+              onChange={e => setOpt2({ ...opt2, isAnswer: e.target.checked })}
             />
           </Form.Group>
         </Form.Row>
@@ -126,12 +134,12 @@ const QuestionCreate = ({ history }) => {
               type="text"
               placeholder="option..."
               value={opt3.optionBody}
-              onChange={(e) => setOpt3({ ...opt3, optionBody: e.target.value })}
+              onChange={e => setOpt3({ ...opt3, optionBody: e.target.value })}
             />
             <Form.Check
               type="checkbox"
               checked={opt3.isAnswer}
-              onChange={(e) => setOpt3({ ...opt3, isAnswer: e.target.checked })}
+              onChange={e => setOpt3({ ...opt3, isAnswer: e.target.checked })}
             />
           </Form.Group>
 
@@ -142,12 +150,12 @@ const QuestionCreate = ({ history }) => {
               type="text"
               placeholder="option..."
               value={opt4.optionBody}
-              onChange={(e) => setOpt4({ ...opt4, optionBody: e.target.value })}
+              onChange={e => setOpt4({ ...opt4, optionBody: e.target.value })}
             />
             <Form.Check
               type="checkbox"
               checked={opt4.isAnswer}
-              onChange={(e) => setOpt4({ ...opt4, isAnswer: e.target.checked })}
+              onChange={e => setOpt4({ ...opt4, isAnswer: e.target.checked })}
             />
           </Form.Group>
         </Form.Row>

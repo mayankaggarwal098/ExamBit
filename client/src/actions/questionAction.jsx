@@ -1,8 +1,11 @@
-import * as question from "../constants/questionConstant";
-import http from "../component/httpService";
-import { toast } from "react-toastify";
+import * as question from '../constants/questionConstant';
+import http from '../component/httpService';
+import { toast } from 'react-toastify';
 
-export const addQuestion = (newQuestion) => async (dispatch, getState) => {
+export const addQuestion = (questions, newQuestion) => async (
+  dispatch,
+  getState
+) => {
   try {
     dispatch({ type: question.QUESTION_CREATE_REQUEST });
 
@@ -12,22 +15,33 @@ export const addQuestion = (newQuestion) => async (dispatch, getState) => {
 
     const config = {
       headers: {
-        "x-auth-token": `${userInfo.token}`,
+        'x-auth-token': `${userInfo.token}`,
       },
     };
     const { data } = await http.post(
-      "/api/questions/create",
+      '/api/questions/create',
       newQuestion,
       config
     );
 
+    dispatch({ type: question.QUESTION_CREATE_SUCCESS });
+
+    const arr = [...questions];
+    arr.push(data);
     dispatch({
-      type: question.QUESTION_CREATE_SUCCESS,
-      payload: data,
+      type: question.QUESTION_LIST_SUCCESS,
+      payload: arr,
     });
 
-    dispatch(getAllQuestions());
+    toast.success('Question Paper Added');
   } catch (error) {
+    if (
+      error.response &&
+      error.response.status >= 400 &&
+      error.response.status <= 500
+    ) {
+      toast.error(error.response.data);
+    }
     dispatch({
       type: question.QUESTION_CREATE_FAIL,
       payload:
@@ -48,11 +62,11 @@ export const getAllQuestions = () => async (dispatch, getState) => {
 
     const config = {
       headers: {
-        "x-auth-token": `${userInfo.token}`,
+        'x-auth-token': `${userInfo.token}`,
       },
     };
 
-    const { data } = await http.get("/api/questions/details/all", config);
+    const { data } = await http.get('/api/questions/details/all', config);
 
     dispatch({
       type: question.QUESTION_LIST_SUCCESS,
@@ -69,7 +83,7 @@ export const getAllQuestions = () => async (dispatch, getState) => {
   }
 };
 
-export const deleteQuestion = (id) => async (dispatch, getState) => {
+export const deleteQuestion = (questions, id) => async (dispatch, getState) => {
   try {
     dispatch({ type: question.QUESTION_DELETE_REQUEST });
 
@@ -79,14 +93,18 @@ export const deleteQuestion = (id) => async (dispatch, getState) => {
 
     const config = {
       headers: {
-        "x-auth-token": `${userInfo.token}`,
+        'x-auth-token': `${userInfo.token}`,
       },
     };
 
     const { data } = await http.delete(`/api/questions/delete/${id}`, config);
 
+    const arr = questions.filter(ques => ques._id !== id);
+
     dispatch({ type: question.QUESTION_DELETE_SUCCESS });
-    dispatch(getAllQuestions());
+
+    dispatch({ type: question.QUESTION_LIST_SUCCESS, payload: arr });
+
     toast.success(data);
   } catch (error) {
     if (error.response && error.response.status === 400) {

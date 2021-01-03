@@ -13,15 +13,15 @@ const createEditTest = async (req, res) => {
   } else {
     const { title,subject, duration, selectQuestion } = req.body;
 
-    const paper = new TestPaper({
+    let paper = new TestPaper({
       title,
       subject,
       questions: selectQuestion,
       duration,
       createdBy: req.user._id,
     });
-    await paper.save();
-    res.send(paper._id);
+    paper = await paper.save();
+    res.send(paper);
   }
 };
 
@@ -41,12 +41,12 @@ const getTest = async (req, res) => {
 
 const getAllTests = async (req, res) => {
   const papers = await TestPaper.find({ createdBy: req.user._id })
-    .populate("questions")
+    .populate("questions", "questionBody")
     .populate({
       path: "questions",
       populate: {
         path: "options",
-        // model: Options,
+        //model: Options,
       },
     });
   res.send(papers);
