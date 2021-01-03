@@ -26,10 +26,18 @@ const QuestionCreate = ({ history }) => {
   //         history.push('/questions');
   //     }
   // },[ questionAdded, history]);
+<<<<<<< HEAD
 
   const submitHandler = e => {
+=======
+  const { questions } = useSelector((state) => state.questionList);
+  const submitHandler = (e) => {
+>>>>>>> 81cc6cd6b15e122fc781deb3294acc4d4a00a181
     e.preventDefault();
     const options = [opt1, opt2, opt3, opt4];
+    // dispatch(
+    //   addQuestion({ questionBody, explanation, subject, weightage, options })
+    // );
     dispatch(
       addQuestion(questions, {
         questionBody,
