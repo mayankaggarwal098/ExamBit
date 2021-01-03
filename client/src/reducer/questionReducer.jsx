@@ -1,4 +1,4 @@
-import * as question from '../constants/questionConstant';
+import * as question from "../constants/questionConstant";
 
 export const createQuestionReducer = (state = {}, action) => {
   switch (action.type) {
