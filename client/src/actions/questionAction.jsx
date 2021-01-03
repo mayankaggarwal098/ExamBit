@@ -2,7 +2,10 @@ import * as question from "../constants/questionConstant";
 import http from "../component/httpService";
 import { toast } from "react-toastify";
 
-export const addQuestion = (newQuestion) => async (dispatch, getState) => {
+export const addQuestion = (questions, newQuestion) => async (
+  dispatch,
+  getState
+) => {
   try {
     dispatch({ type: question.QUESTION_CREATE_REQUEST });
 
@@ -25,8 +28,13 @@ export const addQuestion = (newQuestion) => async (dispatch, getState) => {
       type: question.QUESTION_CREATE_SUCCESS,
       payload: data,
     });
-
-    dispatch(getAllQuestions());
+    const arr = [...questions];
+    arr.push(newQuestion);
+    dispatch({
+      type: question.QUESTION_LIST_SUCCESS,
+      payload: arr,
+    });
+    //dispatch(getAllQuestions());
   } catch (error) {
     dispatch({
       type: question.QUESTION_CREATE_FAIL,

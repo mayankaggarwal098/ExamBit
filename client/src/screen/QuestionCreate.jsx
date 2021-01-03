@@ -24,12 +24,21 @@ const QuestionCreate = ({ history }) => {
   //         history.push('/questions');
   //     }
   // },[ questionAdded, history]);
-
+  const { questions } = useSelector((state) => state.questionList);
   const submitHandler = (e) => {
     e.preventDefault();
     const options = [opt1, opt2, opt3, opt4];
+    // dispatch(
+    //   addQuestion({ questionBody, explanation, subject, weightage, options })
+    // );
     dispatch(
-      addQuestion({ questionBody, explanation, subject, weightage, options })
+      addQuestion(questions, {
+        questionBody,
+        explanation,
+        subject,
+        weightage,
+        options,
+      })
     );
     history.push("/questions");
   };

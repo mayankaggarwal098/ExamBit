@@ -29,7 +29,9 @@ const QuestionList = ({ history }) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(getAllQuestions());
+    if (!questions) {
+      dispatch(getAllQuestions());
+    }
   }, []);
 
   const createHandler = () => {

@@ -11,7 +11,7 @@ const createEditTest = async (req, res) => {
     await TestPaper.findOneAndUpdate({ _id }, { title, questions });
     res.send("Successfully Updated");
   } else {
-    const { title,subject, duration, selectQuestion } = req.body;
+    const { title, subject, duration, selectQuestion } = req.body;
 
     const paper = new TestPaper({
       title,
