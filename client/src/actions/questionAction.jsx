@@ -1,12 +1,6 @@
-<<<<<<< HEAD
 import * as question from '../constants/questionConstant';
 import http from '../component/httpService';
 import { toast } from 'react-toastify';
-=======
-import * as question from "../constants/questionConstant";
-import http from "../component/httpService";
-import { toast } from "react-toastify";
->>>>>>> 81cc6cd6b15e122fc781deb3294acc4d4a00a181
 
 export const addQuestion = (questions, newQuestion) => async (
   dispatch,
@@ -38,18 +32,7 @@ export const addQuestion = (questions, newQuestion) => async (
       type: question.QUESTION_LIST_SUCCESS,
       payload: arr,
     });
-<<<<<<< HEAD
-
-    toast.success('Question Paper Added');
-=======
-    const arr = [...questions];
-    arr.push(newQuestion);
-    dispatch({
-      type: question.QUESTION_LIST_SUCCESS,
-      payload: arr,
-    });
     //dispatch(getAllQuestions());
->>>>>>> 81cc6cd6b15e122fc781deb3294acc4d4a00a181
   } catch (error) {
     if (
       error.response &&

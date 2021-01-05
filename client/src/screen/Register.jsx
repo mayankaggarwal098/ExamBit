@@ -1,16 +1,16 @@
-import React, { useState, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { Form, Button, Container, Row, Col } from "react-bootstrap";
-import { Link } from "react-router-dom";
-import { userRegister } from "../actions/userAction";
-import { toast } from "react-toastify";
+import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { Form, Button, Container, Row, Col } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
+import { userRegister } from '../actions/userAction';
+import { toast } from 'react-toastify';
 
 const Register = ({ history }) => {
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-  const [category, setCategory] = useState("");
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [category, setCategory] = useState('');
 
   // const { loading, success, error } = useSelector( state => state.register )
 
@@ -23,13 +23,13 @@ const Register = ({ history }) => {
   //     }
   // }, [history, success]);
 
-  const submitHandler = (e) => {
+  const submitHandler = e => {
     e.preventDefault();
     if (password !== confirmPassword) {
-      toast.error("Invalid Input");
+      toast.error('Invalid Input');
     } else {
       dispatch(userRegister(name, email, password, category));
-      history.push("/login");
+      history.push('/login');
     }
   };
 
@@ -45,7 +45,7 @@ const Register = ({ history }) => {
                 type="name"
                 value={name}
                 placeholder="Enter name"
-                onChange={(e) => setName(e.target.value)}
+                onChange={e => setName(e.target.value)}
               ></Form.Control>
             </Form.Group>
 
@@ -55,7 +55,7 @@ const Register = ({ history }) => {
                 type="email"
                 value={email}
                 placeholder="Enter Email Address"
-                onChange={(e) => setEmail(e.target.value)}
+                onChange={e => setEmail(e.target.value)}
               ></Form.Control>
             </Form.Group>
 
@@ -64,7 +64,7 @@ const Register = ({ history }) => {
               <Form.Control
                 as="select"
                 value={category}
-                onChange={(e) => setCategory(e.target.value)}
+                onChange={e => setCategory(e.target.value)}
               >
                 <option value="">Select Category</option>
                 <option value="SUPERVISOR">Supervisor</option>
@@ -78,7 +78,7 @@ const Register = ({ history }) => {
                 type="password"
                 value={password}
                 placeholder="Enter Password"
-                onChange={(e) => setPassword(e.target.value)}
+                onChange={e => setPassword(e.target.value)}
               ></Form.Control>
             </Form.Group>
 
@@ -88,7 +88,7 @@ const Register = ({ history }) => {
                 type="password"
                 value={confirmPassword}
                 placeholder="Confirm Password"
-                onChange={(e) => setConfirmPassword(e.target.value)}
+                onChange={e => setConfirmPassword(e.target.value)}
               ></Form.Control>
             </Form.Group>
 
@@ -97,7 +97,7 @@ const Register = ({ history }) => {
             </Button>
 
             <Row className="py-3 px-3">
-              ALREADY HAVE AN ACCOUNT ? &nbsp;&nbsp;{" "}
+              ALREADY HAVE AN ACCOUNT ? &nbsp;&nbsp;{' '}
               <Link to="/login">SIGN IN</Link>
             </Row>
           </Form>

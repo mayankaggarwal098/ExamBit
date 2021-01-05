@@ -1,14 +1,20 @@
-import * as student_reg from '../constants/studentRegistrationConstant';
+import * as res_sheet from '../constants/responseSheetConstant';
 import http from '../component/httpService';
 import { toast } from 'react-toastify';
 
-export const studentRegistrationForTest = students => async dispatch => {
+export const responseSheetOfStudent = ({
+  studentId,
+  testId,
+}) => async dispatch => {
   try {
-    dispatch({ type: student_reg.STUDENT_REGISTRATION_REQUEST });
+    dispatch({ type: res_sheet.STUDENT_RESPONSE_SHEET_REQUEST });
 
-    const { data } = await http.post('/api/student/register', students);
+    const { data } = await http.post('/api/student/responseSheet', {
+      studentId,
+      testId,
+    });
 
-    dispatch({ type: student_reg.STUDENT_REGISTRATION_SUCCESS });
+    dispatch({ type: res_sheet.STUDENT_RESPONSE_SHEET_SUCCESS });
     toast.success(data);
   } catch (error) {
     if (
@@ -17,9 +23,8 @@ export const studentRegistrationForTest = students => async dispatch => {
     ) {
       toast.error(error.response.data);
     }
-
     dispatch({
-      type: student_reg.STUDENT_REGISTRATION_FAIL,
+      type: res_sheet.STUDENT_RESPONSE_SHEET_FAIL,
       payload:
         error.response && error.response.data.message
           ? error.response.data.message

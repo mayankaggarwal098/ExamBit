@@ -10,7 +10,11 @@ import {
   Tab,
   Tabs,
 } from 'react-bootstrap';
-import { getTestPaperList, testPaperDelete } from '../actions/testAction';
+import {
+  getTestPaperList,
+  testBegin,
+  testPaperDelete,
+} from '../actions/testAction';
 import Loader from '../component/Loader';
 import QuestionPaper from '../component/QuestionPaper';
 import QuestionDetails from '../component/QuestionDetails';
@@ -45,6 +49,10 @@ const TestList = ({ history }) => {
     }
   };
 
+  const startTestHandler = (id, index) => {
+    dispatch(testBegin(id, index, testPapers));
+  };
+
   return (
     <>
       {loading && <Loader />}
@@ -66,6 +74,7 @@ const TestList = ({ history }) => {
               <th>TITLE</th>
               <th>DURATION(in minute)</th>
               <th>&nbsp;&nbsp;ACTION&nbsp;&nbsp;</th>
+              <th></th>
             </tr>
           </thead>
           <tbody>
@@ -90,6 +99,15 @@ const TestList = ({ history }) => {
                       onClick={() => deleteHandler(test._id)}
                     >
                       <i className="fas fa-trash"></i>
+                    </Button>
+                  </td>
+                  <td>
+                    <Button
+                      className="btn btn-block"
+                      disabled={test.isTestBegins}
+                      onClick={() => startTestHandler(test._id, index)}
+                    >
+                      Start Test
                     </Button>
                   </td>
                 </tr>

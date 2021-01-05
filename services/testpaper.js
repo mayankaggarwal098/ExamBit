@@ -64,7 +64,7 @@ const deleteTest = async (req, res) => {
 const beginTest = async (req, res) => {
   const paper = await TestPaper.findOneAndUpdate(
     { _id: req.body.id, isTestConducted: false },
-    { isTestBegins: 1, isRegistrationAvailable: 0 },
+    { isTestBegins: true, isRegistrationAvailable: false },
     { new: true }
   );
   if (!paper) {

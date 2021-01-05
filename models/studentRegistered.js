@@ -16,7 +16,6 @@ const studentSchema = new mongoose.Schema({
   },
   testId: {
     type: mongoose.Schema.Types.ObjectId,
-    type: String,
     ref: "TestPaper",
   },
 });

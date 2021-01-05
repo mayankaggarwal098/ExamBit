@@ -11,7 +11,11 @@ import {
   testCreateReducer,
   getTestPaperReducer,
   deleteTestPaperReducer,
+  testbeginReducer,
+  getSingleTestPaperReducer,
 } from "./reducer/testReducer";
+import { studentRegistrationReducer } from "./reducer/studentRegistrationReducer";
+import { responseSheetReducer } from "./reducer/responseSheetReducer";
 
 const reducer = combineReducers({
   register: registerReducer,
@@ -22,6 +26,10 @@ const reducer = combineReducers({
   testCreate: testCreateReducer,
   getTestPaper: getTestPaperReducer,
   deleteTestPaper: deleteTestPaperReducer,
+  testBegin: testbeginReducer,
+  singleTestPaper: getSingleTestPaperReducer,
+  studentRegister: studentRegistrationReducer,
+  studentResponseSheet: responseSheetReducer
 });
 
 const userInfoFromStorage = localStorage.getItem("userInfo")

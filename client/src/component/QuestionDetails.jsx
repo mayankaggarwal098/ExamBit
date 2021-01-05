@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Col, ListGroup, Row } from 'react-bootstrap';
+import { Col, ListGroup, Row } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 
 const QuestionDetails = ({ testPapers, pos }) => {

@@ -18,13 +18,9 @@ const QuestionList = ({ history }) => {
   const [pos, setIndex] = useState(0);
 
   const { loading, questions } = useSelector(state => state.questionList);
-  const { loading: loadingCreate, success: successCreate } = useSelector(
-    state => state.createQuestion
-  );
+  const { loading: loadingCreate } = useSelector(state => state.createQuestion);
 
-  const { loading: loadingDelete, success: successDelete } = useSelector(
-    state => state.questionDelete
-  );
+  const { loading: loadingDelete } = useSelector(state => state.questionDelete);
 
   const dispatch = useDispatch();
 
@@ -32,7 +28,7 @@ const QuestionList = ({ history }) => {
     if (!questions) {
       dispatch(getAllQuestions());
     }
-  }, []);
+  }, [dispatch, questions]);
 
   const createHandler = () => {
     history.push('/questions/create');

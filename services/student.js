@@ -55,21 +55,24 @@ const getStudent = async (req, res) => {
 };
 
 const responseSheet = async (req, res) => {
+
   const { studentId, testId } = req.body;
-  const student = await Student.find({ _id: studentId, testId });
-  const paper = await TestPaper.find({
+  const student = await Student.findOne({ _id: studentId, testId });
+  const paper = await TestPaper.findOne({
     _id: testId,
     isTestBegins: true,
     isTestConducted: false,
   });
 
+
   if (!student || !paper) return res.status(400).send("Invalid Request");
 
-  let responseSheet = await ResponseSheet.find({ studentId, testId });
+  let responseSheet = await ResponseSheet.findOne({ studentId, testId });
 
   if (responseSheet) return res.send(responseSheet);
 
   const questions = paper.questions;
+
   let responses = questions.map((id) => {
     return {
       questionId: id,

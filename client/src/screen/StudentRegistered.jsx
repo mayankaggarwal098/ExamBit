@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Button, Form, Container, Row, Col } from 'react-bootstrap';
+import { useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { studentRegistrationForTest } from '../actions/studentRegistrationAction';
 
@@ -16,10 +17,12 @@ const StudentRegistered = () => {
     link = link + d + '/';
   });
 
+  const dispatch = useDispatch();
   const submitHandler = e => {
     e.preventDefault();
-    console.log(testId);
-    studentRegistrationForTest({ name, email, phoneNum, testId, link });
+    dispatch(
+      studentRegistrationForTest({ name, email, phoneNum, testId, link })
+    );
   };
 
   return (
@@ -53,7 +56,7 @@ const StudentRegistered = () => {
             </Form.Group>
             <Form.Group controlId="phonenumber">
               <Form.Label>
-                <i class="fas fa-phone"></i> Mobile Number
+                <i className="fas fa-phone"></i> Mobile Number
               </Form.Label>
               <Form.Control
                 required
