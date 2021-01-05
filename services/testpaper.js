@@ -1,4 +1,6 @@
 const Question = require("../models/question");
+const Result = require("../models/result");
+const { Student } = require("../models/studentRegistered");
 const TestPaper = require("../models/testpaper");
 
 const createEditTest = async (req, res) => {
@@ -123,7 +125,17 @@ const changeRegistrationStatus = async (req, res) => {
   res.send("Registration status changed");
 };
 
+const getRegisteredStudents = async (req, res) => {
+  const { testId } = req.body;
+  const students = await Student.find({ testId });
+  if (students.length === 0) {
+    return res.status(400).send("Invalid Test Id");
+  }
+  res.send(students);
+};
+
 module.exports = {
+  getRegisteredStudents,
   createEditTest,
   getTest,
   getAllTests,

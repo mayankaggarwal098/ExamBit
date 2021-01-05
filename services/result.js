@@ -80,5 +80,25 @@ const generateResult = async (req, res) => {
   await resultdata.save();
   res.send(resultdata);
 };
+const getAllResults = async (req, res) => {
+  const { testId } = req.body;
+  const results = await Result.find({ testId })
+    .select("score studentId")
+    .populate("studentId");
+  if (results.length === 0) {
+    return res.status(400).send("Invalid TestId");
+  }
+  return results;
+};
 
-module.exports = { generateResult };
+const getDetailedResult = async (req, res) => {
+  const { studentId, testId } = req.body;
+  const result = await Result.findOne({ testId, studentId }).populate(
+    "subResult"
+  );
+  if (!result) return res.status(400).send("Invalid Inputs");
+
+  res.send(result);
+};
+
+module.exports = { generateResult, getDetailedResult, getAllResults };
