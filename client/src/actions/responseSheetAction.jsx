@@ -32,3 +32,28 @@ export const responseSheetOfStudent = ({
     });
   }
 };
+
+export const addAnswerForGivenQuestion = body => async dispatch => {
+  try {
+    dispatch({ type: res_sheet.STUDENT_ANSWER_REQUEST });
+
+    const { data } = await http.post('/api/student/updateResponse', body);
+
+    dispatch({ type: res_sheet.STUDENT_ANSWER_SUCCESS });
+    toast.success(data);
+  } catch (error) {
+    if (
+      error.response &&
+      (error.response.status >= 400 || error.response.status <= 500)
+    ) {
+      toast.error(error.response.data);
+    }
+    dispatch({
+      type: res_sheet.STUDENT_ANSWER_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};

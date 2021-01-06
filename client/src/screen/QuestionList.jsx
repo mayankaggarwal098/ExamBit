@@ -53,7 +53,7 @@ const QuestionList = ({ history }) => {
       <Container>
         <Row className="align-items-center">
           <Col>
-            <h3>All Questions</h3>
+            <h3 style={{ color: 'black' }}>All Questions</h3>
           </Col>
           <Col className="text-right">
             <Button className="my-3" onClick={createHandler}>

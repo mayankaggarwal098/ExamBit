@@ -1,15 +1,19 @@
 import React, { useState, useEffect } from 'react';
-import { Button, Container, Form, ListGroup, Row } from 'react-bootstrap';
+import { Button, Container, Form, ListGroup, Row, Col } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { useLocation } from 'react-router-dom';
-import { responseSheetOfStudent } from '../actions/responseSheetAction';
+import {
+  responseSheetOfStudent,
+  addAnswerForGivenQuestion,
+} from '../actions/responseSheetAction';
 import { getSinglePaper } from '../actions/testAction';
-import Pagination from '../component/Pagination';
+import Clock from '../component/Clock';
+import Paginations from '../component/Pagination';
 
 const TestPaper = () => {
   const query = new URLSearchParams(useLocation().search);
-  const testId = query.get('testid');
-  const studentId = query.get('studentid');
+  const testId = query.get('testId');
+  const studentId = query.get('studentId');
 
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(1);
@@ -27,7 +31,7 @@ const TestPaper = () => {
     }
   }, []);
 
-  const totalCount = paper && paper.length;
+  const totalCount = paper && paper.questions.length;
 
   const handlePageChange = page => {
     setCurrentPage(page);
@@ -56,74 +60,113 @@ const TestPaper = () => {
     setCurrentPage(currentPage + 1);
   };
   const submitHandler = () => {
-    setSaveAnswer([...answer]);
-    console.log(answer);
+    const temp = [...answer];
+    for (var i = 0; i < answer.length; i++) saveAnswer.push(answer[i]);
+    setSaveAnswer(saveAnswer);
+    dispatch(
+      addAnswerForGivenQuestion({
+        testId,
+        studentId,
+        chosenOption: answer,
+        questionId: paper.questions[currentPage - 1]._id,
+      })
+    );
     resetAnswerHandler();
   };
 
   return (
-    <div>
-      {paper && (
-        <Container>
-          <Row className="justify-content-md-left my-5 pd-5">
-            <ListGroup>
-              <ListGroup.Item>
-                <strong>QUESTION:1</strong>{' '}
-                {paper[currentPage - 1].questionBody}
-              </ListGroup.Item>
-              <ListGroup.Item>
-                <strong>Options:</strong>
-                <br />
-                {paper[currentPage - 1].options.map(opt => (
-                  <Form.Check
-                    type="checkbox"
-                    value={opt._id}
-                    label={opt.optionBody}
-                    checked={
-                      saveAnswer.filter(ans => ans === opt._id).length
-                        ? true
-                        : answer.filter(a => a === opt._id).length
-                        ? true
-                        : false
-                    }
-                    onChange={e => submitOptionHandler(e)}
-                  />
-                ))}
-              </ListGroup.Item>
-            </ListGroup>
+    <>
+      <Container style={{ marginLeft: '100px', marginTop: '80px' }}>
+        <Row>
+          <Col md={9}>
+            {paper && (
+              <Container>
+                <ListGroup variant="flush">
+                  <ListGroup.Item>
+                    <h4>QUESTION: {currentPage}</h4>
+                    <p style={{ fontSize: '20px' }}>
+                      {paper.questions[currentPage - 1].questionBody}
+                    </p>
+                  </ListGroup.Item>
+                  <ListGroup.Item>
+                    <h4 style={{ textAlign: 'left' }}>
+                      <strong>Options:</strong>
+                    </h4>
 
-            <br />
-            <br />
-          </Row>
-          <Button
-            onClick={() => setCurrentPage(currentPage - 1)}
-            disabled={currentPage === 1}
-          >
-            Prev
-          </Button>{' '}
-          <Button
-            onClick={() => resetAnswerHandler()}
-            disabled={currentPage === totalCount}
-          >
-            Next
-          </Button>{' '}
-          <Button
-            onClick={() => submitHandler()}
-            disabled={currentPage === totalCount}
-          >
-            Save & Next
-          </Button>
-          <Row className="justify-content-md-bottom my-5 pd-5">
-            <Pagination
+                    {paper.questions[currentPage - 1].options.map(opt => (
+                      <p style={{ fontSize: '20px' }}>
+                        <Form.Check
+                          type="checkbox"
+                          value={opt._id}
+                          label={opt.optionBody}
+                          checked={
+                            saveAnswer.filter(ans => ans === opt._id).length
+                              ? true
+                              : answer.filter(a => a === opt._id).length
+                              ? true
+                              : false
+                          }
+                          onChange={e => submitOptionHandler(e)}
+                        />
+                      </p>
+                    ))}
+                  </ListGroup.Item>
+                  <br />
+                  <br />
+                </ListGroup>
+                <Button
+                  onClick={() => setCurrentPage(currentPage - 1)}
+                  disabled={currentPage === 1}
+                >
+                  Prev
+                </Button>{' '}
+                <Button
+                  variant="primary"
+                  onClick={() => resetAnswerHandler()}
+                  disabled={currentPage === totalCount}
+                >
+                  Next
+                </Button>{' '}
+                <Button
+                  onClick={() => submitHandler()}
+                  disabled={currentPage === totalCount || answer.length === 0}
+                >
+                  Save & Next
+                </Button>
+              </Container>
+            )}
+          </Col>
+
+          <Col md={3}>
+            <Row style={{ marginTop: '-100px' }}>
+              {paper && <Clock totalTime={paper.duration * 60} />}
+            </Row>
+
+            <Button
+              className="btn btn-second"
+              style={{ marginLeft: '120px', marginTop: '10px' }}
+            >
+              End Test
+            </Button>
+
+            {/* <div
+              style={{
+                marginTop: '30px',
+                marginLeft: '130px',
+                marginBottom: '0px',
+              }}
+            > */}
+            <Paginations
               itemsCount={totalCount}
               pageSize={pageSize}
               currentPage={currentPage}
               onPageChange={handlePageChange}
             />
-          </Row>
-        </Container>
-      )}
-    </div>
+            {/* </div> */}
+          </Col>
+        </Row>
+      </Container>
+    </>
   );
 };
 

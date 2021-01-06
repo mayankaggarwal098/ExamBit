@@ -12,3 +12,25 @@ export const studentRegistrationReducer = (state = {}, action) => {
       return state;
   }
 };
+
+export const registrationOpenReducer = (state = {}, action) => {
+  switch (action.type) {
+    case student_reg.REGISTRATION_OPEN_SUCCESS:
+      return { success: true };
+    case student_reg.REGISTRATION_OPEN_FAIL:
+      return { success: false };
+    default:
+      return state;
+  }
+};
+
+export const registrationCloseReducer = (state = {}, action) => {
+  switch (action.type) {
+    case student_reg.REGISTRATION_OPEN_SUCCESS:
+      return { success: true };
+    case student_reg.REGISTRATION_OPEN_FAIL:
+      return { success: false };
+    default:
+      return state;
+  }
+};

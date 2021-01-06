@@ -11,6 +11,7 @@ import TestList from './screen/TestList';
 import TestCreate from './screen/TestCreate';
 import StudentRegistered from './screen/StudentRegistered';
 import TestPaper from './screen/TestPaper';
+import Instruction from './component/Instruction';
 
 const App = () => {
   return (
@@ -25,7 +26,8 @@ const App = () => {
         <Route path="/tests" component={TestList} exact />
         <Route path="/tests/create" component={TestCreate} />
         <Route path="/student/registration/test/:id" component={StudentRegistered} />
-        <Route path="/student/test" component={TestPaper} />
+        <Route path="/student/test" component={Instruction} exact/>
+        <Route path="/student/test/start" component={TestPaper} />
       </header>
     </BrowserRouter>
   );

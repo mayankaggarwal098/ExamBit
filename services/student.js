@@ -44,7 +44,7 @@ const getTestQuestions = async (req, res) => {
     });
 
   if (!paper) return res.status(400).send("Invalid Test Id");
-  res.send(paper.questions);
+  res.send(paper);
 };
 
 const getStudent = async (req, res) => {

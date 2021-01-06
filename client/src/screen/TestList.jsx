@@ -18,6 +18,7 @@ import {
 import Loader from '../component/Loader';
 import QuestionPaper from '../component/QuestionPaper';
 import QuestionDetails from '../component/QuestionDetails';
+import { openRegistrationforTest } from '../actions/studentRegistrationAction';
 
 const TestList = ({ history }) => {
   const [show, setShow] = useState(false);
@@ -53,13 +54,18 @@ const TestList = ({ history }) => {
     dispatch(testBegin(id, index, testPapers));
   };
 
+  const handleClick = (id, status) => {
+    status = status ? false : true;
+    dispatch(openRegistrationforTest({ testPapers, id, status }));
+  };
+
   return (
     <>
       {loading && <Loader />}
       <Container>
         <Row className="align-items-center">
           <Col>
-            <h3>All Tests</h3>
+            <h3 style={{ color: 'black' }}>All Tests</h3>
           </Col>
           <Col className="text-right">
             <Button className="my-3" onClick={createHandler}>
@@ -74,27 +80,29 @@ const TestList = ({ history }) => {
               <th>TITLE</th>
               <th>DURATION(in minute)</th>
               <th>&nbsp;&nbsp;ACTION&nbsp;&nbsp;</th>
+              <th>REGISTRATION (OPEN/CLOSE)</th>
               <th></th>
             </tr>
           </thead>
           <tbody>
             {testPapers &&
               testPapers.map((test, index) => (
-                <tr key={test._id}>
+                <tr key={test._id} style={{ textAlign: 'center' }}>
                   <td>{test.subject}</td>
                   <td>{test.title}</td>
                   <td>{test.duration}</td>
+
                   <td>
                     <Button
-                      variant="primary"
+                      variant="outline-primary"
                       className="btn-sm"
                       onClick={() => set(index)}
                     >
                       <i className="fas fa-info-circle"></i>
                     </Button>
-                    &nbsp;
+                    &nbsp;&nbsp;&nbsp;&nbsp;
                     <Button
-                      variant="primary"
+                      variant="outline-primary"
                       className="btn-sm"
                       onClick={() => deleteHandler(test._id)}
                     >
@@ -103,6 +111,21 @@ const TestList = ({ history }) => {
                   </td>
                   <td>
                     <Button
+                      variant="outline-primary"
+                      className="btn btn"
+                      onClick={() =>
+                        handleClick(test._id, test.isRegistrationAvailable)
+                      }
+                      style={{
+                        width: '150px',
+                      }}
+                    >
+                      {test.isRegistrationAvailable ? 'Close' : 'Open'}
+                    </Button>
+                  </td>
+                  <td>
+                    <Button
+                      variant="outline-primary"
                       className="btn btn-block"
                       disabled={test.isTestBegins}
                       onClick={() => startTestHandler(test._id, index)}

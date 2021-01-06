@@ -12,3 +12,16 @@ export const responseSheetReducer = (state = {}, action) => {
       return state;
   }
 };
+
+export const answerSubmissionReducer = (state = {}, action) => {
+  switch (action.type) {
+    case res_sheet.STUDENT_ANSWER_REQUEST:
+      return { loading: true };
+    case res_sheet.STUDENT_ANSWER_SUCCESS:
+      return { loading: false, success: true };
+    case res_sheet.STUDENT_ANSWER_FAIL:
+      return { loading: false, error: action.payload };
+    default:
+      return state;
+  }
+};
