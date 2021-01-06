@@ -93,10 +93,11 @@ const maxMarks = async (req, res) => {
   if (!paper) {
     return res.status(401).send("Invalid Test Paper Id");
   }
+  let marks = 0;
   paper.questions.map((m) => {
-    m += m.weightage;
+    marks += m.weightage;
   });
-  res.send(m);
+  res.send(marks);
 };
 
 const checkTestName = async (req, res) => {

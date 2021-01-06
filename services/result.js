@@ -1,6 +1,7 @@
 const ResponseSheet = require("../models/responseSheet");
 const Result = require("../models/result");
 const SubResult = require("../models/subResult");
+const { generateExcel } = require("./generateExcel");
 
 const generateResult = async (req, res) => {
   const { studentId, testId } = req.body;
@@ -101,4 +102,19 @@ const getDetailedResult = async (req, res) => {
   res.send(result);
 };
 
-module.exports = { generateResult, getDetailedResult, getAllResults };
+const download = async (req, res) => {
+  const { testId } = req.body;
+  const workbook = generateExcel(testId);
+  const fileName = `result_${testId}.xlsx`;
+
+  res.setHeader(
+    "Content-Type",
+    "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+  );
+  res.setHeader("Content-Disposition", "attachment; filename=" + fileName);
+
+  await workbook.xlsx.write(res);
+  //res.end();
+};
+
+module.exports = { download, generateResult, getDetailedResult, getAllResults };
