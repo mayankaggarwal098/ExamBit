@@ -9,7 +9,7 @@ const signup = require("./routes/signup");
 const question = require("./routes/question");
 const testpaper = require("./routes/testPaper");
 const student = require("./routes/student");
-
+const result = require("./routes/result");
 const PORT = process.env.PORT || 3900;
 mongoose
   .connect(MONOGOURI, { useUnifiedTopology: true, useNewUrlParser: true })
@@ -22,6 +22,7 @@ app.use("/api/signup", signup);
 app.use("/api/questions", question);
 app.use("/api/test", testpaper);
 app.use("/api/student", student);
+app.use("/api/result", result);
 //createadmin();
 
 app.listen(PORT, () => console.log(`Listening on port ${PORT}...`));
