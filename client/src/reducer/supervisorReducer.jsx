@@ -5,7 +5,7 @@ export const getSupervisorReducer = (state = {}, action) => {
     case s.SUPERVISOR_LIST_REQUEST:
       return { loading: true };
     case s.SUPERVISOR_LIST_SUCCESS:
-      return { loading: false, supervisor: action.payload };
+      return { loading: false, supervisors: action.payload };
     case s.SUPERVISOR_LIST_FAIL:
       return { loading: false, error: action.payload };
     default:
@@ -18,7 +18,7 @@ export const getSupervisorReqReducer = (state = {}, action) => {
     case s.SUPERVISOR_REQ_LIST_REQUEST:
       return { loading: true };
     case s.SUPERVISOR_REQ_LIST_SUCCESS:
-      return { loading: false, supervisor: action.payload };
+      return { loading: false, supervisors: action.payload };
     case s.SUPERVISOR_REQ_LIST_FAIL:
       return { loading: false, error: action.payload };
     default:
@@ -44,7 +44,7 @@ export const updateSupervisorReducer = (state = {}, action) => {
     case s.SUPERVISOR_UPDATEPERM_REQUEST:
       return { loading: true };
     case s.SUPERVISOR_UPDATEPERM_SUCCESS:
-      return { loading: false, supervisor: action.payload };
+      return { loading: false, supervisors: action.payload };
     case s.SUPERVISOR_UPDATEPERM_FAIL:
       return { loading: false, error: action.payload };
     default:

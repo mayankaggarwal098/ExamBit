@@ -1,6 +1,6 @@
 import React from "react";
 import { ToastContainer } from "react-toastify";
-import { BrowserRouter, Route } from "react-router-dom";
+import { BrowserRouter, Route, Switch } from "react-router-dom";
 import "react-toastify/dist/ReactToastify.css";
 import Header from "./component/Header";
 import Register from "./screen/Register";
@@ -13,14 +13,14 @@ import StudentRegistered from "./screen/StudentRegistered";
 import TestPaper from "./screen/TestPaper";
 import Instruction from "./component/Instruction";
 import SupervisorList from "./screen/SupervisorList";
-import SupervisorReqList from "./screen/SupervisorList";
+import SupervisorReqList from "./screen/SupervisorReqList";
 
 const App = () => {
   return (
     <BrowserRouter>
-      <header>
-        <Header />
-        <ToastContainer autoClose={1500} />
+      <Header />
+      <ToastContainer autoClose={2000} />
+      <Switch>
         <Route path="/register" component={Register} />
         <Route path="/login" component={Login} />
         <Route path="/questions" component={QuestionList} exact />
@@ -35,7 +35,7 @@ const App = () => {
         <Route path="/student/test/start" component={TestPaper} />
         <Route path="/supervisor/request" component={SupervisorReqList} />
         <Route path="/supervisor" component={SupervisorList} />
-      </header>
+      </Switch>
     </BrowserRouter>
   );
 };

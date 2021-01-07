@@ -1,17 +1,17 @@
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { supervisorList } from "../actions/supervisorAction";
+import { supervisorReqList } from "../actions/supervisorAction";
 import Loader from "../component/Loader";
 import SupervisorTable from "../component/SupervisorTable";
 
-const SupervisorList = ({ history }) => {
+const SupervisorReqList = ({ history }) => {
   const { loading, supervisors, error } = useSelector(
-    (state) => state.supervisorList
+    (state) => state.supervisorReqList
   );
   const dispatch = useDispatch();
   useEffect(() => {
     if (!supervisors) {
-      dispatch(supervisorList());
+      dispatch(supervisorReqList());
     }
   }, []);
 
@@ -19,10 +19,10 @@ const SupervisorList = ({ history }) => {
     <>
       {loading && <Loader />}
       {supervisors && (
-        <SupervisorTable supervisors={supervisors} permission={true} />
+        <SupervisorTable supervisors={supervisors} permission={false} />
       )}
     </>
   );
 };
 
-export default SupervisorList;
+export default SupervisorReqList;
