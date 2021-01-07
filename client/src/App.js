@@ -12,6 +12,8 @@ import TestCreate from "./screen/TestCreate";
 import StudentRegistered from "./screen/StudentRegistered";
 import TestPaper from "./screen/TestPaper";
 import Instruction from "./component/Instruction";
+import SupervisorList from "./screen/SupervisorList";
+import SupervisorReqList from "./screen/SupervisorList";
 
 const App = () => {
   return (
@@ -31,8 +33,8 @@ const App = () => {
         />
         <Route path="/student/test" component={Instruction} exact />
         <Route path="/student/test/start" component={TestPaper} />
-        <Route path="/supervisor/request" component={TestPaper} />
-        <Route path="/supervisor" component={TestPaper} />
+        <Route path="/supervisor/request" component={SupervisorReqList} />
+        <Route path="/supervisor" component={SupervisorList} />
       </header>
     </BrowserRouter>
   );
