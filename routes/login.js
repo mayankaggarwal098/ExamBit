@@ -29,8 +29,7 @@ router.post("/", async (req, res) => {
     name: user.name,
     email: user.email,
     category: user.category,
-    }
-  );
+  });
 });
 
 module.exports = router;

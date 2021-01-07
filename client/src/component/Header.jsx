@@ -24,31 +24,38 @@ const Header = () => {
           <Navbar.Toggle aria-controls="responsive-navbar-nav" />
           <Navbar.Collapse id="responsive-navbar-nav">
             <Nav className="mr-auto">
-              {userInfo &&
-                (userInfo.category === "SUPERVISOR" ? (
-                  <>
-                    <LinkContainer to="/questions">
-                      <Nav.Link>
-                        <i className="fas fa-list" />
-                        &nbsp;All Questions
-                      </Nav.Link>
-                    </LinkContainer>
-                    <LinkContainer to="/tests">
-                      <Nav.Link>
-                        <i className="fas fa-list" />
-                        &nbsp;All Test
-                      </Nav.Link>
-                    </LinkContainer>
-                  </>
-                ) : (
-                  <>
+              {userInfo && userInfo.category === "SUPERVISOR" && (
+                <>
+                  <LinkContainer to="/questions">
+                    <Nav.Link>
+                      <i className="fas fa-list" />
+                      &nbsp;All Questions
+                    </Nav.Link>
+                  </LinkContainer>
+                  <LinkContainer to="/tests">
                     <Nav.Link>
                       <i className="fas fa-list" />
                       &nbsp;All Test
                     </Nav.Link>
-                    <Nav.Link>Pricing</Nav.Link>
-                  </>
-                ))}
+                  </LinkContainer>
+                </>
+              )}
+              {userInfo && userInfo.category === "ADMIN" && (
+                <>
+                  <LinkContainer to="/supervisor">
+                    <Nav.Link>
+                      <i className="fas fa-list" />
+                      &nbsp;SUPERVISOR
+                    </Nav.Link>
+                  </LinkContainer>
+                  <LinkContainer to="/supervisor/request">
+                    <Nav.Link>
+                      <i className="fas fa-list" />
+                      &nbsp;REQUEST
+                    </Nav.Link>
+                  </LinkContainer>
+                </>
+              )}
             </Nav>
             <Nav>
               {userInfo ? (

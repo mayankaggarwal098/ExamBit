@@ -14,8 +14,21 @@ import {
   testbeginReducer,
   getSingleTestPaperReducer,
 } from "./reducer/testReducer";
-import { registrationCloseReducer, registrationOpenReducer, studentRegistrationReducer } from "./reducer/studentRegistrationReducer";
-import { answerSubmissionReducer, responseSheetReducer } from "./reducer/responseSheetReducer";
+import {
+  registrationCloseReducer,
+  registrationOpenReducer,
+  studentRegistrationReducer,
+} from "./reducer/studentRegistrationReducer";
+import {
+  answerSubmissionReducer,
+  responseSheetReducer,
+} from "./reducer/responseSheetReducer";
+import {
+  getSupervisorReducer,
+  getSupervisorReqReducer,
+  removeSupervisorReducer,
+  updateSupervisorReducer,
+} from "./reducer/supervisorReducer";
 
 const reducer = combineReducers({
   register: registerReducer,
@@ -31,7 +44,11 @@ const reducer = combineReducers({
   studentRegister: studentRegistrationReducer,
   studentResponseSheet: responseSheetReducer,
   answerSubmission: answerSubmissionReducer,
-  registrationOpen: registrationOpenReducer
+  registrationOpen: registrationOpenReducer,
+  supervisorList: getSupervisorReducer,
+  supervisorReqList: getSupervisorReqReducer,
+  removeSupervisor: removeSupervisorReducer,
+  updateSupervisor: updateSupervisorReducer,
 });
 
 const userInfoFromStorage = localStorage.getItem("userInfo")
