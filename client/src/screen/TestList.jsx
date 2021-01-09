@@ -21,6 +21,7 @@ import QuestionDetails from '../component/QuestionDetails';
 import { openRegistrationforTest } from '../actions/studentRegistrationAction';
 import { paginate } from '../utils/paginate';
 import Paginations from '../component/Pagination';
+import Statistics from '../component/Statistics';
 
 const TestList = ({ history }) => {
   const [show, setShow] = useState(false);
@@ -63,10 +64,6 @@ const TestList = ({ history }) => {
     }
   };
 
-  const startTestHandler = (id, index) => {
-    dispatch(testBegin(id, index, testPapers));
-  };
-
   const handleClick = (id, status) => {
     status = status ? false : true;
     dispatch(openRegistrationforTest({ testPapers, id, status }));
@@ -99,6 +96,7 @@ const TestList = ({ history }) => {
               <th>DURATION(in minute)</th>
               <th>REGISTRATION</th>
               <th></th>
+              <th>TEST CONDUCT</th>
               <th>&nbsp;&nbsp;ACTION&nbsp;&nbsp;</th>
             </tr>
           </thead>
@@ -113,6 +111,7 @@ const TestList = ({ history }) => {
                     <Button
                       variant="outline-primary"
                       className="btn btn-block"
+                      disabled={test.isTestBegins}
                       onClick={() =>
                         handleClick(test._id, test.isRegistrationAvailable)
                       }
@@ -125,10 +124,22 @@ const TestList = ({ history }) => {
                       variant="outline-primary"
                       className="btn btn-block"
                       disabled={test.isTestBegins}
-                      onClick={() => startTestHandler(test._id, index)}
+                      onClick={() =>
+                        dispatch(testBegin(test._id, index, testPapers))
+                      }
                     >
                       Start Test
                     </Button>
+                  </td>
+                  <td>
+                    {test.isTestConducted ? (
+                      <i
+                        className="fas fa-check"
+                        style={{ color: 'green' }}
+                      ></i>
+                    ) : (
+                      <i className="fa fa-times" style={{ color: 'red' }}></i>
+                    )}
                   </td>
                   <td>
                     <Button
@@ -194,7 +205,7 @@ const TestList = ({ history }) => {
                 eventKey="statistics"
                 title={<i className="fas fa-chart-bar"> Statistics</i>}
               >
-                rawat
+                <Statistics id={testPaperSheet[pos]._id} />
               </Tab>
               <Tab
                 eventKey="feedback"

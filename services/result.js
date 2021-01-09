@@ -107,7 +107,7 @@ const getDetailedResult = async (req, res) => {
 
 const download = async (req, res) => {
   const { testId } = req.body;
-  const workbook = generateExcel(testId);
+  const workbook = await generateExcel(testId);
   const fileName = `result_${testId}.xlsx`;
 
   res.setHeader(
@@ -116,8 +116,8 @@ const download = async (req, res) => {
   );
   res.setHeader("Content-Disposition", "attachment; filename=" + fileName);
 
-  await workbook.xlsx.write(res);
-  //res.end();
+  await workbook.xlsx.writeFile(fileName);
+  res.end();
 };
 
 module.exports = { download, generateResult, getDetailedResult, getAllResults };

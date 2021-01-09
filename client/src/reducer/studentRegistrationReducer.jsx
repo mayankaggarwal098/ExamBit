@@ -47,3 +47,16 @@ export const studentDetailReducer = (state = {}, action) => {
       return state;
   }
 };
+
+export const resultDownloadReducer = (state = {}, action) => {
+  switch (action.type) {
+    case student_reg.RESULT_DOWNLOAD_REQUEST:
+      return { loading: true };
+    case student_reg.RESULT_DOWNLOAD_SUCCESS:
+      return { loading: false, success: true };
+    case student_reg.RESULT_DOWNLOAD_FAIL:
+      return { loading: false, error: action.payload };
+    default:
+      return state;
+  }
+};

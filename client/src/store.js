@@ -18,6 +18,7 @@ import {
 import {
   registrationCloseReducer,
   registrationOpenReducer,
+  resultDownloadReducer,
   studentDetailReducer,
   studentRegistrationReducer,
 } from "./reducer/studentRegistrationReducer";
@@ -56,6 +57,7 @@ const reducer = combineReducers({
   supervisorReqList: getSupervisorReqReducer,
   removeSupervisor: removeSupervisorReducer,
   updateSupervisor: updateSupervisorReducer,
+  resultDownload: resultDownloadReducer
 });
 
 const userInfoFromStorage = localStorage.getItem("userInfo")

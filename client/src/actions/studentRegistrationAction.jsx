@@ -106,3 +106,28 @@ export const getStudentDetail = id => async dispatch => {
     });
   }
 };
+
+export const downloadResult = testId => async dispatch => {
+  try {
+    dispatch({ type: student_reg.RESULT_DOWNLOAD_REQUEST });
+
+    const { data } = await http.post('/api/result/download', { testId });
+
+    dispatch({ type: student_reg.RESULT_DOWNLOAD_SUCCESS });
+  } catch (error) {
+    if (
+      error.response &&
+      (error.response.status >= 400 || error.response.status <= 500)
+    ) {
+      toast.error(error.response.data);
+    }
+
+    dispatch({
+      type: student_reg.RESULT_DOWNLOAD_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};
