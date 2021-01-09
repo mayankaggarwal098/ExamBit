@@ -147,7 +147,12 @@ const TestPaper = ({ history }) => {
 
         <Col md={3.5}>
           <Row style={{ marginTop: '-100px' }}>
-            {paper && <Clock totalTime={paper.duration * 60} />}
+            {paper && (
+              <Clock
+                totalTime={paper.duration * 60}
+                testSubmitHandler={testSubmitHandler}
+              />
+            )}
           </Row>
           <Row>
             <Button

@@ -16,9 +16,8 @@ const generateResult = async (req, res) => {
     studentId,
     testId,
     isCompleted: true,
-  })
-    .populate("questions responses")
-    .populate({
+  }).populate("questions responses")
+  .populate({
       path: "questions",
       populate: {
         path: "options",
@@ -39,7 +38,7 @@ const generateResult = async (req, res) => {
         correctAnswer.push(ansMap[j]);
       }
       for (let k = 0; k < res.length; ++k) {
-        if (String(res[k]) === String(o._id)) {
+        if ( String(res[k])  === String(o._id) ) {
           response.push(ansMap[j]);
         }
       }

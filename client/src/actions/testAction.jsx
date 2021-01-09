@@ -208,3 +208,29 @@ export const getSinglePaper = id => async dispatch => {
     });
   }
 };
+
+export const checkTestStart = id => async dispatch => {
+  try {
+    console.log(id);
+    const { data } = await http.post('/api/test/check-test-start', { id });
+    dispatch({
+      type: test.IS_TEST_STARTED_SUCCESS,
+      payload: data,
+    });
+  } catch (error) {
+    if (
+      error.response &&
+      (error.response.status >= 400 || error.response.status <= 500)
+    ) {
+      toast.error(error.response.data);
+    }
+
+    dispatch({
+      type: test.IS_TEST_STARTED_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};

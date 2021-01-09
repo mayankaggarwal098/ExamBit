@@ -15,6 +15,7 @@ import Instruction from "./component/Instruction";
 import SupervisorList from "./screen/SupervisorList";
 import SupervisorReqList from "./screen/SupervisorReqList";
 import StudentResult from './screen/StudentResult';
+import EmailNotification from "./screen/EmailNotification";
 
 const App = () => {
   return (
@@ -27,17 +28,18 @@ const App = () => {
         <Route path="/login" component={Login} />
         <Route path="/questions" component={QuestionList} exact />
         <Route path="/questions/create" component={QuestionCreate} />
-        <Route path="/tests" component={TestList} exact />
         <Route path="/tests/create" component={TestCreate} />
+        <Route path="/tests" component={TestList} exact />
+        <Route path='/student/registration/test/:id/emailsent' component={EmailNotification} />
         <Route
           path="/student/registration/test/:id"
           component={StudentRegistered}
         />
-        <Route path="/student/test" component={Instruction} exact />
+        <Route path='/student/test/result' component={StudentResult} />
         <Route path="/student/test/start" component={TestPaper} />
+        <Route path="/student/test" component={Instruction} exact />
         <Route path="/supervisor/request" component={SupervisorReqList} />
         <Route path="/supervisor" component={SupervisorList} />
-        <Route path='/student/test/result' component={StudentResult} />
       </Switch>
     </BrowserRouter>
   );

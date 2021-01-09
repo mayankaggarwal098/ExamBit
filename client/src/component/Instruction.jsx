@@ -1,13 +1,32 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import { Button } from 'react-bootstrap';
+import React, { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { Button, Modal } from 'react-bootstrap';
 import { useLocation } from 'react-router-dom';
 import './clock.css';
+import { checkTestStart } from '../actions/testAction';
 
-const Instruction = props => {
+const Instruction = ({ history }) => {
   const query = new URLSearchParams(useLocation().search);
   const testId = query.get('testid');
   const studentId = query.get('studentid');
+
+  const [show, setShow] = useState();
+
+  const { testStart } = useSelector(state => state.isTestStart);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (testStart) {
+      history.push(
+        `/student/test/start?testId=${testId}&studentId=${studentId}`
+      );
+    }
+  }, [testStart]);
+  const submitHandler = () => {
+    dispatch(checkTestStart(testId));
+    setShow(true);
+  };
+
   return (
     <div>
       <div className="instaruction-page-wrapper">
@@ -34,21 +53,29 @@ const Instruction = props => {
             <b>NOTE :</b>To save answers,click on the 'Save & Next' button.
           </h4>
           <div className="proceed-to-test-button">
-            <Link
-              to={`/student/test/start?testId=${testId}&studentId=${studentId}`}
+            <Button
+              style={{ float: 'right' }}
+              variant="outline-primary"
+              icon="caret-right"
+              onClick={() => submitHandler()}
             >
-              <Button
-                style={{ float: 'right' }}
-                variant="outline-primary"
-                icon="caret-right"
-              >
-                Proceed To Test
-              </Button>
-            </Link>
+              Proceed To Test
+            </Button>
           </div>
         </div>
-        <div></div>
       </div>
+      <Modal
+        show={show}
+        onHide={() => setShow(false)}
+        aria-labelledby="example-custom-modal-styling-title"
+        variant="success"
+      >
+        <Modal.Body>
+          <div className="d-flex justify-content-center">
+            <p>Test is not started Yet</p>
+          </div>
+        </Modal.Body>
+      </Modal>
     </div>
   );
 };

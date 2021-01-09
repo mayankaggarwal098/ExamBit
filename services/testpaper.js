@@ -100,13 +100,12 @@ const maxMarks = async (req, res) => {
   res.send(marks);
 };
 
-const checkTestName = async (req, res) => {
-  const paper = await TestPaper.findOne({ title: req.body.testName });
-  if (paper) {
-    res.send(false);
-  } else {
-    res.send(true);
-  }
+const checkTestStart = async (req, res) => {
+  const { id } = req.body
+  const paper = await TestPaper.findById(id);
+  if (!paper) res.status(404).send('Paper Not found');
+  
+  res.send(paper.isTestBegins);
 };
 
 const changeRegistrationStatus = async (req, res) => {
@@ -144,6 +143,6 @@ module.exports = {
   beginTest,
   endTest,
   maxMarks,
-  checkTestName,
+  checkTestStart,
   changeRegistrationStatus,
 };

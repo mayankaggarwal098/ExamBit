@@ -8,7 +8,7 @@ import './clock.css';
 
 //const element = <FontAwesomeIcon icon={faClock} />;
 
-const Clock = ({ totalTime }) => {
+const Clock = ({ totalTime, testSubmitHandler }) => {
   const [timer, setTimer] = useState(totalTime);
   // const [isActive, setIsActive] = useState(false);
   // const [isPaused, setIsPaused] = useState(false);
@@ -57,6 +57,8 @@ const Clock = ({ totalTime }) => {
     if (localStorage.getItem('time') === null)
       localStorage.setItem('time', timer);
     else if (timer !== totalTime) localStorage.setItem('time', timer);
+
+    if (timer === 0) testSubmitHandler();
 
     const getSeconds = `0${timer % 60}`.slice(-2);
     const minutes = `${Math.floor(timer / 60)}`;

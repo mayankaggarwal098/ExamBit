@@ -14,6 +14,7 @@ import {
   testbeginReducer,
   getSingleTestPaperReducer,
   testEndReducer,
+  isTestStartReducer,
 } from "./reducer/testReducer";
 import {
   registrationCloseReducer,
@@ -51,6 +52,7 @@ const reducer = combineReducers({
   answerSubmission: answerSubmissionReducer,
   registrationOpen: registrationOpenReducer,
   registrationClose: registrationCloseReducer,
+  isTestStart: isTestStartReducer,
   studentDetail: studentDetailReducer,
   generateResult : generateResultReducer ,
   supervisorList: getSupervisorReducer,

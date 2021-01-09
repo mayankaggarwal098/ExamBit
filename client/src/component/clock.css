@@ -94,3 +94,21 @@ p {
   height: 40px;
   margin: 10px 10px 10px 30px;
 }
+
+.reasendmail-container-register {
+  background: linear-gradient(
+    to right,
+    rgb(80, 190, 189),
+    rgb(0, 153, 153),
+    rgb(0, 153, 203)
+  );
+  border-radius: 5px;
+  width: 50%;
+  margin-left: 25%;
+  margin-top: 80px;
+  min-height: 100px;
+  padding: 40px;
+  font-size: 25px;
+  text-align: center;
+  color: #fff;
+}

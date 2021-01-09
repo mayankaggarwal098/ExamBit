@@ -4,7 +4,7 @@ import { useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { studentRegistrationForTest } from '../actions/studentRegistrationAction';
 
-const StudentRegistered = () => {
+const StudentRegistered = ({ history }) => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [phoneNum, setNumber] = useState('');
@@ -23,6 +23,8 @@ const StudentRegistered = () => {
     dispatch(
       studentRegistrationForTest({ name, email, phoneNum, testId, link })
     );
+
+    history.push(`/student/registration/test/${testId}/emailsent`);
   };
 
   return (

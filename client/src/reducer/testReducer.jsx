@@ -76,3 +76,14 @@ export const testEndReducer = (state = {}, action) => {
       return state;
   }
 };
+
+export const isTestStartReducer = (state = {}, action) => {
+  switch (action.type) {
+    case test.IS_TEST_STARTED_SUCCESS:
+      return { testStart: action.payload };
+    case test.IS_TEST_STARTED_FAIL:
+      return { error: action.payload };
+    default:
+      return state;
+  }
+};
