@@ -1,6 +1,7 @@
 import * as question from '../constants/questionConstant';
 import http from '../component/httpService';
 import { toast } from 'react-toastify';
+import { getTestPaperList } from './testAction';
 
 export const addQuestion = (questions, newQuestion) => async (
   dispatch,
@@ -97,12 +98,12 @@ export const deleteQuestion = (questions, id) => async (dispatch, getState) => {
     };
 
     const { data } = await http.delete(`/api/questions/delete/${id}`, config);
-
     const arr = questions.filter(ques => ques._id !== id);
 
     dispatch({ type: question.QUESTION_DELETE_SUCCESS });
 
     dispatch({ type: question.QUESTION_LIST_SUCCESS, payload: arr });
+    dispatch(getTestPaperList());
 
     toast.success(data);
   } catch (error) {

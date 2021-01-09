@@ -5,9 +5,11 @@ const { generateExcel } = require("./generateExcel");
 
 const generateResult = async (req, res) => {
   const { studentId, testId } = req.body;
+  const ansMap = ['A','B','C','D','E'];
   const result = await Result.findOne({ testId, studentId }).populate(
     "subResult"
   );
+
   if (result) return res.send(result);
 
   const responseSheet = await ResponseSheet.findOne({
@@ -27,8 +29,8 @@ const generateResult = async (req, res) => {
   if (!responseSheet) return res.status(400).send("Invalid Request");
 
   const { questions, responses } = responseSheet;
-  const score = 0;
-  const subResults = questions.map((q) => {
+  let score = 0;
+  const subResults = questions.map((q, i) => {
     const res = responses[i].chosenOption;
     const correctAnswer = [];
     const response = [];
@@ -81,6 +83,7 @@ const generateResult = async (req, res) => {
   await resultdata.save();
   res.send(resultdata);
 };
+
 const getAllResults = async (req, res) => {
   const { testId } = req.body;
   const results = await Result.find({ testId })

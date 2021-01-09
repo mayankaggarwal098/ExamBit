@@ -34,3 +34,16 @@ export const registrationCloseReducer = (state = {}, action) => {
       return state;
   }
 };
+
+export const studentDetailReducer = (state = {}, action) => {
+  switch (action.type) {
+    case student_reg.STUDENT_DETAIL_REQUEST:
+      return { loading: true };
+    case student_reg.STUDENT_DETAIL_SUCCESS:
+      return { loading: false, success: true, student: action.payload };
+    case student_reg.STUDENT_DETAIL_FAIL:
+      return { success: false, error: action.payload };
+    default:
+      return state;
+  }
+};

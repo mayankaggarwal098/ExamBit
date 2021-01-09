@@ -22,7 +22,7 @@ const Paginations = ({ itemsCount, pageSize, currentPage, onPageChange }) => {
           </li>
         ))}
       </ul> */}
-      <Pagination size="lg">
+      <Pagination>
         {pages.map(page => (
           <div
             class="mypost"

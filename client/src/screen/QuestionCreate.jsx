@@ -5,7 +5,7 @@ import { addQuestion } from '../actions/questionAction';
 
 const QuestionCreate = ({ history }) => {
   const [questionBody, setQuestion] = useState('');
-  const [explanation, setExplanation] = useState('');
+  const [explaination, setExplaination] = useState('');
   const [subject, setSubject] = useState('');
   const [weightage, setWeightage] = useState(1);
   const [opt1, setOpt1] = useState({ optionBody: '', isAnswer: false });
@@ -28,7 +28,7 @@ const QuestionCreate = ({ history }) => {
     dispatch(
       addQuestion(questions, {
         questionBody,
-        explanation,
+        explaination,
         subject,
         weightage,
         options,
@@ -51,15 +51,15 @@ const QuestionCreate = ({ history }) => {
           />
         </Form.Group>
 
-        <Form.Group controlId="explanation">
-          <Form.Label>Explanation</Form.Label>
+        <Form.Group controlId="explaination">
+          <Form.Label>Explaination</Form.Label>
           <Form.Control
             required
-            placeholder="Explanation...."
+            placeholder="Explaination...."
             as="textarea"
             row={3}
-            value={explanation}
-            onChange={e => setExplanation(e.target.value)}
+            value={explaination}
+            onChange={e => setExplaination(e.target.value)}
           />
         </Form.Group>
 

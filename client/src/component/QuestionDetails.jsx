@@ -2,7 +2,7 @@ import React from 'react';
 import { Col, ListGroup, Row } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 
-const QuestionDetails = ({ testPapers, pos }) => {
+const QuestionDetails = ({ testPaperSheet, pos }) => {
   var link = window.location.href.split('/').splice(0, 3);
   var mainlink = '';
   link.forEach(d => {
@@ -10,47 +10,47 @@ const QuestionDetails = ({ testPapers, pos }) => {
   });
 
   return (
-    <ListGroup.Item variant="flush">
+    <ListGroup.Item>
       <ListGroup.Item>
         <Row>
-          <Col xs={5}>
+          <Col>
             <strong>TEST ID </strong>
           </Col>
-          <Col xs={5}>{testPapers[pos]._id}</Col>
+          <Col>{testPaperSheet[pos]._id}</Col>
         </Row>
       </ListGroup.Item>
       <ListGroup.Item>
         <Row>
-          <Col xs={5}>
+          <Col>
             <strong>TEST Link </strong>
           </Col>
-          <Col xs={5} xl={5}>
-            <Link>{`${mainlink}student/registration/test/${testPapers[pos]._id}`}</Link>
+          <Col>
+            <Link>{`${mainlink}student/registration/test/${testPaperSheet[pos]._id}`}</Link>
           </Col>
         </Row>
       </ListGroup.Item>
       <ListGroup.Item>
         <Row>
-          <Col xs={5}>
+          <Col>
             <strong>TEST NAME </strong>
           </Col>
-          <Col xs={5}>{testPapers[pos].title}</Col>
+          <Col>{testPaperSheet[pos].title}</Col>
         </Row>
       </ListGroup.Item>
       <ListGroup.Item>
         <Row>
-          <Col xs={5}>
+          <Col>
             <strong>SUBJECT </strong>
           </Col>
-          <Col xs={5}>{testPapers[pos].subject}</Col>
+          <Col>{testPaperSheet[pos].subject}</Col>
         </Row>
       </ListGroup.Item>
       <ListGroup.Item>
         <Row>
-          <Col xs={5}>
+          <Col>
             <strong>DURATION </strong>
           </Col>
-          <Col xs={5}>{testPapers[pos].duration}</Col>
+          <Col>{testPaperSheet[pos].duration}</Col>
         </Row>
       </ListGroup.Item>
     </ListGroup.Item>

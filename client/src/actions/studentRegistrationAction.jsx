@@ -78,3 +78,31 @@ export const openRegistrationforTest = ({ testPapers, id, status }) => async (
     });
   }
 };
+
+export const getStudentDetail = id => async dispatch => {
+  try {
+    dispatch({ type: student_reg.STUDENT_DETAIL_REQUEST });
+
+    const { data } = await http.post('/api/student/details', { id });
+
+    dispatch({
+      type: student_reg.STUDENT_DETAIL_SUCCESS,
+      payload: data,
+    });
+  } catch (error) {
+    if (
+      error.response &&
+      (error.response.status >= 400 || error.response.status <= 500)
+    ) {
+      toast.error(error.response.data);
+    }
+
+    dispatch({
+      type: student_reg.STUDENT_DETAIL_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};

@@ -20,7 +20,7 @@ const questionSchema = new mongoose.Schema({
     type: Number,
     default: 1,
   },
-  explanation: {
+  explaination: {
     type: String,
   },
   createdBy: {

@@ -18,7 +18,6 @@ const Clock = ({ totalTime }) => {
     // start button logic here
     // setIsActive(true);
     // setIsPaused(true);
-    console.log(parseInt(localStorage.getItem('time')));
     const count = parseInt(localStorage.getItem('time')) || totalTime;
     setTimer(count);
     countRef.current = setInterval(() => {

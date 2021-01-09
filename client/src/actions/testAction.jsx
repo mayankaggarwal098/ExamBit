@@ -1,6 +1,6 @@
-import * as test from "../constants/testConstant";
-import http from "../component/httpService";
-import { toast } from "react-toastify";
+import * as test from '../constants/testConstant';
+import http from '../component/httpService';
+import { toast } from 'react-toastify';
 
 export const createTest = (testPapers, testPaper) => async (
   dispatch,
@@ -13,18 +13,18 @@ export const createTest = (testPapers, testPaper) => async (
     } = getState();
     const config = {
       headers: {
-        "x-auth-token": `${userInfo.token}`,
+        'x-auth-token': `${userInfo.token}`,
       },
     };
 
-    const { data } = await http.post("/api/test/create", testPaper, config);
+    const { data } = await http.post('/api/test/create', testPaper, config);
 
     dispatch({ type: test.TEST_CREATE_SUCCESS });
 
     dispatch(getTestPaperList());
     toast.success(data);
   } catch (error) {
-    toast.error("Something Went Wrong");
+    toast.error('Something Went Wrong');
     dispatch({
       type: test.TEST_CREATE_FAIL,
       payload:
@@ -43,18 +43,18 @@ export const getTestPaperList = () => async (dispatch, getState) => {
     } = getState();
     const config = {
       headers: {
-        "x-auth-token": `${userInfo.token}`,
+        'x-auth-token': `${userInfo.token}`,
       },
     };
 
-    const { data } = await http.get("/api/test/details/all", config);
+    const { data } = await http.get('/api/test/details/all', config);
 
     dispatch({
       type: test.TEST_LIST_SUCCESS,
       payload: data,
     });
   } catch (error) {
-    toast.error("Something Went Wrong");
+    toast.error('Something Went Wrong');
     dispatch({
       type: test.TEST_LIST_FAIL,
       payload:
@@ -76,15 +76,15 @@ export const testPaperDelete = (testPapers, id) => async (
     } = getState();
     const config = {
       headers: {
-        "x-auth-token": `${userInfo.token}`,
+        'x-auth-token': `${userInfo.token}`,
       },
     };
 
-    const { data } = await http.post("/api/test/delete", { id }, config);
+    const { data } = await http.post('/api/test/delete', { id }, config);
 
     dispatch({ type: test.TEST_DELETE_SUCCESS });
 
-    const arr = testPapers.filter((t) => t._id !== id);
+    const arr = testPapers.filter(t => t._id !== id);
 
     dispatch({ type: test.TEST_LIST_SUCCESS, payload: arr });
 
@@ -116,11 +116,11 @@ export const testBegin = (id, index, testPapers) => async (
     } = getState();
     const config = {
       headers: {
-        "x-auth-token": `${userInfo.token}`,
+        'x-auth-token': `${userInfo.token}`,
       },
     };
 
-    await http.post("/api/test/begin", { id }, config);
+    await http.post('/api/test/begin', { id }, config);
 
     const arr = [...testPapers];
     arr[index].isTestBegins = true;
@@ -132,7 +132,7 @@ export const testBegin = (id, index, testPapers) => async (
       payload: arr,
     });
 
-    toast.success("test has been started");
+    toast.success('test has been started');
   } catch (error) {
     if (
       error.response &&
@@ -151,11 +151,41 @@ export const testBegin = (id, index, testPapers) => async (
   }
 };
 
-export const getSinglePaper = (id) => async (dispatch) => {
+export const testEnd = ({ testId, studentId }) => async dispatch => {
+  try {
+    dispatch({ type: test.TEST_END_REQUEST });
+
+    const { data } = await http.post('/api/student/endTest', {
+      testId,
+      studentId,
+    });
+
+    dispatch({ type: test.TEST_END_SUCCESS });
+
+    toast.success(data);
+  } catch (error) {
+    if (
+      error.response &&
+      (error.response.status >= 400 || error.response.status <= 500)
+    ) {
+      toast.error(error.response.data);
+    }
+
+    dispatch({
+      type: test.TEST_END_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};
+
+export const getSinglePaper = id => async dispatch => {
   try {
     dispatch({ type: test.SINGLE_TESTPAPER_REQUEST });
 
-    const { data } = await http.post("/api/student/questions", { id });
+    const { data } = await http.post('/api/student/questions', { id });
 
     dispatch({
       type: test.SINGLE_TESTPAPER_SUCCESS,

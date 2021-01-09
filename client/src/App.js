@@ -14,10 +14,12 @@ import TestPaper from "./screen/TestPaper";
 import Instruction from "./component/Instruction";
 import SupervisorList from "./screen/SupervisorList";
 import SupervisorReqList from "./screen/SupervisorReqList";
+import StudentResult from './screen/StudentResult';
 
 const App = () => {
   return (
     <BrowserRouter>
+    
       <Header />
       <ToastContainer autoClose={2000} />
       <Switch>
@@ -35,6 +37,7 @@ const App = () => {
         <Route path="/student/test/start" component={TestPaper} />
         <Route path="/supervisor/request" component={SupervisorReqList} />
         <Route path="/supervisor" component={SupervisorList} />
+        <Route path='/student/test/result' component={StudentResult} />
       </Switch>
     </BrowserRouter>
   );

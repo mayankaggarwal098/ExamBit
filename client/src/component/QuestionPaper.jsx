@@ -1,14 +1,14 @@
-import React from "react";
-import { ListGroup, Row, Col } from "react-bootstrap";
+import React from 'react';
+import { ListGroup, Row, Col } from 'react-bootstrap';
 
-const QuestionPaper = ({ testPapers, pos }) => {
+const QuestionPaper = ({ testPaperSheet, pos }) => {
   return (
     <ListGroup variant="flush">
       <ListGroup.Item>
         <Row
           style={{
-            width: "200px",
-            margin: "auto",
+            width: '200px',
+            margin: 'auto',
           }}
         >
           <h3>Test Paper</h3>
@@ -17,25 +17,25 @@ const QuestionPaper = ({ testPapers, pos }) => {
           <Col md={10}>
             <strong>
               <b>SUBJECT</b>
-            </strong>{" "}
-            : {testPapers[pos].subject}
+            </strong>{' '}
+            : {testPaperSheet[pos].subject}
             <br />
             <br />
             <strong>
               <b>TITLE</b>
-            </strong>{" "}
-            : {testPapers[pos].title}
+            </strong>{' '}
+            : {testPaperSheet[pos].title}
           </Col>
           <Col>
             <strong>
               <b>DURATION</b>
-            </strong>{" "}
-            : {testPapers[pos].duration}
+            </strong>{' '}
+            : {testPaperSheet[pos].duration}
           </Col>
         </Row>
       </ListGroup.Item>
       <ListGroup.Item>
-        {testPapers[pos].questions.map((question, index) => (
+        {testPaperSheet[pos].questions.map((question, index) => (
           <ListGroup.Item key={index}>
             <Row>
               <Col md={0.6}>
@@ -46,22 +46,24 @@ const QuestionPaper = ({ testPapers, pos }) => {
                   <Col md={1}>
                     <strong>Question: </strong>
                   </Col>
-                  <Col>{question.questionBody}</Col>
+                  <Col md={10}>{question.questionBody}</Col>
                 </Row>
-                <Row>
-                  <Col md={1}>
-                    <strong>Options: </strong>
-                  </Col>
-                  <Col>
-                    {question.options.map((opt, index) => (
-                      <React.Fragment key={index}>
-                        <strong>{index + 1}: </strong>
-                        {opt.optionBody}
-                        <br />
-                      </React.Fragment>
-                    ))}
-                  </Col>
-                </Row>
+              </Col>
+            </Row>
+            <Row>
+              <Col md={0.6}></Col>
+
+              <Col md={1}>
+                <strong> Options: </strong>
+              </Col>
+              <Col>
+                {question.options.map((opt, index) => (
+                  <React.Fragment key={index}>
+                    <strong>{index + 1}: </strong>
+                    {opt.optionBody}
+                    <br />
+                  </React.Fragment>
+                ))}
               </Col>
             </Row>
           </ListGroup.Item>

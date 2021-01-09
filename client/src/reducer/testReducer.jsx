@@ -63,3 +63,16 @@ export const testbeginReducer = (state = {}, action) => {
       return state;
   }
 };
+
+export const testEndReducer = (state = {}, action) => {
+  switch (action.type) {
+    case test.TEST_END_REQUEST:
+      return { loading: true };
+    case test.TEST_END_SUCCESS:
+      return { loading: false, success: true };
+    case test.TEST_END_FAIL:
+      return { loading: false, error: action.payload };
+    default:
+      return state;
+  }
+};

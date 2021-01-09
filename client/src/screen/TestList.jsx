@@ -19,10 +19,14 @@ import Loader from '../component/Loader';
 import QuestionPaper from '../component/QuestionPaper';
 import QuestionDetails from '../component/QuestionDetails';
 import { openRegistrationforTest } from '../actions/studentRegistrationAction';
+import { paginate } from '../utils/paginate';
+import Paginations from '../component/Pagination';
 
 const TestList = ({ history }) => {
   const [show, setShow] = useState(false);
   const [pos, setIndex] = useState(0);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pageSize, setPageSize] = useState(2);
 
   const { loading, error, testPapers } = useSelector(
     state => state.getTestPaper
@@ -34,6 +38,15 @@ const TestList = ({ history }) => {
       dispatch(getTestPaperList());
     }
   }, []);
+
+  //PAGINATION
+  const totalCount = testPapers && testPapers.length;
+
+  const handlePageChange = page => {
+    setCurrentPage(page);
+  };
+
+  const testPaperSheet = paginate(testPapers, currentPage, pageSize);
 
   const set = index => {
     setShow(true);
@@ -58,7 +71,6 @@ const TestList = ({ history }) => {
     status = status ? false : true;
     dispatch(openRegistrationforTest({ testPapers, id, status }));
   };
-
   return (
     <>
       {loading && <Loader />}
@@ -73,25 +85,51 @@ const TestList = ({ history }) => {
             </Button>
           </Col>
         </Row>
-        <Table hover bordered striped responsive className="table-lg">
+        <Table
+          hover
+          bordered
+          striped
+          responsive
+          style={{ textAlign: 'center' }}
+        >
           <thead>
             <tr>
               <th>SUBJECT</th>
               <th>TITLE</th>
               <th>DURATION(in minute)</th>
-              <th>&nbsp;&nbsp;ACTION&nbsp;&nbsp;</th>
-              <th>REGISTRATION (OPEN/CLOSE)</th>
+              <th>REGISTRATION</th>
               <th></th>
+              <th>&nbsp;&nbsp;ACTION&nbsp;&nbsp;</th>
             </tr>
           </thead>
           <tbody>
-            {testPapers &&
-              testPapers.map((test, index) => (
+            {testPaperSheet &&
+              testPaperSheet.map((test, index) => (
                 <tr key={test._id} style={{ textAlign: 'center' }}>
                   <td>{test.subject}</td>
                   <td>{test.title}</td>
                   <td>{test.duration}</td>
-
+                  <td>
+                    <Button
+                      variant="outline-primary"
+                      className="btn btn-block"
+                      onClick={() =>
+                        handleClick(test._id, test.isRegistrationAvailable)
+                      }
+                    >
+                      {test.isRegistrationAvailable ? 'Close' : 'Open'}
+                    </Button>
+                  </td>
+                  <td>
+                    <Button
+                      variant="outline-primary"
+                      className="btn btn-block"
+                      disabled={test.isTestBegins}
+                      onClick={() => startTestHandler(test._id, index)}
+                    >
+                      Start Test
+                    </Button>
+                  </td>
                   <td>
                     <Button
                       variant="outline-primary"
@@ -109,36 +147,18 @@ const TestList = ({ history }) => {
                       <i className="fas fa-trash"></i>
                     </Button>
                   </td>
-                  <td>
-                    <Button
-                      variant="outline-primary"
-                      className="btn btn"
-                      onClick={() =>
-                        handleClick(test._id, test.isRegistrationAvailable)
-                      }
-                      style={{
-                        width: '150px',
-                      }}
-                    >
-                      {test.isRegistrationAvailable ? 'Close' : 'Open'}
-                    </Button>
-                  </td>
-                  <td>
-                    <Button
-                      variant="outline-primary"
-                      className="btn btn-block"
-                      disabled={test.isTestBegins}
-                      onClick={() => startTestHandler(test._id, index)}
-                    >
-                      Start Test
-                    </Button>
-                  </td>
                 </tr>
               ))}
           </tbody>
         </Table>
+        <Paginations
+          itemsCount={totalCount}
+          pageSize={pageSize}
+          currentPage={currentPage}
+          onPageChange={handlePageChange}
+        />
       </Container>
-      {testPapers && testPapers[pos] && (
+      {testPaperSheet && testPaperSheet[pos] && (
         <Modal
           show={show}
           onHide={() => setShow(false)}
@@ -147,7 +167,7 @@ const TestList = ({ history }) => {
         >
           <Modal.Header closeButton>
             <Modal.Title id="example-custom-modal-styling-title">
-              TestID: {testPapers[pos]._id}
+              TestID: {testPaperSheet[pos]._id}
             </Modal.Title>
           </Modal.Header>
           <Modal.Body>
@@ -156,13 +176,13 @@ const TestList = ({ history }) => {
                 eventKey="details"
                 title={<i className="fas fa-info-circle"> Details</i>}
               >
-                <QuestionDetails testPapers={testPapers} pos={pos} />
+                <QuestionDetails testPaperSheet={testPaperSheet} pos={pos} />
               </Tab>
               <Tab
                 eventKey="questions"
                 title={<i className="fas fa-question-circle"> Question</i>}
               >
-                <QuestionPaper testPapers={testPapers} pos={pos} />
+                <QuestionPaper testPaperSheet={testPaperSheet} pos={pos} />
               </Tab>
               <Tab
                 eventKey="trainee"

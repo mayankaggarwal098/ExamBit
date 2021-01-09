@@ -12,16 +12,21 @@ import {
 import { getAllQuestions } from '../actions/questionAction';
 import { deleteQuestion } from '../actions/questionAction';
 import Loader from '../component/Loader';
+import { paginate } from '../utils/paginate';
+import Paginations from '../component/Pagination';
 
 const QuestionList = ({ history }) => {
   const [show, setShow] = useState(false);
   const [pos, setIndex] = useState(0);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pageSize, setPageSize] = useState(5);
 
   const { loading, questions } = useSelector(state => state.questionList);
   const { loading: loadingCreate } = useSelector(state => state.createQuestion);
 
   const { loading: loadingDelete } = useSelector(state => state.questionDelete);
 
+  const totalCount = questions && questions.length;
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -44,6 +49,12 @@ const QuestionList = ({ history }) => {
     setShow(true);
     setIndex(index);
   };
+
+  const handlePageChange = page => {
+    setCurrentPage(page);
+  };
+
+  const ques = paginate(questions, currentPage, pageSize);
 
   return (
     <>
@@ -71,8 +82,8 @@ const QuestionList = ({ history }) => {
             </tr>
           </thead>
           <tbody>
-            {questions &&
-              questions.map((question, index) => (
+            {ques &&
+              ques.map((question, index) => (
                 <tr key={question._id}>
                   <td>{question.subject}</td>
                   <td>{question.questionBody}</td>
@@ -98,8 +109,14 @@ const QuestionList = ({ history }) => {
               ))}
           </tbody>
         </Table>
+        <Paginations
+          itemsCount={totalCount}
+          pageSize={pageSize}
+          currentPage={currentPage}
+          onPageChange={handlePageChange}
+        />
       </Container>
-      {questions && questions[pos] && (
+      {ques && ques[pos] && (
         <Modal
           show={show}
           onHide={() => setShow(false)}
@@ -108,7 +125,7 @@ const QuestionList = ({ history }) => {
         >
           <Modal.Header closeButton>
             <Modal.Title id="example-custom-modal-styling-title">
-              QuestionID: {questions[pos]._id}
+              QuestionID: {ques[pos]._id}
             </Modal.Title>
           </Modal.Header>
           <Modal.Body>
@@ -117,26 +134,26 @@ const QuestionList = ({ history }) => {
                 <strong>
                   <b>SUBJECT</b>
                 </strong>{' '}
-                : {questions[pos].subject}
+                : {ques[pos].subject}
               </ListGroup.Item>
               <ListGroup.Item>
                 <strong>
                   <b>WEIGHTAGE</b>
                 </strong>{' '}
-                : {questions[pos].weightage}
+                : {ques[pos].weightage}
               </ListGroup.Item>
               <ListGroup.Item>
                 <strong>
                   <b>QUESTION</b>
                 </strong>{' '}
-                : {questions[pos].questionBody}
+                : {ques[pos].questionBody}
               </ListGroup.Item>
               <ListGroup.Item>
                 <strong>
                   <b>OPTIONS</b>
                 </strong>
                 <br></br>
-                {questions[pos].options.map((opt, index) => (
+                {ques[pos].options.map((opt, index) => (
                   <>
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                     <strong>{index + 1}</strong>: {opt.optionBody}
@@ -148,7 +165,7 @@ const QuestionList = ({ history }) => {
                 <strong>
                   <b>Answer:</b>{' '}
                 </strong>
-                {questions[pos].options.map((opt, index) => (
+                {ques[pos].options.map((opt, index) => (
                   <>
                     {opt.isAnswer && (
                       <>
@@ -161,9 +178,9 @@ const QuestionList = ({ history }) => {
               </ListGroup.Item>
               <ListGroup.Item>
                 <strong>
-                  <b>EXPLANATION</b>
+                  <b>EXPLAINATION</b>
                 </strong>{' '}
-                : {questions[pos].explanation}
+                : {ques[pos].explaination}
               </ListGroup.Item>
             </ListGroup>
           </Modal.Body>

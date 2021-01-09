@@ -19,7 +19,6 @@ body {
   position: relative;
   border-radius: 10px;
 }
-
 h3 {
   color: white;
   text-align: center;
@@ -51,7 +50,7 @@ p {
   transform: translate(-50%, -50%);
 }
 
-button {
+/* button {
   outline: none;
   background: transparent;
   border: 1px solid blue;
@@ -59,15 +58,15 @@ button {
   border-radius: 7px;
   color: blue;
   cursor: pointer;
-}
+} */
 
-.buttons {
+/* .buttons {
   display: flex;
   justify-content: space-evenly;
   width: 150px;
   margin: 0 auto;
   margin-top: 5px;
-}
+} */
 
 .instaruction-page-wrapper {
   width: 100%;
@@ -87,9 +86,11 @@ button {
   padding: 20px 0px 40px 0px;
 }
 
-.mypost {
-  display: flex;
-  flex-wrap: wrap;
-  flex-direction: row;
-  justify-content: space-around;
+.box {
+  background-color: lightblue;
+  text-align: center;
+  font-size: 25px;
+  width: 15%;
+  height: 40px;
+  margin: 10px 10px 10px 30px;
 }

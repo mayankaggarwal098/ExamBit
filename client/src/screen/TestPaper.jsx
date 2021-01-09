@@ -6,19 +6,17 @@ import {
   responseSheetOfStudent,
   addAnswerForGivenQuestion,
 } from '../actions/responseSheetAction';
-import { getSinglePaper } from '../actions/testAction';
+import { getSinglePaper, testEnd } from '../actions/testAction';
 import Clock from '../component/Clock';
-import Paginations from '../component/Pagination';
 
-const TestPaper = () => {
+const TestPaper = ({ history }) => {
   const query = new URLSearchParams(useLocation().search);
   const testId = query.get('testId');
   const studentId = query.get('studentId');
 
-  const [currentPage, setCurrentPage] = useState(1);
-  const [pageSize, setPageSize] = useState(1);
   const [answer, setAnswer] = useState([]);
   const [saveAnswer, setSaveAnswer] = useState([]);
+  const [questionNumber, setQuestionNumber] = useState(1);
 
   const { paper } = useSelector(state => state.singleTestPaper);
 
@@ -32,10 +30,8 @@ const TestPaper = () => {
   }, []);
 
   const totalCount = paper && paper.questions.length;
-
-  const handlePageChange = page => {
-    setCurrentPage(page);
-  };
+  const arr = [];
+  for (var i = 0; i < totalCount; i++) arr.push(i + 1);
 
   const submitOptionHandler = e => {
     let arr = [...answer];
@@ -57,8 +53,9 @@ const TestPaper = () => {
 
   const resetAnswerHandler = () => {
     setAnswer([]);
-    setCurrentPage(currentPage + 1);
+    if (questionNumber !== totalCount) setQuestionNumber(questionNumber + 1);
   };
+
   const submitHandler = () => {
     const temp = [...answer];
     for (var i = 0; i < answer.length; i++) saveAnswer.push(answer[i]);
@@ -68,105 +65,117 @@ const TestPaper = () => {
         testId,
         studentId,
         chosenOption: answer,
-        questionId: paper.questions[currentPage - 1]._id,
+        questionId: paper.questions[questionNumber - 1]._id,
       })
     );
     resetAnswerHandler();
   };
 
+  const testSubmitHandler = () => {
+    dispatch(testEnd({ testId, studentId }));
+    localStorage.removeItem('time');
+    history.push(
+      `/student/test/result?testId=${testId}&studentId=${studentId}`
+    );
+  };
+
   return (
-    <>
-      <Container style={{ marginLeft: '100px', marginTop: '80px' }}>
-        <Row>
-          <Col md={9}>
-            {paper && (
-              <Container>
-                <ListGroup variant="flush">
-                  <ListGroup.Item>
-                    <h4>QUESTION: {currentPage}</h4>
-                    <p style={{ fontSize: '20px' }}>
-                      {paper.questions[currentPage - 1].questionBody}
+    <div style={{ marginLeft: '100px', marginTop: '80px', padding: '20px' }}>
+      <Row>
+        <Col md={8}>
+          {paper && (
+            <Container>
+              <ListGroup variant="flush">
+                <ListGroup.Item>
+                  <h4>QUESTION: {questionNumber}</h4>
+                  <p style={{ fontSize: '20px' }}>
+                    {paper.questions[questionNumber - 1].questionBody}
+                  </p>
+                </ListGroup.Item>
+                <ListGroup.Item>
+                  <h4 style={{ textAlign: 'left' }}>
+                    <strong>Options:</strong>
+                  </h4>
+
+                  {paper.questions[questionNumber - 1].options.map(opt => (
+                    <p style={{ fontSize: '20px' }} key={opt._id}>
+                      <Form.Check
+                        type="checkbox"
+                        value={opt._id}
+                        label={opt.optionBody}
+                        checked={
+                          saveAnswer.filter(ans => ans === opt._id).length
+                            ? true
+                            : answer.filter(a => a === opt._id).length
+                            ? true
+                            : false
+                        }
+                        onChange={e => submitOptionHandler(e)}
+                      />
                     </p>
-                  </ListGroup.Item>
-                  <ListGroup.Item>
-                    <h4 style={{ textAlign: 'left' }}>
-                      <strong>Options:</strong>
-                    </h4>
+                  ))}
+                </ListGroup.Item>
+                <br />
+                <br />
+              </ListGroup>
+              <Button
+                variant="outline-primary"
+                onClick={() => setQuestionNumber(questionNumber - 1)}
+                disabled={questionNumber === 1}
+              >
+                Prev
+              </Button>{' '}
+              <Button
+                variant="outline-primary"
+                onClick={() => resetAnswerHandler()}
+                disabled={questionNumber === totalCount}
+              >
+                Next
+              </Button>{' '}
+              <Button
+                variant="outline-primary"
+                onClick={() => submitHandler()}
+                disabled={
+                  questionNumber - 1 === totalCount || answer.length === 0
+                }
+              >
+                Save & Next
+              </Button>
+            </Container>
+          )}
+        </Col>
 
-                    {paper.questions[currentPage - 1].options.map(opt => (
-                      <p style={{ fontSize: '20px' }}>
-                        <Form.Check
-                          type="checkbox"
-                          value={opt._id}
-                          label={opt.optionBody}
-                          checked={
-                            saveAnswer.filter(ans => ans === opt._id).length
-                              ? true
-                              : answer.filter(a => a === opt._id).length
-                              ? true
-                              : false
-                          }
-                          onChange={e => submitOptionHandler(e)}
-                        />
-                      </p>
-                    ))}
-                  </ListGroup.Item>
-                  <br />
-                  <br />
-                </ListGroup>
-                <Button
-                  onClick={() => setCurrentPage(currentPage - 1)}
-                  disabled={currentPage === 1}
-                >
-                  Prev
-                </Button>{' '}
-                <Button
-                  variant="primary"
-                  onClick={() => resetAnswerHandler()}
-                  disabled={currentPage === totalCount}
-                >
-                  Next
-                </Button>{' '}
-                <Button
-                  onClick={() => submitHandler()}
-                  disabled={currentPage === totalCount || answer.length === 0}
-                >
-                  Save & Next
-                </Button>
-              </Container>
-            )}
-          </Col>
-
-          <Col md={3}>
-            <Row style={{ marginTop: '-100px' }}>
-              {paper && <Clock totalTime={paper.duration * 60} />}
-            </Row>
-
+        <Col md={3.5}>
+          <Row style={{ marginTop: '-100px' }}>
+            {paper && <Clock totalTime={paper.duration * 60} />}
+          </Row>
+          <Row>
             <Button
-              className="btn btn-second"
-              style={{ marginLeft: '120px', marginTop: '10px' }}
+              variant="outline-primary"
+              style={{ marginLeft: '180px', marginTop: '10px' }}
+              onClick={() => testSubmitHandler()}
             >
               End Test
             </Button>
-
-            {/* <div
-              style={{
-                marginTop: '30px',
-                marginLeft: '130px',
-                marginBottom: '0px',
-              }}
-            > */}
-            <Paginations
-              itemsCount={totalCount}
-              pageSize={pageSize}
-              currentPage={currentPage}
-              onPageChange={handlePageChange}
-            />
-            {/* </div> */}
-          </Col>
-        </Row>
-      </Container>
-    </>
+          </Row>
+          <Row style={{ position: 'center' }}>
+            {arr &&
+              arr.map(a => (
+                <div
+                  className="box"
+                  style={{
+                    backgroundColor: `${
+                      questionNumber === a ? 'green' : 'lightblue'
+                    }`,
+                  }}
+                >
+                  {a}
+                </div>
+              ))}
+          </Row>
+        </Col>
+      </Row>
+    </div>
   );
 };
 

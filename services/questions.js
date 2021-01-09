@@ -12,7 +12,7 @@ const createQuestion = async (req, res) => {
     options: option,
     subject,
     weightage,
-    explanation,
+    explaination,
   } = req.body;
 
   const op = await Options.insertMany(option);
@@ -24,7 +24,7 @@ const createQuestion = async (req, res) => {
   });
   let data = new Question({
     questionBody,
-    explanation,
+    explaination,
     subject,
     options: op,
     createdBy: req.user._id,

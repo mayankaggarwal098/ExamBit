@@ -13,10 +13,12 @@ import {
   deleteTestPaperReducer,
   testbeginReducer,
   getSingleTestPaperReducer,
+  testEndReducer,
 } from "./reducer/testReducer";
 import {
   registrationCloseReducer,
   registrationOpenReducer,
+  studentDetailReducer,
   studentRegistrationReducer,
 } from "./reducer/studentRegistrationReducer";
 import {
@@ -29,6 +31,7 @@ import {
   removeSupervisorReducer,
   updateSupervisorReducer,
 } from "./reducer/supervisorReducer";
+import { generateResultReducer } from "./reducer/generateResultReducer";
 
 const reducer = combineReducers({
   register: registerReducer,
@@ -40,11 +43,15 @@ const reducer = combineReducers({
   getTestPaper: getTestPaperReducer,
   deleteTestPaper: deleteTestPaperReducer,
   testBegin: testbeginReducer,
+  testEnd: testEndReducer,
   singleTestPaper: getSingleTestPaperReducer,
   studentRegister: studentRegistrationReducer,
   studentResponseSheet: responseSheetReducer,
   answerSubmission: answerSubmissionReducer,
   registrationOpen: registrationOpenReducer,
+  registrationClose: registrationCloseReducer,
+  studentDetail: studentDetailReducer,
+  generateResult : generateResultReducer ,
   supervisorList: getSupervisorReducer,
   supervisorReqList: getSupervisorReqReducer,
   removeSupervisor: removeSupervisorReducer,
