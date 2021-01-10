@@ -123,9 +123,9 @@ const QuestionList = ({ history }) => {
           dialogClassName="my-modal"
           aria-labelledby="example-custom-modal-styling-title"
         >
-          <Modal.Header closeButton>
+          <Modal.Header closeButton style={{ textAlign: 'center' }}>
             <Modal.Title id="example-custom-modal-styling-title">
-              QuestionID: {ques[pos]._id}
+              Question
             </Modal.Title>
           </Modal.Header>
           <Modal.Body>

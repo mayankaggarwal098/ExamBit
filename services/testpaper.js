@@ -126,11 +126,13 @@ const changeRegistrationStatus = async (req, res) => {
 };
 
 const getRegisteredStudents = async (req, res) => {
+
   const { testId } = req.body;
   const students = await Student.find({ testId });
   if (students.length === 0) {
     return res.status(400).send("Invalid Test Id");
   }
+  
   res.send(students);
 };
 

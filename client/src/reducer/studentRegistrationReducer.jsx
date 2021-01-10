@@ -60,3 +60,16 @@ export const resultDownloadReducer = (state = {}, action) => {
       return state;
   }
 };
+
+export const registeredStudentListReducer = (state = {}, action) => {
+  switch (action.type) {
+    case student_reg.GET_ALL_REGISTERED_REQUEST:
+      return { loading: true };
+    case student_reg.GET_ALL_REGISTERED_SUCCESS:
+      return { loading: false, registeredStudent: action.payload };
+    case student_reg.GET_ALL_REGISTERED_FAIL:
+      return { loading: false, error: action.payload };
+    default:
+      return state;
+  }
+};

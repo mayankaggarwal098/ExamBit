@@ -17,6 +17,7 @@ import {
   isTestStartReducer,
 } from "./reducer/testReducer";
 import {
+  registeredStudentListReducer,
   registrationCloseReducer,
   registrationOpenReducer,
   resultDownloadReducer,
@@ -52,6 +53,7 @@ const reducer = combineReducers({
   answerSubmission: answerSubmissionReducer,
   registrationOpen: registrationOpenReducer,
   registrationClose: registrationCloseReducer,
+  registeredStudentList: registeredStudentListReducer,
   isTestStart: isTestStartReducer,
   studentDetail: studentDetailReducer,
   generateResult : generateResultReducer ,

@@ -131,3 +131,31 @@ export const downloadResult = testId => async dispatch => {
     });
   }
 };
+
+export const getAllRegisteredStudent = testId => async dispatch => {
+  try {
+    dispatch({ type: student_reg.GET_ALL_REGISTERED_REQUEST });
+
+    const { data } = await http.post('/api/test/students/all', { testId });
+
+    dispatch({
+      type: student_reg.GET_ALL_REGISTERED_SUCCESS,
+      payload: data,
+    });
+  } catch (error) {
+    if (
+      error.response &&
+      (error.response.status >= 400 || error.response.status <= 500)
+    ) {
+      toast.error(error.response.data);
+    }
+
+    dispatch({
+      type: student_reg.GET_ALL_REGISTERED_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};

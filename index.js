@@ -11,6 +11,7 @@ const testpaper = require("./routes/testPaper");
 const student = require("./routes/student");
 const result = require("./routes/result");
 const admin = require("./routes/admin");
+const snapshots = require("./routes/snapshots");
 const PORT = process.env.PORT || 3900;
 mongoose
   .connect(MONOGOURI, { useUnifiedTopology: true, useNewUrlParser: true })
@@ -25,6 +26,7 @@ app.use("/api/test", testpaper);
 app.use("/api/student", student);
 app.use("/api/result", result);
 app.use("/api/supervisor", admin);
+app.use("/api/snapshot", snapshots);
 //createadmin();
 
 app.listen(PORT, () => console.log(`Listening on port ${PORT}...`));
