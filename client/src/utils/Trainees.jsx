@@ -1,23 +1,25 @@
-import React, { useState, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { Button, Table } from 'react-bootstrap';
-import Loader from '../component/Loader';
-import { getAllRegisteredStudent } from '../actions/studentRegistrationAction';
+import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Button, Table } from "react-bootstrap";
+import Loader from "../component/Loader";
+import { getAllRegisteredStudent } from "../actions/studentRegistrationAction";
 
 const Trainees = ({ id }) => {
   const dispatch = useDispatch();
   const { loading, registeredStudent: students } = useSelector(
-    state => state.registeredStudentList
+    (state) => state.registeredStudentList
   );
 
   useEffect(() => {
     dispatch(getAllRegisteredStudent(id));
   }, []);
 
-  const resultWindowHandler = studentId => {
+  const resultWindowHandler = (studentId) => {
     window.open(`/student/test/result?testId=${id}&studentId=${studentId}`);
   };
-
+  const snapshotHandler = (studentId) => {
+    window.open(`/student/test/snapshots?testId=${id}&studentId=${studentId}`);
+  };
   return (
     <>
       {loading && <Loader />}
@@ -32,7 +34,7 @@ const Trainees = ({ id }) => {
         bordered
         striped
         responsive
-        style={{ textAlign: 'center', marginTop: '10px' }}
+        style={{ textAlign: "center", marginTop: "10px" }}
       >
         <thead>
           <tr>
@@ -61,7 +63,12 @@ const Trainees = ({ id }) => {
                   </Button>
                 </td>
                 <td>
-                  <Button variant="outline-danger">SnapShot</Button>
+                  <Button
+                    variant="outline-danger"
+                    onClick={() => snapshotHandler(stud._id)}
+                  >
+                    SnapShot
+                  </Button>
                 </td>
               </tr>
             ))}

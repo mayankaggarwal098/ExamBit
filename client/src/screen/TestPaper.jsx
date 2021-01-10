@@ -74,32 +74,34 @@ const TestPaper = ({ history }) => {
   };
 
   const testSubmitHandler = () => {
+    clearInterval(snaps);
     dispatch(testEnd({ testId, studentId }));
     localStorage.removeItem("time");
     history.push(
       `/student/test/result?testId=${testId}&studentId=${studentId}`
     );
   };
-
-  const videoConstraints = {
-    width: 480,
-    height: 480,
-    facingMode: "user",
-  };
-
-  setInterval(async function () {
-    const image = webcamRef.current.getScreenshot({ height: 420, width: 480 });
-    await uploadImage(testId, studentId, image);
-  }, 5000);
+  let snaps;
+  if (paper && paper.isSnapshots === true) {
+    snaps = setInterval(async function () {
+      const image = webcamRef.current.getScreenshot({
+        height: 420,
+        width: 480,
+      });
+      await uploadImage(testId, studentId, image);
+    }, 5000);
+  }
   return (
     <div style={{ marginLeft: "100px", marginTop: "80px", padding: "20px" }}>
-      <Webcam
-        audio={false}
-        ref={webcamRef}
-        screenshotFormat="image/jpeg"
-        screenshotQuality={0.3}
-        width={0}
-      />
+      {paper && paper.isSnapshots && (
+        <Webcam
+          audio={false}
+          ref={webcamRef}
+          screenshotFormat="image/jpeg"
+          screenshotQuality={0.3}
+          width={0}
+        />
+      )}
       <Row>
         <Col md={8}>
           {paper && (

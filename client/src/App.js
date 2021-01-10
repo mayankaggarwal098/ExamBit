@@ -14,13 +14,12 @@ import TestPaper from "./screen/TestPaper";
 import Instruction from "./component/Instruction";
 import SupervisorList from "./screen/SupervisorList";
 import SupervisorReqList from "./screen/SupervisorReqList";
-import StudentResult from './screen/StudentResult';
+import StudentResult from "./screen/StudentResult";
 import EmailNotification from "./screen/EmailNotification";
-
+import Snapshots from "./screen/Snapshots";
 const App = () => {
   return (
     <BrowserRouter>
-    
       <Header />
       <ToastContainer autoClose={2000} />
       <Switch>
@@ -30,13 +29,17 @@ const App = () => {
         <Route path="/questions/create" component={QuestionCreate} />
         <Route path="/tests/create" component={TestCreate} />
         <Route path="/tests" component={TestList} exact />
-        <Route path='/student/registration/test/:id/emailsent' component={EmailNotification} />
+        <Route
+          path="/student/registration/test/:id/emailsent"
+          component={EmailNotification}
+        />
         <Route
           path="/student/registration/test/:id"
           component={StudentRegistered}
         />
-        <Route path='/student/test/result' component={StudentResult} />
+        <Route path="/student/test/result" component={StudentResult} />
         <Route path="/student/test/start" component={TestPaper} />
+        <Route path="/student/test/snapshots" component={Snapshots} />
         <Route path="/student/test" component={Instruction} exact />
         <Route path="/supervisor/request" component={SupervisorReqList} />
         <Route path="/supervisor" component={SupervisorList} />

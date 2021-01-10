@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 import {
   Form,
   Container,
@@ -7,21 +7,21 @@ import {
   Col,
   Modal,
   ListGroup,
-} from 'react-bootstrap';
-import { useSelector, useDispatch } from 'react-redux';
-import { getAllQuestions } from '../actions/questionAction';
-import { createTest } from '../actions/testAction';
+} from "react-bootstrap";
+import { useSelector, useDispatch } from "react-redux";
+import { getAllQuestions } from "../actions/questionAction";
+import { createTest } from "../actions/testAction";
 
 const TestCreate = ({ history }) => {
   const [show, setShow] = useState(false);
-  const [title, setTitle] = useState('');
-  const [subject, setSubject] = useState('');
-  const [duration, setDuration] = useState('');
+  const [title, setTitle] = useState("");
+  const [subject, setSubject] = useState("");
+  const [duration, setDuration] = useState("");
   const [selectQuestion, setSelectQuestion] = useState([]);
+  const [isSnapshots, setSnapshots] = useState(false);
+  const { questions } = useSelector((state) => state.questionList);
 
-  const { questions } = useSelector(state => state.questionList);
-
-  const { testPapers } = useSelector(state => state.getTestPaper);
+  const { testPapers } = useSelector((state) => state.getTestPaper);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -30,24 +30,30 @@ const TestCreate = ({ history }) => {
     }
   }, []);
 
-  const submitQuestionHandler = e => {
+  const submitQuestionHandler = (e) => {
     let arr = [...selectQuestion];
 
     if (e.target.checked) {
       arr.push(e.target.value);
     } else {
-      arr = arr.filter(a => a !== e.target.value);
+      arr = arr.filter((a) => a !== e.target.value);
     }
 
     setSelectQuestion(arr);
   };
 
-  const submitHandler = e => {
+  const submitHandler = (e) => {
     e.preventDefault();
     dispatch(
-      createTest(testPapers, { title, subject, duration, selectQuestion })
+      createTest(testPapers, {
+        title,
+        subject,
+        duration,
+        selectQuestion,
+        isSnapshots,
+      })
     );
-    history.push('/tests');
+    history.push("/tests");
   };
 
   return (
@@ -63,7 +69,7 @@ const TestCreate = ({ history }) => {
               placeholder="Title..."
               type="text"
               value={title}
-              onChange={e => setTitle(e.target.value)}
+              onChange={(e) => setTitle(e.target.value)}
             />
           </Form.Group>
 
@@ -77,7 +83,7 @@ const TestCreate = ({ history }) => {
                 type="text"
                 placeholder="Subject"
                 value={subject}
-                onChange={e => setSubject(e.target.value)}
+                onChange={(e) => setSubject(e.target.value)}
               />
             </Form.Group>
 
@@ -91,13 +97,20 @@ const TestCreate = ({ history }) => {
                 placeholder="Select.."
                 value={duration}
                 aria-describedby="durationInMinute"
-                onChange={e => setDuration(e.target.value)}
+                onChange={(e) => setDuration(e.target.value)}
               />
               <Form.Text id="durationInMinute" muted>
                 Duration must be filled in term of minutes
               </Form.Text>
             </Form.Group>
           </Form.Row>
+          <Form.Check
+            type="switch"
+            id="custom-switch"
+            label="Check this switch"
+            checked={isSnapshots}
+            onChange={() => setSnapshots(!isSnapshots)}
+          />
           <Button variant="primary" onClick={() => setShow(true)}>
             Select Question
           </Button>
@@ -164,12 +177,12 @@ const TestCreate = ({ history }) => {
                         type="checkbox"
                         value={question._id}
                         checked={
-                          selectQuestion.filter(ques => ques === question._id)
+                          selectQuestion.filter((ques) => ques === question._id)
                             .length
                             ? true
                             : false
                         }
-                        onChange={e => submitQuestionHandler(e)}
+                        onChange={(e) => submitQuestionHandler(e)}
                       />
                     </Col>
                   </Row>

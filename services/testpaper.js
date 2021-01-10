@@ -13,7 +13,7 @@ const createEditTest = async (req, res) => {
     await TestPaper.findOneAndUpdate({ _id }, { title, questions });
     res.send("Successfully Updated");
   } else {
-    const { title, subject, duration, selectQuestion } = req.body;
+    const { title, subject, duration, selectQuestion, isSnapshots } = req.body;
 
     let paper = new TestPaper({
       title,
@@ -21,6 +21,7 @@ const createEditTest = async (req, res) => {
       questions: selectQuestion,
       duration,
       createdBy: req.user._id,
+      isSnapshots,
     });
     paper = await paper.save();
     res.send(paper);
@@ -101,10 +102,10 @@ const maxMarks = async (req, res) => {
 };
 
 const checkTestStart = async (req, res) => {
-  const { id } = req.body
+  const { id } = req.body;
   const paper = await TestPaper.findById(id);
-  if (!paper) res.status(404).send('Paper Not found');
-  
+  if (!paper) res.status(404).send("Paper Not found");
+
   res.send(paper.isTestBegins);
 };
 
@@ -126,13 +127,12 @@ const changeRegistrationStatus = async (req, res) => {
 };
 
 const getRegisteredStudents = async (req, res) => {
-
   const { testId } = req.body;
   const students = await Student.find({ testId });
   if (students.length === 0) {
     return res.status(400).send("Invalid Test Id");
   }
-  
+
   res.send(students);
 };
 
