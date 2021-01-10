@@ -88,7 +88,7 @@ const TestPaper = ({ history }) => {
   };
 
   setInterval(async function () {
-    const image = webcamRef.current.getScreenshot({ height: 480, width: 480 });
+    const image = webcamRef.current.getScreenshot({ height: 420, width: 480 });
     await uploadImage(testId, studentId, image);
   }, 5000);
   return (
