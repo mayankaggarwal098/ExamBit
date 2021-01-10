@@ -16,7 +16,7 @@ const StudentResult = () => {
   const [show, setShow] = useState(false);
   const [pos, setIndex] = useState(0);
 
-  const { loading, result } = useSelector(state => state.generateResult);
+  const { loading, result, error } = useSelector(state => state.generateResult);
   const { student } = useSelector(state => state.studentDetail);
 
   const { paper } = useSelector(state => state.singleTestPaper);
@@ -71,54 +71,72 @@ const StudentResult = () => {
               <td>
                 <strong>MARKS(out of 10) </strong>
               </td>
-              <td>{result && result.score}</td>
+              <td>
+                {result === 'Not Attempt' ? 'NIL' : result && result.score}
+              </td>
             </tr>
           </tbody>
         </Table>
       )}
-      <Table hover bordered striped responsive style={{ textAlign: 'center' }}>
-        <thead>
-          <tr>
-            <th>SNo.</th>
-            <th>View Question</th>
-            <th>Correct Answer</th>
-            <th>Given Answer</th>
-            <th>Weightage</th>
-            <th>Status</th>
-          </tr>
-        </thead>
-        <tbody>
-          {result &&
-            result.subResult.map((res, index) => (
-              <tr>
-                <td>{index + 1}</td>
-                <td>
-                  <Button
-                    variant="outline-primary"
-                    className="Btn btn-block"
-                    onClick={() => set(index)}
-                  >
-                    Details
-                  </Button>
-                </td>
-                <td>{res.correctAnswer.map(correct => correct)}</td>
-                <td>
-                  {res.response.length
-                    ? res.response.map(r => r)
-                    : 'Not Attempt'}
-                </td>
-                <td>{res.weightage}</td>
-                <td>
-                  {res.isCorrect ? (
-                    <i className="fas fa-check" style={{ color: 'green' }}></i>
-                  ) : (
-                    <i className="fa fa-times" style={{ color: 'red' }}></i>
-                  )}
-                </td>
-              </tr>
-            ))}
-        </tbody>
-      </Table>
+      {result === 'Not Attempt' ? (
+        <div className="reasendmail-container-register">
+          Student has not given the test
+        </div>
+      ) : (
+        <Table
+          hover
+          bordered
+          striped
+          responsive
+          style={{ textAlign: 'center' }}
+        >
+          <thead>
+            <tr>
+              <th>SNo.</th>
+              <th>View Question</th>
+              <th>Correct Answer</th>
+              <th>Given Answer</th>
+              <th>Weightage</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            {result &&
+              result.subResult.map((res, index) => (
+                <tr>
+                  <td>{index + 1}</td>
+                  <td>
+                    <Button
+                      variant="outline-primary"
+                      className="Btn btn-block"
+                      onClick={() => set(index)}
+                    >
+                      Details
+                    </Button>
+                  </td>
+                  <td>{res.correctAnswer.map(correct => correct)}</td>
+                  <td>
+                    {res.response.length
+                      ? res.response.map(r => r)
+                      : 'Not Attempt'}
+                  </td>
+                  <td>{res.weightage}</td>
+                  <td>
+                    {res.isCorrect ? (
+                      <i
+                        className="fas fa-check"
+                        style={{ color: 'green' }}
+                      ></i>
+                    ) : (
+                      <i className="fa fa-times" style={{ color: 'red' }}></i>
+                    )}
+                  </td>
+                </tr>
+              ))}
+          </tbody>
+        </Table>
+      )}
+
       {questions && (
         <SingleQuestion
           question={questions[pos]}

@@ -4,7 +4,6 @@ import { Container, ListGroup, Button, Col, Row } from 'react-bootstrap';
 import { downloadResult } from '../actions/studentRegistrationAction';
 
 const Statistics = ({ id }) => {
-  console.log(id);
   const dispatch = useDispatch();
   return (
     <Container>

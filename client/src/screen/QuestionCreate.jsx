@@ -155,7 +155,13 @@ const QuestionCreate = ({ history }) => {
           </Form.Group>
         </Form.Row>
 
-        <Button variant="primary" type="submit">
+        <Button
+          variant="outline-primary"
+          type="submit"
+          disabled={
+            !opt1.isAnswer && !opt2.isAnswer && !opt3.isAnswer && !opt4.isAnswer
+          }
+        >
           Submit
         </Button>
       </Form>

@@ -25,7 +25,7 @@ const generateResult = async (req, res) => {
       },
     });
 
-  if (!responseSheet) return res.status(400).send("Invalid Request");
+  if (!responseSheet) return res.send("Not Attempt");
 
   const { questions, responses } = responseSheet;
   let score = 0;

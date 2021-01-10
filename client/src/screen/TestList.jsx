@@ -22,6 +22,7 @@ import { openRegistrationforTest } from '../actions/studentRegistrationAction';
 import { paginate } from '../utils/paginate';
 import Paginations from '../component/Pagination';
 import Statistics from '../component/Statistics';
+import Trainees from '../utils/Trainees';
 
 const TestList = ({ history }) => {
   const [show, setShow] = useState(false);
@@ -199,7 +200,7 @@ const TestList = ({ history }) => {
                 eventKey="trainee"
                 title={<i className="fas fa-user"> Trainees</i>}
               >
-                rawat
+                <Trainees id={testPaperSheet[pos]._id} />
               </Tab>
               <Tab
                 eventKey="statistics"
