@@ -5,7 +5,7 @@ const { generateExcel } = require("./generateExcel");
 
 const generateResult = async (req, res) => {
   const { studentId, testId } = req.body;
-  const ansMap = ['A','B','C','D','E'];
+  const ansMap = ["A", "B", "C", "D", "E"];
   const result = await Result.findOne({ testId, studentId }).populate(
     "subResult"
   );
@@ -16,8 +16,9 @@ const generateResult = async (req, res) => {
     studentId,
     testId,
     isCompleted: true,
-  }).populate("questions responses")
-  .populate({
+  })
+    .populate("questions responses")
+    .populate({
       path: "questions",
       populate: {
         path: "options",
@@ -38,7 +39,7 @@ const generateResult = async (req, res) => {
         correctAnswer.push(ansMap[j]);
       }
       for (let k = 0; k < res.length; ++k) {
-        if ( String(res[k])  === String(o._id) ) {
+        if (String(res[k]) === String(o._id)) {
           response.push(ansMap[j]);
         }
       }
@@ -83,26 +84,26 @@ const generateResult = async (req, res) => {
   res.send(resultdata);
 };
 
-const getAllResults = async (req, res) => {
-  const { testId } = req.body;
-  const results = await Result.find({ testId })
-    .select("score studentId")
-    .populate("studentId");
-  if (results.length === 0) {
-    return res.status(400).send("Invalid TestId");
-  }
-  return results;
-};
+// const getAllResults = async (req, res) => {
+//   const { testId } = req.body;
+//   const results = await Result.find({ testId })
+//     .select("score studentId")
+//     .populate("studentId");
+//   if (results.length === 0) {
+//     return res.status(400).send("Invalid TestId");
+//   }
+//   return results;
+// };
 
-const getDetailedResult = async (req, res) => {
-  const { studentId, testId } = req.body;
-  const result = await Result.findOne({ testId, studentId }).populate(
-    "subResult"
-  );
-  if (!result) return res.status(400).send("Invalid Inputs");
+// const getDetailedResult = async (req, res) => {
+//   const { studentId, testId } = req.body;
+//   const result = await Result.findOne({ testId, studentId }).populate(
+//     "subResult"
+//   );
+//   if (!result) return res.status(400).send("Invalid Inputs");
 
-  res.send(result);
-};
+//   res.send(result);
+// };
 
 const download = async (req, res) => {
   const { testId } = req.body;
@@ -119,4 +120,4 @@ const download = async (req, res) => {
   res.end();
 };
 
-module.exports = { download, generateResult, getDetailedResult, getAllResults };
+module.exports = { download, generateResult };

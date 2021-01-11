@@ -76,30 +76,31 @@ const beginTest = async (req, res) => {
   res.send(paper);
 };
 
-const endTest = async (req, res) => {
-  const paper = await TestPaper.findOneAndUpdate(
-    { _id: req.body.id, isTestBegins: 1 },
-    { isTestBegins: false, isTestConducted: true, isResultGenerated: true },
-    { new: true }
-  );
-  if (!paper) {
-    return res.status(401).send("Invalid request");
-  }
-  //pending excel download feature
-  res.send(paper);
-};
+// const endTest = async (req, res) => {
+//   const paper = await TestPaper.findOneAndUpdate(
+//     { _id: req.body.id, isTestBegins: 1 },
+//     { isTestBegins: false, isTestConducted: true, // isResultGenerated: true
+// },
+//     { new: true }
+//   );
+//   if (!paper) {
+//     return res.status(401).send("Invalid request");
+//   }
+//   //pending excel download feature
+//   res.send(paper);
+// };
 
-const maxMarks = async (req, res) => {
-  const paper = await TestPaper.findById(req.body.testId).populate("questions");
-  if (!paper) {
-    return res.status(401).send("Invalid Test Paper Id");
-  }
-  let marks = 0;
-  paper.questions.map((m) => {
-    marks += m.weightage;
-  });
-  res.send(marks);
-};
+// const maxMarks = async (req, res) => {
+//   const paper = await TestPaper.findById(req.body.testId).populate("questions");
+//   if (!paper) {
+//     return res.status(401).send("Invalid Test Paper Id");
+//   }
+//   let marks = 0;
+//   paper.questions.map((m) => {
+//     marks += m.weightage;
+//   });
+//   res.send(marks);
+// };
 
 const checkTestStart = async (req, res) => {
   const { id } = req.body;
@@ -143,8 +144,6 @@ module.exports = {
   getAllTests,
   deleteTest,
   beginTest,
-  endTest,
-  maxMarks,
   checkTestStart,
   changeRegistrationStatus,
 };

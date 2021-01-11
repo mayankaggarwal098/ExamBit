@@ -15,7 +15,8 @@ const subResultSchema = new mongoose.Schema({
   },
   explaination: {
     type: String,
-    required: true,
+    //required: true,
+    default: "No explaination given",
   },
   weightage: {
     type: Number,

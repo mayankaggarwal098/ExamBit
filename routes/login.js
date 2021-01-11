@@ -12,13 +12,13 @@ router.post("/", async (req, res) => {
   if (error) return res.status(400).send(error.details[0].message);
 
   const user = await User.findOne({ email: req.body.email });
-  if (!user) return res.status(400).send("Invalid email or password");
+  if (!user) return res.status(401).send("Invalid email or password");
 
   const validPassword = await bcrypt.compare(req.body.password, user.password);
-  if (!validPassword) return res.status(400).send("Invalid email or password");
+  if (!validPassword) return res.status(401).send("Invalid email or password");
 
   if (user.category === "SUPERVISOR" && user.supervisorPerm === false) {
-    return res.status(403).send("Access Denied");
+    return res.status(403).send("Permission not granted");
   }
 
   const token = jwt.sign({ _id: user._id }, jwtPrivateKey);

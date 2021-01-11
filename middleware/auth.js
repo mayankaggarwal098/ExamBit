@@ -12,6 +12,6 @@ module.exports = async function (req, res, next) {
     req.user = await User.findById(_id);
     next();
   } catch (ex) {
-    res.status(400).send("Invalid token.");
+    return res.status(400).send("Invalid token.");
   }
 };

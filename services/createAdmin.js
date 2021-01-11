@@ -7,7 +7,7 @@ var createadmin = async () => {
     name: "admin",
     password: "admin",
     email: "admin@admin.com",
-    type: "ADMIN",
+    category: "ADMIN",
   });
 
   const salt = await bcrypt.genSalt(10);

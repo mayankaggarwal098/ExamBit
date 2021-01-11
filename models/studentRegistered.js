@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const Joi = require("joi");
+//const Joi = require("joi");
 
 const studentSchema = new mongoose.Schema({
   name: {
@@ -17,18 +17,19 @@ const studentSchema = new mongoose.Schema({
   testId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "TestPaper",
+    required: true,
   },
 });
 
 const Student = mongoose.model("Student", studentSchema);
 
-function validateStudent(student) {
-  const schema = Joi.object({
-    email: Joi.string().max(255).required().email(),
-    name: Joi.string().max(255).required(),
-    phoneNum: Joi.string().max(13).required(),
-  });
-  return schema.validate(student);
-}
+// function validateStudent(student) {
+//   const schema = Joi.object({
+//     email: Joi.string().max(255).required().email(),
+//     name: Joi.string().max(255).required(),
+//     phoneNum: Joi.string().max(13).required(),
+//   });
+//   return schema.validate(student);
+// }
 
-module.exports = { Student, validateStudent };
+module.exports = { Student };

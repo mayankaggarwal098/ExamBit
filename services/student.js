@@ -55,7 +55,6 @@ const getStudent = async (req, res) => {
 };
 
 const responseSheet = async (req, res) => {
-
   const { studentId, testId } = req.body;
   const student = await Student.findOne({ _id: studentId, testId });
   const paper = await TestPaper.findOne({
@@ -63,7 +62,6 @@ const responseSheet = async (req, res) => {
     isTestBegins: true,
     isTestConducted: false,
   });
-
 
   if (!student || !paper) return res.status(400).send("Invalid Request");
 
@@ -82,13 +80,13 @@ const responseSheet = async (req, res) => {
   });
   responses = await Response.insertMany(responses);
 
-  const startTime = new Date();
+  //const startTime = new Date();
   responseSheet = new ResponseSheet({
     testId,
     studentId,
     questions,
     responses,
-    startTime,
+    // startTime,
   });
   await responseSheet.save();
   res.send("Test Starts");
@@ -104,25 +102,25 @@ const updateResponse = async (req, res) => {
   });
 
   if (!paper || !responseSheet) return res.status(400).send("Invalid Request");
-  const currentDate = new Date();
-  const pendingTime =
-    paper.duration * 60000 - (currentDate - responseSheet.startTime);
-  if (pendingTime > 0) {
-    const response = await Response.findOneAndUpdate(
-      { questionId, studentId },
-      { chosenOption }
-    );
-    if (!response) return res.status(400).send("Invalid Request");
+  //const currentDate = new Date();
+  // const pendingTime =
+  //   paper.duration * 60000 - (currentDate - responseSheet.startTime);
+  //if (pendingTime > 0) {
+  const response = await Response.findOneAndUpdate(
+    { questionId, studentId },
+    { chosenOption }
+  );
+  if (!response) return res.status(400).send("Invalid Request");
 
-    res.send("Response Updated");
-  } else {
-    const responseSheet = await ResponseSheet.findOneAndUpdate(
-      { testId, studentId },
-      { isCompleted: true }
-    );
-    if (!responseSheet) return res.status(400).send("Invalid Request");
-    res.send("Time is up");
-  }
+  res.send("Response Updated");
+  // } else {
+  //   const responseSheet = await ResponseSheet.findOneAndUpdate(
+  //     { testId, studentId },
+  //     { isCompleted: true }
+  //   );
+  //   if (!responseSheet) return res.status(400).send("Invalid Request");
+  //   res.send("Time is up");
+  // }
 };
 
 const endTest = async (req, res) => {

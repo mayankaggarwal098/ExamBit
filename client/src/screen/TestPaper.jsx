@@ -72,25 +72,30 @@ const TestPaper = ({ history }) => {
     );
     resetAnswerHandler();
   };
+  let intervalId;
+  if (paper && paper.isSnapshots === true) {
+    intervalId = setInterval(async function () {
+      if (paper && paper.isSnapshots === true) {
+        const image = webcamRef.current.getScreenshot({
+          height: 420,
+          width: 480,
+        });
+        await uploadImage(testId, studentId, image);
+      } else {
+        clearInterval(intervalId);
+      }
+    }, 5000);
+  }
 
   const testSubmitHandler = () => {
-    clearInterval(snaps);
+    clearInterval(intervalId);
     dispatch(testEnd({ testId, studentId }));
     localStorage.removeItem("time");
     history.push(
       `/student/test/result?testId=${testId}&studentId=${studentId}`
     );
   };
-  let snaps;
-  if (paper && paper.isSnapshots === true) {
-    snaps = setInterval(async function () {
-      const image = webcamRef.current.getScreenshot({
-        height: 420,
-        width: 480,
-      });
-      await uploadImage(testId, studentId, image);
-    }, 5000);
-  }
+
   return (
     <div style={{ marginLeft: "100px", marginTop: "80px", padding: "20px" }}>
       {paper && paper.isSnapshots && (

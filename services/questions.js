@@ -3,10 +3,9 @@ const Options = require("../models/options");
 const auth = require("../middleware/auth");
 
 const createQuestion = async (req, res) => {
-
-  if (req.user.category !== "SUPERVISOR") {
-    return res.status(401).send("Permission not granted");
-  }
+  // if (req.user.category !== "SUPERVISOR") {
+  //   return res.status(401).send("Permission not granted");
+  // }
   const {
     questionBody,
     options: option,
@@ -36,7 +35,6 @@ const createQuestion = async (req, res) => {
 };
 
 const deleteQuestion = async (req, res) => {
-
   if (req.user.category !== "SUPERVISOR") {
     return res.status(401).send("Permission not granted");
   }
@@ -46,15 +44,15 @@ const deleteQuestion = async (req, res) => {
     return res.status(400).send("Invalid Question Id");
   }
 
-  await Options.deleteMany({_id: ques.options})
+  await Options.deleteMany({ _id: ques.options });
   await ques.remove();
   res.send("Deleted Successfully");
 };
 
 const getAllQuestions = async (req, res) => {
-  if (req.user.category !== "SUPERVISOR") {
-    return res.status(401).send("Permission not granted");
-  }
+  // if (req.user.category !== "SUPERVISOR") {
+  //   return res.status(401).send("Permission not granted");
+  // }
   // const { subject } = req.body;
   // if (subject.length !== 0) {
   //   const allques = await Question.find({ subject }).populate(
@@ -62,13 +60,14 @@ const getAllQuestions = async (req, res) => {
   //   );
   //   res.send(allques);
   // } else {
-    const allques = await Question.find({ createdBy: req.user._id}).populate("createdBy options");
-    res.send(allques);
+  const allques = await Question.find({ createdBy: req.user._id }).populate(
+    "createdBy options"
+  );
+  res.send(allques);
   // }
 };
 
 const getSingleQuestion = async (req, res) => {
-  
   if (req.user.category !== "SUPERVISOR") {
     return res.status(401).send("Permission not granted");
   }

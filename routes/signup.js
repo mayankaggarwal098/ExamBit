@@ -14,7 +14,7 @@ router.post("/", async (req, res) => {
   const { name, email, password, category } = req.body;
 
   let user = await User.findOne({ email: req.body.email });
-  if (user) return res.status(400).send("User already registered");
+  if (user) return res.status(409).send("User already registered");
 
   user = new User({ name, email, password, category });
 
@@ -22,7 +22,7 @@ router.post("/", async (req, res) => {
   user.password = await bcrypt.hash(user.password, salt);
 
   await user.save();
-  res.send('successfully signin');
+  res.send("successfully signin");
 });
 
 module.exports = router;

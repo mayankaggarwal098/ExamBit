@@ -3,12 +3,13 @@ const mongoose = require("mongoose");
 const testSchema = new mongoose.Schema({
   title: {
     type: String,
-    require: true,
+    required: true,
   },
   questions: [
     {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Question",
+      required: true,
     },
   ],
   subject: {
@@ -21,28 +22,29 @@ const testSchema = new mongoose.Schema({
   },
   isTestBegins: {
     type: Boolean,
-    required: true,
+    // required: true,
     default: false,
   },
   createdBy: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
+    required: true,
   },
   isRegistrationAvailable: {
     type: Boolean,
-    required: true,
+    //  required: true,
     default: false,
   },
   isTestConducted: {
     type: Boolean,
-    required: true,
+    //   required: true,
     default: false,
   },
-  isResultGenerated: {
-    type: Boolean,
-    required: true,
-    default: false,
-  },
+  // isResultGenerated: {
+  //   type: Boolean,
+  //   //   required: true,
+  //   default: false,
+  // },
   isSnapshots: {
     type: Boolean,
     default: false,

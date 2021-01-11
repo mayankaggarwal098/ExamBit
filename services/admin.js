@@ -15,14 +15,14 @@ const getAllReqSupervisor = async (req, res) => {
   res.send(supervisor);
 };
 
-const getSupervisor = async (req, res) => {
-  const supervisor = await User.findOne({
-    _id: req.params.id,
-    category: "SUPERVISOR",
-  }).select("-password -category");
-  if (!supervisor) return res.status(400).send("Invalid Supervisor Id");
-  res.send(supervisor);
-};
+// const getSupervisor = async (req, res) => {
+//   const supervisor = await User.findOne({
+//     _id: req.params.id,
+//     category: "SUPERVISOR",
+//   }).select("-password -category");
+//   if (!supervisor) return res.status(400).send("Invalid Supervisor Id");
+//   res.send(supervisor);
+// };
 
 const removeSupervisor = async (req, res) => {
   const supervisor = await User.findOne({
@@ -46,7 +46,7 @@ const updateSupervisorPerm = async (req, res) => {
 
 module.exports = {
   removeSupervisor,
-  getSupervisor,
+  //getSupervisor,
   getAllAuthSupervisor,
   getAllReqSupervisor,
   updateSupervisorPerm,

@@ -22,10 +22,12 @@ const questionSchema = new mongoose.Schema({
   },
   explaination: {
     type: String,
+    default: "No explaination given",
   },
   createdBy: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
+    required: true,
   },
 });
 

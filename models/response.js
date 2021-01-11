@@ -3,7 +3,8 @@ const mongoose = require("mongoose");
 const responseSchema = new mongoose.Schema({
   questionId: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'Question',
+    ref: "Question",
+    required: true,
   },
   chosenOption: [
     {

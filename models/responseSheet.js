@@ -25,10 +25,10 @@ const responseSheetSchema = new mongoose.Schema({
       required: true,
     },
   ],
-  startTime: {
-    type: Date,
-    required: true,
-  },
+  // startTime: {
+  //   type: Date,
+  //   required: true,
+  // },
   isCompleted: {
     type: Boolean,
     default: false,
