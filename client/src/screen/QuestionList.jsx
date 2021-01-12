@@ -22,11 +22,14 @@ const QuestionList = ({ history }) => {
   const [pageSize, setPageSize] = useState(5);
 
   const { loading, questions } = useSelector(state => state.questionList);
-  const { loading: loadingCreate } = useSelector(state => state.createQuestion);
+  // const { loading: loadingCreate } = useSelector(state => state.createQuestion);
 
-  const { loading: loadingDelete } = useSelector(state => state.questionDelete);
+  // const { loading: loadingDelete } = useSelector(state => state.questionDelete);
 
-  const totalCount = questions && questions.length;
+  const count = questions && questions.length;
+  let ques = paginate(questions, currentPage, pageSize);
+
+  const [totalCount, setTotalCount] = useState(count);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -42,6 +45,10 @@ const QuestionList = ({ history }) => {
   const deleteHandler = id => {
     if (window.confirm('Are you sure ')) {
       dispatch(deleteQuestion(questions, id));
+      setTotalCount(totalCount => totalCount - 1);
+      let currPage = Math.floor((totalCount - 1) / pageSize);
+      setCurrentPage(currPage);
+      ques = paginate(ques, currentPage, pageSize);
     }
   };
 
@@ -54,12 +61,10 @@ const QuestionList = ({ history }) => {
     setCurrentPage(page);
   };
 
-  const ques = paginate(questions, currentPage, pageSize);
-
   return (
     <>
-      {loadingCreate && <Loader />}
-      {loadingDelete && <Loader />}
+      {/* {loadingCreate && <Loader />}
+      {loadingDelete && <Loader />} */}
       {loading && <Loader />}
       <Container>
         <Row className="align-items-center">
@@ -110,7 +115,7 @@ const QuestionList = ({ history }) => {
           </tbody>
         </Table>
         <Paginations
-          itemsCount={totalCount}
+          itemsCount={count}
           pageSize={pageSize}
           currentPage={currentPage}
           onPageChange={handlePageChange}

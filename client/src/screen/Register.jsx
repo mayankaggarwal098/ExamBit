@@ -26,10 +26,9 @@ const Register = ({ history }) => {
   const submitHandler = e => {
     e.preventDefault();
     if (password !== confirmPassword) {
-      toast.error('Invalid Input');
+      toast.error('Password Does not match');
     } else {
-      dispatch(userRegister(name, email, password, category));
-      history.push('/login');
+      userRegister(name, email, password, category, history);
     }
   };
 

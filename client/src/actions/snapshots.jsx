@@ -1,8 +1,9 @@
-import http from "../component/httpService";
+import http from '../component/httpService';
+import Token from '../utils/Token';
 
 export const uploadImage = async (testId, studentId, image) => {
   try {
-    const { data } = await http.post("/api/snapshot/upload", {
+    const { data } = await http.post('/api/snapshot/upload', {
       testId,
       studentId,
       image,
@@ -15,10 +16,14 @@ export const uploadImage = async (testId, studentId, image) => {
 
 export const getAllImages = async (testId, studentId) => {
   try {
-    const { data } = await http.post("/api/snapshot/get/all", {
-      testId,
-      studentId,
-    });
+    const { data } = await http.post(
+      '/api/snapshot/get/all',
+      {
+        testId,
+        studentId,
+      },
+      Token()
+    );
     // console.log(data);
     return data;
   } catch (ex) {

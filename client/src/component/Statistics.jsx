@@ -2,11 +2,13 @@ import React from 'react';
 import { useDispatch } from 'react-redux';
 import { Container, ListGroup, Button, Col, Row } from 'react-bootstrap';
 import { downloadResult } from '../actions/studentRegistrationAction';
+import BarCharts from '../utils/BarCharts';
+import PieChart from '../utils/PieChart';
 
 const Statistics = ({ id }) => {
   const dispatch = useDispatch();
   return (
-    <Container>
+    <>
       <ListGroup variant="flush">
         <ListGroup.Item>
           <Row>
@@ -14,7 +16,7 @@ const Statistics = ({ id }) => {
               <Button
                 className="btn btn-block"
                 variant="outline-danger"
-                onClick={() => dispatch(downloadResult(id))}
+                onClick={() => downloadResult(id)}
               >
                 Download
               </Button>
@@ -27,10 +29,23 @@ const Statistics = ({ id }) => {
           </Row>
         </ListGroup.Item>
         <ListGroup.Item>
-          <p>sdfshhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh</p>
+          <p>Score vs No of Student</p>
+          <BarCharts />
+        </ListGroup.Item>
+        <ListGroup.Item>
+          <Row style={{ position: 'center' }}>
+            <Col md={5}>
+              <p>Pass/Fail</p>
+              <PieChart />
+            </Col>
+            <Col md={5}>
+              <p>Category</p>
+              <PieChart />
+            </Col>
+          </Row>
         </ListGroup.Item>
       </ListGroup>
-    </Container>
+    </>
   );
 };
 

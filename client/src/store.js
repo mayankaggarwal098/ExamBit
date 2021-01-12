@@ -3,65 +3,63 @@ import thunk from "redux-thunk";
 import { composeWithDevTools } from "redux-devtools-extension";
 import { registerReducer, userLoginReducer } from "./reducer/userReducer";
 import {
-  createQuestionReducer,
-  questionDeleteReducer,
+  // createQuestionReducer,
+  // questionDeleteReducer,
   questionListReducer,
 } from "./reducer/questionReducer";
 import {
-  testCreateReducer,
+  // testCreateReducer,
   getTestPaperReducer,
-  deleteTestPaperReducer,
-  testbeginReducer,
+  // deleteTestPaperReducer,
+  // testbeginReducer,
   getSingleTestPaperReducer,
-  testEndReducer,
-  isTestStartReducer,
+  // testEndReducer,
 } from "./reducer/testReducer";
 import {
   registeredStudentListReducer,
-  registrationCloseReducer,
-  registrationOpenReducer,
-  resultDownloadReducer,
+  // registrationCloseReducer,
+  // registrationOpenReducer,
+  // resultDownloadReducer,
   studentDetailReducer,
-  studentRegistrationReducer,
+  // studentRegistrationReducer,
 } from "./reducer/studentRegistrationReducer";
 import {
-  answerSubmissionReducer,
-  responseSheetReducer,
+  // answerSubmissionReducer,
+  // responseSheetReducer,
 } from "./reducer/responseSheetReducer";
 import {
   getSupervisorReducer,
   getSupervisorReqReducer,
-  removeSupervisorReducer,
+  // removeSupervisorReducer,
   updateSupervisorReducer,
 } from "./reducer/supervisorReducer";
 import { generateResultReducer } from "./reducer/generateResultReducer";
 
 const reducer = combineReducers({
-  register: registerReducer,
+  // register: registerReducer,
   userLogin: userLoginReducer,
-  createQuestion: createQuestionReducer,
+  // createQuestion: createQuestionReducer,
   questionList: questionListReducer,
-  questionDelete: questionDeleteReducer,
-  testCreate: testCreateReducer,
+  // questionDelete: questionDeleteReducer,
+  // testCreate: testCreateReducer,
   getTestPaper: getTestPaperReducer,
-  deleteTestPaper: deleteTestPaperReducer,
-  testBegin: testbeginReducer,
-  testEnd: testEndReducer,
+  // deleteTestPaper: deleteTestPaperReducer,
+  // testBegin: testbeginReducer,
+  // testEnd: testEndReducer,
   singleTestPaper: getSingleTestPaperReducer,
-  studentRegister: studentRegistrationReducer,
-  studentResponseSheet: responseSheetReducer,
-  answerSubmission: answerSubmissionReducer,
-  registrationOpen: registrationOpenReducer,
-  registrationClose: registrationCloseReducer,
+  // studentRegister: studentRegistrationReducer,
+  // studentResponseSheet: responseSheetReducer,
+  // answerSubmission: answerSubmissionReducer,
+  // registrationOpen: registrationOpenReducer,
+  // registrationClose: registrationCloseReducer,
   registeredStudentList: registeredStudentListReducer,
-  isTestStart: isTestStartReducer,
   studentDetail: studentDetailReducer,
   generateResult : generateResultReducer ,
   supervisorList: getSupervisorReducer,
   supervisorReqList: getSupervisorReqReducer,
-  removeSupervisor: removeSupervisorReducer,
+  // removeSupervisor: removeSupervisorReducer,
   updateSupervisor: updateSupervisorReducer,
-  resultDownload: resultDownloadReducer
+  // resultDownload: resultDownloadReducer
 });
 
 const userInfoFromStorage = localStorage.getItem("userInfo")

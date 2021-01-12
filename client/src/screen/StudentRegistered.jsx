@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button, Form, Container, Row, Col } from 'react-bootstrap';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { studentRegistrationForTest } from '../actions/studentRegistrationAction';
+import { getSinglePaper } from '../actions/testAction';
 
 const StudentRegistered = ({ history }) => {
   const [name, setName] = useState('');
@@ -17,14 +18,24 @@ const StudentRegistered = ({ history }) => {
     link = link + d + '/';
   });
 
-  const dispatch = useDispatch();
-  const submitHandler = e => {
-    e.preventDefault();
-    dispatch(
-      studentRegistrationForTest({ name, email, phoneNum, testId, link })
-    );
+  const { paper } = useSelector(state => state.singleTestPaper);
 
-    history.push(`/student/registration/test/${testId}/emailsent`);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (!paper) {
+      dispatch(getSinglePaper(testId));
+    }
+
+    if (paper && paper.isRegistrationAvailable) {
+      history.push(`/student/registration/test/${testId}/emailsent`);
+    }
+  }, [paper]);
+
+  const submitHandler = async e => {
+    e.preventDefault();
+    await studentRegistrationForTest({ name, email, phoneNum, testId, link });
+    dispatch(getSinglePaper(testId));
   };
 
   return (

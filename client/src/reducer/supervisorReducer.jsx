@@ -1,4 +1,4 @@
-import * as s from "../constants/supervisorConstant";
+import * as s from '../constants/supervisorConstant';
 
 export const getSupervisorReducer = (state = {}, action) => {
   switch (action.type) {
@@ -26,18 +26,18 @@ export const getSupervisorReqReducer = (state = {}, action) => {
   }
 };
 
-export const removeSupervisorReducer = (state = {}, action) => {
-  switch (action.type) {
-    case s.SUPERVISOR_REMOVE_REQUEST:
-      return { loading: true };
-    case s.SUPERVISOR_REMOVE_SUCCESS:
-      return { loading: false, success: true };
-    case s.SUPERVISOR_REMOVE_FAIL:
-      return { loading: false, error: action.payload };
-    default:
-      return state;
-  }
-};
+// export const removeSupervisorReducer = (state = {}, action) => {
+//   switch (action.type) {
+//     case s.SUPERVISOR_REMOVE_REQUEST:
+//       return { loading: true };
+//     case s.SUPERVISOR_REMOVE_SUCCESS:
+//       return { loading: false, success: true };
+//     case s.SUPERVISOR_REMOVE_FAIL:
+//       return { loading: false, error: action.payload };
+//     default:
+//       return state;
+//   }
+// };
 
 export const updateSupervisorReducer = (state = {}, action) => {
   switch (action.type) {

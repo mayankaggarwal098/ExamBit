@@ -47,11 +47,11 @@ const Clock = ({ totalTime, testSubmitHandler }) => {
   //     setTimer(0);
   //   };
 
-  const { loading } = useSelector(state => state.studentResponseSheet);
+  // const { loading } = useSelector(state => state.studentResponseSheet);
   useEffect(() => {
-    if (loading) {
-      handleStart();
-    }
+    // if (loading) {
+    handleStart();
+    // }
   }, []);
   const formatTime = () => {
     if (localStorage.getItem('time') === null)

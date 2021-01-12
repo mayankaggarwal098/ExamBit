@@ -12,19 +12,15 @@ const Instruction = ({ history }) => {
 
   const [show, setShow] = useState();
 
-  const { testStart } = useSelector(state => state.isTestStart);
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    if (testStart) {
+  const submitHandler = async () => {
+    const start = await checkTestStart(testId);
+    if (start) {
       history.push(
         `/student/test/start?testId=${testId}&studentId=${studentId}`
       );
+    } else {
+      setShow(true);
     }
-  }, [testStart]);
-  const submitHandler = () => {
-    dispatch(checkTestStart(testId));
-    setShow(true);
   };
 
   return (

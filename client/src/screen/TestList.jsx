@@ -42,13 +42,15 @@ const TestList = ({ history }) => {
   }, []);
 
   //PAGINATION
-  const totalCount = testPapers && testPapers.length;
+  const count = testPapers && testPapers.length;
 
   const handlePageChange = page => {
     setCurrentPage(page);
   };
 
-  const testPaperSheet = paginate(testPapers, currentPage, pageSize);
+  let testPaperSheet = paginate(testPapers, currentPage, pageSize);
+
+  const [totalCount, setTotalCount] = useState(count);
 
   const set = index => {
     setShow(true);
@@ -62,6 +64,10 @@ const TestList = ({ history }) => {
   const deleteHandler = id => {
     if (window.confirm('Are you sure')) {
       dispatch(testPaperDelete(testPapers, id));
+      setTotalCount(totalCount => totalCount - 1);
+      let currPage = Math.floor((totalCount - 1) / pageSize);
+      setCurrentPage(currPage);
+      testPaperSheet = paginate(testPapers, currentPage, pageSize);
     }
   };
 
@@ -126,7 +132,13 @@ const TestList = ({ history }) => {
                       className="btn btn-block"
                       disabled={test.isTestBegins}
                       onClick={() =>
-                        dispatch(testBegin(test._id, index, testPapers))
+                        dispatch(
+                          testBegin(
+                            test._id,
+                            pageSize * (currentPage - 1) + index,
+                            testPapers
+                          )
+                        )
                       }
                     >
                       Start Test
@@ -164,7 +176,7 @@ const TestList = ({ history }) => {
           </tbody>
         </Table>
         <Paginations
-          itemsCount={totalCount}
+          itemsCount={count}
           pageSize={pageSize}
           currentPage={currentPage}
           onPageChange={handlePageChange}
@@ -183,7 +195,7 @@ const TestList = ({ history }) => {
             </Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <Tabs defaultActiveKey="details" id="uncontrolled-tab-example">
+            <Tabs defaultActiveKey="details">
               <Tab
                 eventKey="details"
                 title={<i className="fas fa-info-circle"> Details</i>}

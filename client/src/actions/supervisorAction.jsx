@@ -1,19 +1,23 @@
-import * as s from "../constants/supervisorConstant";
-import http from "../component/httpService";
-import { toast } from "react-toastify";
+import * as s from '../constants/supervisorConstant';
+import http from '../component/httpService';
+import { toast } from 'react-toastify';
+import Token from '../utils/Token';
 
-export const supervisorList = () => async (dispatch, getState) => {
+export const supervisorList = () => async dispatch => {
   try {
     dispatch({ type: s.SUPERVISOR_LIST_REQUEST });
-    const {
-      userLogin: { userInfo },
-    } = getState();
-    const config = {
-      headers: {
-        "x-auth-token": `${userInfo.token}`,
-      },
-    };
-    const { data } = await http.get("/api/supervisor/auth/details/all", config);
+    // const {
+    //   userLogin: { userInfo },
+    // } = getState();
+    // const config = {
+    //   headers: {
+    //     'x-auth-token': `${userInfo.token}`,
+    //   },
+    // };
+    const { data } = await http.get(
+      '/api/supervisor/auth/details/all',
+      Token()
+    );
 
     dispatch({
       type: s.SUPERVISOR_LIST_SUCCESS,
@@ -24,7 +28,7 @@ export const supervisorList = () => async (dispatch, getState) => {
       error.response && error.response.data.message
         ? error.response.data.message
         : error.message;
-    toast.error("Something Went Wrong");
+    toast.error('Something Went Wrong');
     dispatch({
       type: s.SUPERVISOR_LIST_FAIL,
       payload: ex,
@@ -34,17 +38,17 @@ export const supervisorList = () => async (dispatch, getState) => {
 export const supervisorReqList = () => async (dispatch, getState) => {
   try {
     dispatch({ type: s.SUPERVISOR_REQ_LIST_REQUEST });
-    const {
-      userLogin: { userInfo },
-    } = getState();
-    const config = {
-      headers: {
-        "x-auth-token": `${userInfo.token}`,
-      },
-    };
+    // const {
+    //   userLogin: { userInfo },
+    // } = getState();
+    // const config = {
+    //   headers: {
+    //     'x-auth-token': `${userInfo.token}`,
+    //   },
+    // };
     const { data } = await http.get(
-      "/api/supervisor/request/details/all",
-      config
+      '/api/supervisor/request/details/all',
+      Token()
     );
 
     dispatch({
@@ -56,7 +60,7 @@ export const supervisorReqList = () => async (dispatch, getState) => {
       error.response && error.response.data.message
         ? error.response.data.message
         : error.message;
-    toast.error("Something Went Wrong");
+    toast.error('Something Went Wrong');
     dispatch({
       type: s.SUPERVISOR_REQ_LIST_FAIL,
       payload: ex,
@@ -69,22 +73,22 @@ export const removeSupervisor = (supervisors, id, permission) => async (
   getState
 ) => {
   try {
-    dispatch({ type: s.SUPERVISOR_REMOVE_REQUEST });
-    const {
-      userLogin: { userInfo },
-    } = getState();
-    const config = {
-      headers: {
-        "x-auth-token": `${userInfo.token}`,
-      },
-    };
-    const { data } = await http.delete(`/api/supervisor/remove/${id}`, config);
+    // dispatch({ type: s.SUPERVISOR_REMOVE_REQUEST });
+    // const {
+    //   userLogin: { userInfo },
+    // } = getState();
+    // const config = {
+    //   headers: {
+    //     'x-auth-token': `${userInfo.token}`,
+    //   },
+    // };
+    const { data } = await http.delete(`/api/supervisor/remove/${id}`, Token());
 
-    dispatch({
-      type: s.SUPERVISOR_REMOVE_SUCCESS,
-    });
+    // dispatch({
+    //   type: s.SUPERVISOR_REMOVE_SUCCESS,
+    // });
 
-    const arr = supervisors.filter((s) => s._id !== id);
+    const arr = supervisors.filter(s => s._id !== id);
     if (permission === true) {
       dispatch({ type: s.SUPERVISOR_LIST_SUCCESS, payload: arr });
     } else {
@@ -92,15 +96,15 @@ export const removeSupervisor = (supervisors, id, permission) => async (
     }
     toast.success(data);
   } catch (error) {
-    const ex =
-      error.response && error.response.data.message
-        ? error.response.data.message
-        : error.message;
-    toast.error("Something Went Wrong");
-    dispatch({
-      type: s.SUPERVISOR_REMOVE_FAIL,
-      payload: ex,
-    });
+    // const ex =
+    //   error.response && error.response.data.message
+    //     ? error.response.data.message
+    //     : error.message;
+    toast.error('Something Went Wrong');
+    // dispatch({
+    //   type: s.SUPERVISOR_REMOVE_FAIL,
+    //   payload: ex,
+    // });
   }
 };
 
@@ -113,19 +117,18 @@ export const updateSupervisor = (supervisor, status) => async (
   try {
     dispatch({ type: s.SUPERVISOR_UPDATEPERM_REQUEST });
     const {
-      userLogin: { userInfo },
       supervisorList: { supervisors },
       supervisorReqList: { supervisors: requests },
     } = getState();
-    const config = {
-      headers: {
-        "x-auth-token": `${userInfo.token}`,
-      },
-    };
+    // const config = {
+    //   headers: {
+    //     'x-auth-token': `${userInfo.token}`,
+    //   },
+    // };
     const { data } = await http.post(
       `/api/supervisor/change/permission`,
       { id, status },
-      config
+      Token()
     );
 
     dispatch({
@@ -133,14 +136,14 @@ export const updateSupervisor = (supervisor, status) => async (
     });
 
     if (status === true) {
-      const arr = requests.filter((s) => s._id !== id);
+      const arr = requests.filter(s => s._id !== id);
       dispatch({ type: s.SUPERVISOR_REQ_LIST_SUCCESS, payload: arr });
       dispatch({
         type: s.SUPERVISOR_LIST_SUCCESS,
         payload: [...supervisors, supervisor],
       });
     } else {
-      const arr = supervisors.filter((s) => s._id !== id);
+      const arr = supervisors.filter(s => s._id !== id);
       dispatch({ type: s.SUPERVISOR_LIST_SUCCESS, payload: arr });
       dispatch({
         type: s.SUPERVISOR_REQ_LIST_SUCCESS,
@@ -153,7 +156,7 @@ export const updateSupervisor = (supervisor, status) => async (
       error.response && error.response.data.message
         ? error.response.data.message
         : error.message;
-    toast.error("Something Went Wrong");
+    toast.error('Something Went Wrong');
     dispatch({
       type: s.SUPERVISOR_UPDATEPERM_FAIL,
       payload: ex,

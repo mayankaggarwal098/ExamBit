@@ -17,7 +17,7 @@ export const resultGenerate = ({ testId, studentId }) => async dispatch => {
     if (
       error.response &&
       error.response.status >= 400 &&
-      error.response.status <= 500
+      error.response.status < 500
     ) {
       toast.error(error.response.data);
     }
