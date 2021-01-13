@@ -3,10 +3,7 @@ import { Button, Container, Form, ListGroup, Row, Col } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { useLocation } from 'react-router-dom';
 import Webcam from 'react-webcam';
-import {
-  responseSheetOfStudent,
-  addAnswerForGivenQuestion,
-} from '../actions/responseSheetAction';
+import { responseSheetOfStudent, addAnswerForGivenQuestion } from '../actions/responseSheetAction';
 import { getSinglePaper, testEnd } from '../actions/testAction';
 import Clock from '../component/Clock';
 import { uploadImage } from './../actions/snapshots';
@@ -94,9 +91,7 @@ const TestPaper = ({ history }) => {
     clearInterval(intervalId);
     await testEnd({ testId, studentId });
     localStorage.removeItem('time');
-    history.push(
-      `/student/test/result?testId=${testId}&studentId=${studentId}`
-    );
+    history.push(`/student/test/result?testId=${testId}&studentId=${studentId}`);
   };
 
   return (
@@ -164,9 +159,7 @@ const TestPaper = ({ history }) => {
               <Button
                 variant="outline-primary"
                 onClick={() => submitHandler()}
-                disabled={
-                  questionNumber - 1 === totalCount || answer.length === 0
-                }
+                disabled={questionNumber - 1 === totalCount || answer.length === 0}
               >
                 Save & Next
               </Button>
@@ -177,10 +170,7 @@ const TestPaper = ({ history }) => {
         <Col md={3.5}>
           <Row style={{ marginTop: '-100px' }}>
             {paper && (
-              <Clock
-                totalTime={paper.duration * 60}
-                testSubmitHandler={testSubmitHandler}
-              />
+              <Clock totalTime={paper.duration * 60} testSubmitHandler={testSubmitHandler} />
             )}
           </Row>
           <Row>
@@ -198,9 +188,7 @@ const TestPaper = ({ history }) => {
                 <div
                   className="box"
                   style={{
-                    backgroundColor: `${
-                      questionNumber === a ? 'green' : 'lightblue'
-                    }`,
+                    backgroundColor: `${questionNumber === a ? 'green' : 'lightblue'}`,
                   }}
                 >
                   {a}

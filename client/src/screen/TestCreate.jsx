@@ -1,13 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import {
-  Form,
-  Container,
-  Button,
-  Row,
-  Col,
-  Modal,
-  ListGroup,
-} from 'react-bootstrap';
+import { Form, Container, Button, Row, Col, Modal, ListGroup } from 'react-bootstrap';
 import { useSelector, useDispatch } from 'react-redux';
 import { getAllQuestions } from '../actions/questionAction';
 import { createTest } from '../actions/testAction';
@@ -17,7 +9,7 @@ const TestCreate = ({ history }) => {
   const [title, setTitle] = useState('');
   const [subject, setSubject] = useState('');
   const [duration, setDuration] = useState('');
-  const [selectQuestion, setSelectQuestion] = useState([]);
+  const [selectedQuestions, setSelectedQuestions] = useState([]);
   const [isSnapshots, setSnapshots] = useState(false);
   const { questions } = useSelector(state => state.questionList);
 
@@ -31,7 +23,7 @@ const TestCreate = ({ history }) => {
   }, []);
 
   const submitQuestionHandler = e => {
-    let arr = [...selectQuestion];
+    let arr = [...selectedQuestions];
 
     if (e.target.checked) {
       arr.push(e.target.value);
@@ -39,7 +31,7 @@ const TestCreate = ({ history }) => {
       arr = arr.filter(a => a !== e.target.value);
     }
 
-    setSelectQuestion(arr);
+    setSelectedQuestions(arr);
   };
 
   const submitHandler = e => {
@@ -49,7 +41,7 @@ const TestCreate = ({ history }) => {
         title,
         subject,
         duration,
-        selectQuestion,
+        selectedQuestions,
         isSnapshots,
       })
     );
@@ -94,6 +86,7 @@ const TestCreate = ({ history }) => {
               <Form.Control
                 required
                 type="number"
+                min="0"
                 placeholder="Select.."
                 value={duration}
                 aria-describedby="durationInMinute"
@@ -119,7 +112,7 @@ const TestCreate = ({ history }) => {
           <Button
             variant="primary"
             type="submit"
-            disabled={selectQuestion.length ? false : true}
+            disabled={selectedQuestions.length ? false : true}
           >
             Submit
           </Button>
@@ -177,8 +170,7 @@ const TestCreate = ({ history }) => {
                         type="checkbox"
                         value={question._id}
                         checked={
-                          selectQuestion.filter(ques => ques === question._id)
-                            .length
+                          selectedQuestions.filter(ques => ques === question._id).length
                             ? true
                             : false
                         }

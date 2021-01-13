@@ -1,19 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import {
-  Table,
-  Row,
-  Col,
-  Button,
-  Container,
-  Modal,
-  ListGroup,
-} from 'react-bootstrap';
+import { Table, Row, Col, Button, Container, Modal, ListGroup } from 'react-bootstrap';
 import { getAllQuestions } from '../actions/questionAction';
 import { deleteQuestion } from '../actions/questionAction';
-import Loader from '../component/Loader';
+import Loader from '../utils/Loader';
 import { paginate } from '../utils/paginate';
-import Paginations from '../component/Pagination';
+import Paginations from '../utils/Pagination';
 
 const QuestionList = ({ history }) => {
   const [show, setShow] = useState(false);
@@ -36,7 +28,7 @@ const QuestionList = ({ history }) => {
     if (!questions) {
       dispatch(getAllQuestions());
     }
-  }, [dispatch, questions]);
+  }, []);
 
   const createHandler = () => {
     history.push('/questions/create');
@@ -94,11 +86,7 @@ const QuestionList = ({ history }) => {
                   <td>{question.questionBody}</td>
                   <td>{question.weightage}</td>
                   <td>
-                    <Button
-                      variant="primary"
-                      className="btn-sm"
-                      onClick={() => set(index)}
-                    >
+                    <Button variant="primary" className="btn-sm" onClick={() => set(index)}>
                       <i className="fas fa-info-circle"></i>
                     </Button>
                     &nbsp;
@@ -129,9 +117,7 @@ const QuestionList = ({ history }) => {
           aria-labelledby="example-custom-modal-styling-title"
         >
           <Modal.Header closeButton style={{ textAlign: 'center' }}>
-            <Modal.Title id="example-custom-modal-styling-title">
-              Question
-            </Modal.Title>
+            <Modal.Title id="example-custom-modal-styling-title">Question</Modal.Title>
           </Modal.Header>
           <Modal.Body>
             <ListGroup variant="flush">

@@ -1,7 +1,8 @@
 import * as test from '../constants/testConstant';
-import http from '../component/httpService';
+import http from '../utils/httpService';
 import { toast } from 'react-toastify';
 import Token from '../utils/Token';
+import errorHandler from '../errorHandler';
 
 export const createTest = testPaper => async dispatch => {
   try {
@@ -21,8 +22,8 @@ export const createTest = testPaper => async dispatch => {
 
     dispatch(getTestPaperList());
     toast.success(data);
-  } catch (error) {
-    toast.error('Something Went Wrong');
+  } catch (ex) {
+    errorHandler(ex);
     // dispatch({
     //   type: test.TEST_CREATE_FAIL,
     //   payload:
@@ -35,7 +36,7 @@ export const createTest = testPaper => async dispatch => {
 
 export const getTestPaperList = () => async dispatch => {
   try {
-    // dispatch({ type: test.TEST_LIST_REQUEST });
+    dispatch({ type: test.TEST_LIST_REQUEST });
     // const {
     //   userLogin: { userInfo },
     // } = getState();
@@ -51,15 +52,15 @@ export const getTestPaperList = () => async dispatch => {
       type: test.TEST_LIST_SUCCESS,
       payload: data,
     });
-  } catch (error) {
-    toast.error('Something Went Wrong');
-    dispatch({
-      type: test.TEST_LIST_FAIL,
-      payload:
-        error.response && error.response.data.message
-          ? error.response.data.message
-          : error.message,
-    });
+  } catch (ex) {
+    errorHandler(ex);
+    // dispatch({
+    //   type: test.TEST_LIST_FAIL,
+    //   payload:
+    //     ex.response && ex.response.data.message
+    //       ? ex.response.data.message
+    //       : ex.message,
+    // });
   }
 };
 
@@ -84,10 +85,8 @@ export const testPaperDelete = (testPapers, id) => async dispatch => {
     dispatch({ type: test.TEST_LIST_SUCCESS, payload: arr });
 
     toast.success(data);
-  } catch (error) {
-    if (error.response && error.response.status === 401) {
-      toast.error(error.response.data);
-    }
+  } catch (ex) {
+    errorHandler(ex);
 
     // dispatch({
     //   type: test.TEST_DELETE_FAIL,
@@ -99,10 +98,7 @@ export const testPaperDelete = (testPapers, id) => async dispatch => {
   }
 };
 
-export const testBegin = (id, index, testPapers) => async (
-  dispatch,
-  getState
-) => {
+export const testBegin = (id, index, testPapers) => async (dispatch, getState) => {
   try {
     // dispatch({ type: test.TEST_BEGIN_REQUEST });
 
@@ -119,6 +115,7 @@ export const testBegin = (id, index, testPapers) => async (
 
     const arr = [...testPapers];
     arr[index].isTestBegins = true;
+    arr[index].isRegistrationAvailable = false;
 
     // dispatch({ type: test.TEST_BEGIN_SUCCESS });
 
@@ -128,13 +125,8 @@ export const testBegin = (id, index, testPapers) => async (
     });
 
     toast.success('test has been started');
-  } catch (error) {
-    if (
-      error.response &&
-      (error.response.status >= 400 || error.response.status <= 500)
-    ) {
-      toast.error(error.response.data);
-    }
+  } catch (ex) {
+    errorHandler(ex);
 
     // dispatch({
     //   type: test.TEST_BEGIN_FAIL,
@@ -158,13 +150,8 @@ export const testEnd = async ({ testId, studentId }) => {
     // dispatch({ type: test.TEST_END_SUCCESS });
 
     toast.success(data);
-  } catch (error) {
-    if (
-      error.response &&
-      (error.response.status >= 400 || error.response.status <= 500)
-    ) {
-      toast.error(error.response.data);
-    }
+  } catch (ex) {
+    errorHandler(ex);
 
     // dispatch({
     //   type: test.TEST_END_FAIL,
@@ -186,21 +173,16 @@ export const getSinglePaper = id => async dispatch => {
       type: test.SINGLE_TESTPAPER_SUCCESS,
       payload: data,
     });
-  } catch (error) {
-    if (
-      error.response &&
-      (error.response.status >= 400 || error.response.status <= 500)
-    ) {
-      toast.error(error.response.data);
-    }
+  } catch (ex) {
+    errorHandler(ex);
 
-    dispatch({
-      type: test.SINGLE_TESTPAPER_FAIL,
-      payload:
-        error.response && error.response.data.message
-          ? error.response.data.message
-          : error.message,
-    });
+    // dispatch({
+    //   type: test.SINGLE_TESTPAPER_FAIL,
+    //   payload:
+    //     ex.response && ex.response.data.message
+    //       ? ex.response.data.message
+    //       : ex.message,
+    // });
   }
 };
 
@@ -208,12 +190,7 @@ export const checkTestStart = async id => {
   try {
     const { data } = await http.post('/api/test/check-test-start', { id });
     return data;
-  } catch (error) {
-    if (
-      error.response &&
-      (error.response.status >= 400 || error.response.status <= 500)
-    ) {
-      toast.error(error.response.data);
-    }
+  } catch (ex) {
+    errorHandler(ex);
   }
 };

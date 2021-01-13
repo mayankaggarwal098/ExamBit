@@ -1,12 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Button } from 'react-bootstrap';
 import { useSelector } from 'react-redux';
-import './clock.css';
-
-//import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-//import { faClock } from '@fortawesome/free-regular-svg-icons';
-
-//const element = <FontAwesomeIcon icon={faClock} />;
 
 const Clock = ({ totalTime, testSubmitHandler }) => {
   const [timer, setTimer] = useState(totalTime);
@@ -54,8 +48,7 @@ const Clock = ({ totalTime, testSubmitHandler }) => {
     // }
   }, []);
   const formatTime = () => {
-    if (localStorage.getItem('time') === null)
-      localStorage.setItem('time', timer);
+    if (localStorage.getItem('time') === null) localStorage.setItem('time', timer);
     else if (timer !== totalTime) localStorage.setItem('time', timer);
 
     if (timer === 0) testSubmitHandler();

@@ -18,24 +18,20 @@ const StudentRegistered = ({ history }) => {
     link = link + d + '/';
   });
 
-  const { paper } = useSelector(state => state.singleTestPaper);
+  // const { paper } = useSelector(state => state.singleTestPaper);
 
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    if (!paper) {
-      dispatch(getSinglePaper(testId));
-    }
-
-    if (paper && paper.isRegistrationAvailable) {
-      history.push(`/student/registration/test/${testId}/emailsent`);
-    }
-  }, [paper]);
+  // useEffect(() => {
+  //   if (!paper) {
+  //     dispatch(getSinglePaper(testId));
+  //   }
+  // }, [paper]);
 
   const submitHandler = async e => {
     e.preventDefault();
-    await studentRegistrationForTest({ name, email, phoneNum, testId, link });
-    dispatch(getSinglePaper(testId));
+    await studentRegistrationForTest({ name, email, phoneNum, testId, link }, history);
+    // dispatch(getSinglePaper(testId));
   };
 
   return (

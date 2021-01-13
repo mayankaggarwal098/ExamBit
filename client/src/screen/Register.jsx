@@ -28,7 +28,7 @@ const Register = ({ history }) => {
     if (password !== confirmPassword) {
       toast.error('Password Does not match');
     } else {
-      userRegister(name, email, password, category, history);
+      userRegister({ name, email, password, category }, history);
     }
   };
 
@@ -96,8 +96,7 @@ const Register = ({ history }) => {
             </Button>
 
             <Row className="py-3 px-3">
-              ALREADY HAVE AN ACCOUNT ? &nbsp;&nbsp;{' '}
-              <Link to="/login">SIGN IN</Link>
+              ALREADY HAVE AN ACCOUNT ? &nbsp;&nbsp; <Link to="/login">SIGN IN</Link>
             </Row>
           </Form>
         </Col>

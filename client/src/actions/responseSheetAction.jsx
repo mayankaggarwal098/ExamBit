@@ -1,5 +1,6 @@
 import * as res_sheet from '../constants/responseSheetConstant';
-import http from '../component/httpService';
+import http from '../utils/httpService';
+import errorHandler from '../errorHandler';
 import { toast } from 'react-toastify';
 
 export const responseSheetOfStudent = async ({ studentId, testId }) => {
@@ -13,13 +14,8 @@ export const responseSheetOfStudent = async ({ studentId, testId }) => {
 
     // dispatch({ type: res_sheet.STUDENT_RESPONSE_SHEET_SUCCESS });
     toast.success(data);
-  } catch (error) {
-    if (
-      error.response &&
-      (error.response.status >= 400 || error.response.status <= 500)
-    ) {
-      toast.error(error.response.data);
-    }
+  } catch (ex) {
+    errorHandler(ex);
     // dispatch({
     //   type: res_sheet.STUDENT_RESPONSE_SHEET_FAIL,
     //   payload:
@@ -38,13 +34,8 @@ export const addAnswerForGivenQuestion = async body => {
 
     // dispatch({ type: res_sheet.STUDENT_ANSWER_SUCCESS });
     toast.success(data);
-  } catch (error) {
-    if (
-      error.response &&
-      (error.response.status >= 400 || error.response.status <= 500)
-    ) {
-      toast.error(error.response.data);
-    }
+  } catch (ex) {
+    errorHandler(ex);
     // dispatch({
     //   type: res_sheet.STUDENT_ANSWER_FAIL,
     //   payload:

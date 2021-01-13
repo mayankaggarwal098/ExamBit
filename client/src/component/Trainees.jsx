@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Button, Table } from 'react-bootstrap';
-import Loader from '../component/Loader';
+import Loader from '../utils/Loader';
 import { getAllRegisteredStudent } from '../actions/studentRegistrationAction';
 
 const Trainees = ({ id }) => {
@@ -23,19 +23,10 @@ const Trainees = ({ id }) => {
   return (
     <>
       {loading && <Loader />}
-      <Button
-        className="my-3"
-        onClick={() => dispatch(getAllRegisteredStudent(id))}
-      >
+      <Button className="my-3" onClick={() => dispatch(getAllRegisteredStudent(id))}>
         <i className="fas fa-sync"></i>&nbsp;&nbsp;Reload
       </Button>
-      <Table
-        hover
-        bordered
-        striped
-        responsive
-        style={{ textAlign: 'center', marginTop: '10px' }}
-      >
+      <Table hover bordered striped responsive style={{ textAlign: 'center', marginTop: '10px' }}>
         <thead>
           <tr>
             <th>SNo.</th>
@@ -55,18 +46,12 @@ const Trainees = ({ id }) => {
                 <td>{stud.email}</td>
                 <td>{stud.phoneNum}</td>
                 <td>
-                  <Button
-                    variant="outline-danger"
-                    onClick={() => resultWindowHandler(stud._id)}
-                  >
+                  <Button variant="outline-danger" onClick={() => resultWindowHandler(stud._id)}>
                     Result
                   </Button>
                 </td>
                 <td>
-                  <Button
-                    variant="outline-danger"
-                    onClick={() => snapshotHandler(stud._id)}
-                  >
+                  <Button variant="outline-danger" onClick={() => snapshotHandler(stud._id)}>
                     SnapShot
                   </Button>
                 </td>

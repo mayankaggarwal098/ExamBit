@@ -54,7 +54,6 @@ const QuestionCreate = ({ history }) => {
         <Form.Group controlId="explaination">
           <Form.Label>Explaination</Form.Label>
           <Form.Control
-            required
             placeholder="Explaination...."
             as="textarea"
             row={3}

@@ -5,7 +5,7 @@ import { registerReducer, userLoginReducer } from "./reducer/userReducer";
 import {
   // createQuestionReducer,
   // questionDeleteReducer,
-  questionListReducer,
+  questionListReducer
 } from "./reducer/questionReducer";
 import {
   // testCreateReducer,

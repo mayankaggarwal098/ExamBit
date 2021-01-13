@@ -34,7 +34,7 @@ const registerStudent = async (req, res) => {
 
 const getTestQuestions = async (req, res) => {
   const paper = await TestPaper.findById(req.body.id)
-    .select("questions")
+    .select("questions duration")
     .populate("questions")
     .populate({
       path: "questions",
@@ -45,7 +45,7 @@ const getTestQuestions = async (req, res) => {
       },
     });
 
-  if (!paper) return res.status(404).send("Testpaer not found");
+  if (!paper) return res.status(404).send("Testpaper not found");
   res.send(paper);
 };
 

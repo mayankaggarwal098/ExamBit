@@ -1,5 +1,6 @@
 //const Joi = require("joi");
 const Joi = require("joi");
+Joi.objectId = require("joi-objectid")(Joi);
 
 function validateSignup(user) {
   const schema = Joi.object({
@@ -35,7 +36,7 @@ function validateCreateTest(testPaper) {
     subject: Joi.string().max(50).required(),
     duration: Joi.number().min(0).required(),
     selectedQuestions: Joi.array().required(),
-    isSnapshots: Joi.boolean().required,
+    isSnapshots: Joi.boolean().required(),
   });
   return schema.validate(testPaper);
 }
@@ -58,7 +59,7 @@ function validateEditTest(testPaper) {
     subject: Joi.string().max(50).required(),
     duration: Joi.number().min(0).required(),
     selectedQuestions: Joi.array().required(),
-    isSnapshots: Joi.boolean().required,
+    isSnapshots: Joi.boolean().required(),
   });
   return schema.validate(testPaper);
 }

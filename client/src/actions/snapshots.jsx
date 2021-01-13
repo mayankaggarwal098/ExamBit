@@ -1,4 +1,5 @@
-import http from '../component/httpService';
+import http from '../utils/httpService';
+import errorHandler from '../errorHandler';
 import Token from '../utils/Token';
 
 export const uploadImage = async (testId, studentId, image) => {
@@ -8,9 +9,8 @@ export const uploadImage = async (testId, studentId, image) => {
       studentId,
       image,
     });
-    console.log(data);
   } catch (ex) {
-    console.log(ex);
+    errorHandler(ex);
   }
 };
 
@@ -27,6 +27,6 @@ export const getAllImages = async (testId, studentId) => {
     // console.log(data);
     return data;
   } catch (ex) {
-    console.log(ex);
+    errorHandler(ex);
   }
 };

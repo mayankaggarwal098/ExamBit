@@ -1,28 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import {
-  Table,
-  Row,
-  Col,
-  Button,
-  Container,
-  Modal,
-  Tab,
-  Tabs,
-} from 'react-bootstrap';
-import {
-  getTestPaperList,
-  testBegin,
-  testPaperDelete,
-} from '../actions/testAction';
-import Loader from '../component/Loader';
+import { Table, Row, Col, Button, Container, Modal, Tab, Tabs } from 'react-bootstrap';
+import { getTestPaperList, testBegin, testPaperDelete } from '../actions/testAction';
+import Loader from '../utils/Loader';
 import QuestionPaper from '../component/QuestionPaper';
 import QuestionDetails from '../component/QuestionDetails';
 import { openRegistrationforTest } from '../actions/studentRegistrationAction';
 import { paginate } from '../utils/paginate';
-import Paginations from '../component/Pagination';
+import Paginations from '../utils/Pagination';
 import Statistics from '../component/Statistics';
-import Trainees from '../utils/Trainees';
+import Trainees from '../component/Trainees';
 
 const TestList = ({ history }) => {
   const [show, setShow] = useState(false);
@@ -30,9 +17,7 @@ const TestList = ({ history }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(2);
 
-  const { loading, error, testPapers } = useSelector(
-    state => state.getTestPaper
-  );
+  const { loading, error, testPapers } = useSelector(state => state.getTestPaper);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -89,13 +74,7 @@ const TestList = ({ history }) => {
             </Button>
           </Col>
         </Row>
-        <Table
-          hover
-          bordered
-          striped
-          responsive
-          style={{ textAlign: 'center' }}
-        >
+        <Table hover bordered striped responsive style={{ textAlign: 'center' }}>
           <thead>
             <tr>
               <th>SUBJECT</th>
@@ -119,9 +98,7 @@ const TestList = ({ history }) => {
                       variant="outline-primary"
                       className="btn btn-block"
                       disabled={test.isTestBegins}
-                      onClick={() =>
-                        handleClick(test._id, test.isRegistrationAvailable)
-                      }
+                      onClick={() => handleClick(test._id, test.isRegistrationAvailable)}
                     >
                       {test.isRegistrationAvailable ? 'Close' : 'Open'}
                     </Button>
@@ -133,11 +110,7 @@ const TestList = ({ history }) => {
                       disabled={test.isTestBegins}
                       onClick={() =>
                         dispatch(
-                          testBegin(
-                            test._id,
-                            pageSize * (currentPage - 1) + index,
-                            testPapers
-                          )
+                          testBegin(test._id, pageSize * (currentPage - 1) + index, testPapers)
                         )
                       }
                     >
@@ -146,20 +119,13 @@ const TestList = ({ history }) => {
                   </td>
                   <td>
                     {test.isTestConducted ? (
-                      <i
-                        className="fas fa-check"
-                        style={{ color: 'green' }}
-                      ></i>
+                      <i className="fas fa-check" style={{ color: 'green' }}></i>
                     ) : (
                       <i className="fa fa-times" style={{ color: 'red' }}></i>
                     )}
                   </td>
                   <td>
-                    <Button
-                      variant="outline-primary"
-                      className="btn-sm"
-                      onClick={() => set(index)}
-                    >
+                    <Button variant="outline-primary" className="btn-sm" onClick={() => set(index)}>
                       <i className="fas fa-info-circle"></i>
                     </Button>
                     &nbsp;&nbsp;&nbsp;&nbsp;
@@ -189,41 +155,26 @@ const TestList = ({ history }) => {
           dialogClassName="my-modal"
           aria-labelledby="example-custom-modal-styling-title"
         >
-          <Modal.Header closeButton>
+          {/* <Modal.Header closeButton>
             <Modal.Title id="example-custom-modal-styling-title">
               TestID: {testPaperSheet[pos]._id}
             </Modal.Title>
-          </Modal.Header>
+          </Modal.Header> */}
           <Modal.Body>
             <Tabs defaultActiveKey="details">
-              <Tab
-                eventKey="details"
-                title={<i className="fas fa-info-circle"> Details</i>}
-              >
+              <Tab eventKey="details" title={<i className="fas fa-info-circle"> Details</i>}>
                 <QuestionDetails testPaperSheet={testPaperSheet} pos={pos} />
               </Tab>
-              <Tab
-                eventKey="questions"
-                title={<i className="fas fa-question-circle"> Question</i>}
-              >
+              <Tab eventKey="questions" title={<i className="fas fa-question-circle"> Question</i>}>
                 <QuestionPaper testPaperSheet={testPaperSheet} pos={pos} />
               </Tab>
-              <Tab
-                eventKey="trainee"
-                title={<i className="fas fa-user"> Trainees</i>}
-              >
+              <Tab eventKey="trainee" title={<i className="fas fa-user"> Trainees</i>}>
                 <Trainees id={testPaperSheet[pos]._id} />
               </Tab>
-              <Tab
-                eventKey="statistics"
-                title={<i className="fas fa-chart-bar"> Statistics</i>}
-              >
+              <Tab eventKey="statistics" title={<i className="fas fa-chart-bar"> Statistics</i>}>
                 <Statistics id={testPaperSheet[pos]._id} />
               </Tab>
-              <Tab
-                eventKey="feedback"
-                title={<i className="fas fa-comments"> FeedBack</i>}
-              >
+              <Tab eventKey="feedback" title={<i className="fas fa-comments"> FeedBack</i>}>
                 rawat
               </Tab>
             </Tabs>

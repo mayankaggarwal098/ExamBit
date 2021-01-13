@@ -1,7 +1,6 @@
 import React from 'react';
 import { Pagination } from 'react-bootstrap';
 import _ from 'lodash';
-import './clock.css';
 
 const Paginations = ({ itemsCount, pageSize, currentPage, onPageChange }) => {
   const pagesCount = Math.ceil(itemsCount / pageSize);

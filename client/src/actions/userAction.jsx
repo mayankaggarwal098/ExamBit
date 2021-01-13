@@ -1,4 +1,4 @@
-import http from '../component/httpService';
+import http from '../utils/httpService';
 import { toast } from 'react-toastify';
 import { QUESTION_LIST_RESET } from '../constants/questionConstant';
 import { TEST_LIST_RESET } from '../constants/testConstant';
@@ -11,18 +11,13 @@ import {
   USER_REGISTER_REQUEST,
   USER_REGISTER_SUCCESS,
 } from '../constants/userConstanst';
+import errorHandler from '../errorHandler';
 
-export const userRegister = async (
-  name,
-  email,
-  password,
-  category,
-  history
-) => {
+export const userRegister = async (newUser, history) => {
   try {
     // dispatch({ type: USER_REGISTER_REQUEST });
 
-    await http.post('/api/signup', { name, email, password, category });
+    await http.post('/api/signup', newUser);
 
     // dispatch({
     //   type: USER_REGISTER_SUCCESS,
@@ -30,13 +25,8 @@ export const userRegister = async (
 
     toast.success('Successfully Register');
     history.push('/login');
-  } catch (error) {
-    if (
-      error.response &&
-      (error.response.status >= 400 || error.response.status < 500)
-    ) {
-      toast.error(error.response.data);
-    }
+  } catch (ex) {
+    errorHandler(ex);
 
     // dispatch({
     //   type: USER_REGISTER_FAIL,
@@ -61,21 +51,16 @@ export const login = (email, password) => async dispatch => {
 
     toast.success('Successfully login');
     localStorage.setItem('userInfo', JSON.stringify(data));
-  } catch (error) {
-    if (
-      error.response &&
-      (error.response.status >= 400 || error.response.status <= 500)
-    ) {
-      toast.error(error.response.data);
-    }
+  } catch (ex) {
+    errorHandler(ex);
 
-    dispatch({
-      type: USER_LOGIN_FAIL,
-      payload:
-        error.response && error.response.data.message
-          ? error.response.data.message
-          : error.message,
-    });
+    // dispatch({
+    //   type: USER_LOGIN_FAIL,
+    //   payload:
+    //     ex.response && ex.response.data.message
+    //       ? ex.response.data.message
+    //       : ex.message,
+    // });
   }
 };
 

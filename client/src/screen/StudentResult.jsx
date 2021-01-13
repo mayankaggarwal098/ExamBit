@@ -5,7 +5,7 @@ import { Row, Container, Col, Table, ListGroup, Button } from 'react-bootstrap';
 import { resultGenerate } from '../actions/generateResultAction';
 import { getStudentDetail } from '../actions/studentRegistrationAction';
 import { getSinglePaper } from '../actions/testAction';
-import Loader from '../component/Loader';
+import Loader from '../utils/Loader';
 import SingleQuestion from '../component/SingleQuestion';
 
 const StudentResult = () => {
@@ -71,25 +71,15 @@ const StudentResult = () => {
               <td>
                 <strong>MARKS(out of 10) </strong>
               </td>
-              <td>
-                {result === 'Not Attempt' ? 'NIL' : result && result.score}
-              </td>
+              <td>{result === 'Not Attempt' ? 'NIL' : result && result.score}</td>
             </tr>
           </tbody>
         </Table>
       )}
       {result === 'Not Attempt' ? (
-        <div className="reasendmail-container-register">
-          Student has not given the test
-        </div>
+        <div className="reasendmail-container-register">Student has not given the test</div>
       ) : (
-        <Table
-          hover
-          bordered
-          striped
-          responsive
-          style={{ textAlign: 'center' }}
-        >
+        <Table hover bordered striped responsive style={{ textAlign: 'center' }}>
           <thead>
             <tr>
               <th>SNo.</th>
@@ -115,18 +105,11 @@ const StudentResult = () => {
                     </Button>
                   </td>
                   <td>{res.correctAnswer.map(correct => correct)}</td>
-                  <td>
-                    {res.response.length
-                      ? res.response.map(r => r)
-                      : 'Not Attempt'}
-                  </td>
+                  <td>{res.response.length ? res.response.map(r => r) : 'Not Attempt'}</td>
                   <td>{res.weightage}</td>
                   <td>
                     {res.isCorrect ? (
-                      <i
-                        className="fas fa-check"
-                        style={{ color: 'green' }}
-                      ></i>
+                      <i className="fas fa-check" style={{ color: 'green' }}></i>
                     ) : (
                       <i className="fa fa-times" style={{ color: 'red' }}></i>
                     )}
@@ -137,13 +120,7 @@ const StudentResult = () => {
         </Table>
       )}
 
-      {questions && (
-        <SingleQuestion
-          question={questions[pos]}
-          show={show}
-          setShow={setShow}
-        />
-      )}
+      {questions && <SingleQuestion question={questions[pos]} show={show} setShow={setShow} />}
     </Container>
   );
 };

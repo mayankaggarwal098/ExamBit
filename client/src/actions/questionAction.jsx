@@ -1,13 +1,11 @@
 import * as question from '../constants/questionConstant';
-import http from '../component/httpService';
+import http from '../utils/httpService';
 import { toast } from 'react-toastify';
 import { getTestPaperList } from './testAction';
 import Token from '../utils/Token';
+import errorHandler from '../errorHandler';
 
-export const addQuestion = (questions, newQuestion) => async (
-  dispatch,
-  getState
-) => {
+export const addQuestion = (questions, newQuestion) => async dispatch => {
   try {
     // dispatch({ type: question.QUESTION_CREATE_REQUEST });
 
@@ -20,11 +18,7 @@ export const addQuestion = (questions, newQuestion) => async (
     //     'x-auth-token': `${userInfo.token}`,
     //   },
     // };
-    const { data } = await http.post(
-      '/api/questions/create',
-      newQuestion,
-      Token()
-    );
+    const { data } = await http.post('/api/questions/create', newQuestion, Token());
 
     // dispatch({ type: question.QUESTION_CREATE_SUCCESS });
 
@@ -35,14 +29,8 @@ export const addQuestion = (questions, newQuestion) => async (
       payload: arr,
     });
     //dispatch(getAllQuestions());
-  } catch (error) {
-    if (
-      error.response &&
-      error.response.status >= 400 &&
-      error.response.status <= 500
-    ) {
-      toast.error(error.response.data);
-    }
+  } catch (ex) {
+    errorHandler(ex);
     // dispatch({
     //   type: question.QUESTION_CREATE_FAIL,
     //   payload:
@@ -73,14 +61,15 @@ export const getAllQuestions = () => async (dispatch, getState) => {
       type: question.QUESTION_LIST_SUCCESS,
       payload: data,
     });
-  } catch (error) {
-    dispatch({
-      type: question.QUESTION_LIST_FAIL,
-      payload:
-        error.response && error.response.data.message
-          ? error.response.data.message
-          : error.message,
-    });
+  } catch (ex) {
+    errorHandler(ex);
+    // dispatch({
+    //   type: question.QUESTION_LIST_FAIL,
+    //   payload:
+    //     ex.response && ex.response.data.message
+    //       ? ex.response.data.message
+    //       : ex.message,
+    // });
   }
 };
 
@@ -107,11 +96,8 @@ export const deleteQuestion = (questions, id) => async (dispatch, getState) => {
     dispatch(getTestPaperList());
 
     toast.success(data);
-  } catch (error) {
-    if (error.response && error.response.status === 400) {
-      toast.error(error.response.data);
-    }
-
+  } catch (ex) {
+    errorHandler(ex);
     // dispatch({
     //   type: question.QUESTION_DELETE_FAIL,
     //   payload:

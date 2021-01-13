@@ -1,6 +1,7 @@
 import React from 'react';
 import { Col, ListGroup, Row } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
+import { CopyToClipboard } from 'react-copy-to-clipboard';
+import { toast } from 'react-toastify';
 
 const QuestionDetails = ({ testPaperSheet, pos }) => {
   var link = window.location.href.split('/').splice(0, 3);
@@ -21,11 +22,19 @@ const QuestionDetails = ({ testPaperSheet, pos }) => {
       </ListGroup.Item>
       <ListGroup.Item>
         <Row>
-          <Col>
-            <strong>TEST Link </strong>
+          <Col md={5}>
+            <strong>
+              TEST Link &nbsp;{' '}
+              <CopyToClipboard
+                text={`${mainlink}student/registration/test/${testPaperSheet[pos]._id}`}
+                onCopy={() => toast.info('Link Copied to clipboard')}
+              >
+                <i className="fas fa-copy"></i>
+              </CopyToClipboard>
+            </strong>
           </Col>
-          <Col>
-            <Link>{`${mainlink}student/registration/test/${testPaperSheet[pos]._id}`}</Link>
+          <Col md={5}>
+            <a>{`${mainlink}student/registration/test/${testPaperSheet[pos]._id}`}</a>
           </Col>
         </Row>
       </ListGroup.Item>
