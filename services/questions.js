@@ -1,11 +1,16 @@
 const Question = require("../models/question");
 const Options = require("../models/options");
 const auth = require("../middleware/auth");
+const { validateQuestionCreate } = require("./validation");
 
 const createQuestion = async (req, res) => {
   // if (req.user.category !== "SUPERVISOR") {
   //   return res.status(401).send("Permission not granted");
   // }
+
+  const { error } = validateQuestionCreate(req.body);
+  if (error) return res.status(400).send(error.details[0].message);
+
   const {
     questionBody,
     options: option,
@@ -35,13 +40,13 @@ const createQuestion = async (req, res) => {
 };
 
 const deleteQuestion = async (req, res) => {
-  if (req.user.category !== "SUPERVISOR") {
-    return res.status(401).send("Permission not granted");
-  }
+  // if (req.user.category !== "SUPERVISOR") {
+  //   return res.status(401).send("Permission not granted");
+  // }
 
   const ques = await Question.findById(req.params.id);
   if (!ques) {
-    return res.status(400).send("Invalid Question Id");
+    return res.status(404).send("Question not found");
   }
 
   await Options.deleteMany({ _id: ques.options });
@@ -68,14 +73,16 @@ const getAllQuestions = async (req, res) => {
 };
 
 const getSingleQuestion = async (req, res) => {
-  if (req.user.category !== "SUPERVISOR") {
-    return res.status(401).send("Permission not granted");
-  }
-  const { _id } = req.params;
-  const ques = await Question.findById(_id).populate("createdBy options");
+  // if (req.user.category !== "SUPERVISOR") {
+  //   return res.status(401).send("Permission not granted");
+  // }
+  //const { _id } = req.params;
+  const ques = await Question.findById(req.params.id).populate(
+    "createdBy options"
+  );
 
   if (!ques) {
-    return res.status(401).send("Invalid Question id");
+    return res.status(404).send("Question not found");
   }
   res.send(ques);
 };

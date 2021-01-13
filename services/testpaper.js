@@ -2,23 +2,33 @@ const Question = require("../models/question");
 const Result = require("../models/result");
 const { Student } = require("../models/studentRegistered");
 const TestPaper = require("../models/testpaper");
+const { validateEditTest, validateCreateTest } = require("./validation");
 
 const createEditTest = async (req, res) => {
-  if (req.user.category !== "SUPERVISOR") {
-    return res.status(401).send("Permission not granted");
-  }
+  // if (req.user.category !== "SUPERVISOR") {
+  //   return res.status(401).send("Permission not granted");
+  // }
+  const { title, subject, duration, selectedQuestions, isSnapshots } = req.body;
   const _id = req.body._id || null;
-  const { title, selectQuestion } = req.body;
   if (_id != null) {
-    await TestPaper.findOneAndUpdate({ _id }, { title, questions });
+    const { error } = validateEditTest(req.body);
+    if (error) return res.status(400).send(error.details[0].message);
+
+    const paper = await TestPaper.findOneAndUpdate(
+      { _id },
+      { title, questions: selectedQuestions, subject, duration, isSnapshots }
+    );
+    if (!paper) return res.status(404).send("Testpaper not exists");
+
     res.send("Successfully Updated");
   } else {
-    const { title, subject, duration, selectQuestion, isSnapshots } = req.body;
+    const { error } = validateCreateTest(req.body);
+    if (error) return res.status(400).send(error.details[0].message);
 
     let paper = new TestPaper({
       title,
       subject,
-      questions: selectQuestion,
+      questions: selectedQuestions,
       duration,
       createdBy: req.user._id,
       isSnapshots,
@@ -39,6 +49,7 @@ const getTest = async (req, res) => {
         model: Options,
       },
     });
+  if (!paper) res.status(404).send("Testpaper does not exists");
   res.send(paper);
 };
 
@@ -58,7 +69,7 @@ const getAllTests = async (req, res) => {
 const deleteTest = async (req, res) => {
   const paper = await TestPaper.findById(req.body.id);
   if (!paper) {
-    return res.status(401).send("Invalid Test Paper Id");
+    return res.status(404).send("Test paper does not exist");
   }
   await paper.remove();
   res.send("Test Paper Deleted Successfully");
@@ -67,28 +78,31 @@ const deleteTest = async (req, res) => {
 const beginTest = async (req, res) => {
   const paper = await TestPaper.findOneAndUpdate(
     { _id: req.body.id, isTestConducted: false },
-    { isTestBegins: true, isRegistrationAvailable: false },
-    { new: true }
+    { isTestBegins: true, isRegistrationAvailable: false }
+    // { new: true }
   );
   if (!paper) {
-    return res.status(401).send("Unable to start test");
+    return res.status(404).send("Unable to start test");
   }
-  res.send(paper);
+  //res.send(paper);
+  res.send("Test Starts");
 };
 
-// const endTest = async (req, res) => {
-//   const paper = await TestPaper.findOneAndUpdate(
-//     { _id: req.body.id, isTestBegins: 1 },
-//     { isTestBegins: false, isTestConducted: true, // isResultGenerated: true
-// },
-//     { new: true }
-//   );
-//   if (!paper) {
-//     return res.status(401).send("Invalid request");
-//   }
-//   //pending excel download feature
-//   res.send(paper);
-// };
+const endTest = async (req, res) => {
+  const paper = await TestPaper.findOneAndUpdate(
+    { _id: req.body.id, isTestBegins: 1 },
+    {
+      isTestBegins: false,
+      isTestConducted: true, // isResultGenerated: true
+    }
+    // { new: true }
+  );
+  if (!paper) {
+    return res.status(404).send("Unable to end test");
+  }
+  //res.send(paper);
+  res.send("Test has ended");
+};
 
 // const maxMarks = async (req, res) => {
 //   const paper = await TestPaper.findById(req.body.testId).populate("questions");
@@ -105,25 +119,28 @@ const beginTest = async (req, res) => {
 const checkTestStart = async (req, res) => {
   const { id } = req.body;
   const paper = await TestPaper.findById(id);
-  if (!paper) res.status(404).send("Paper Not found");
+  if (!paper) res.status(404).send("Test Paper does not exist");
 
   res.send(paper.isTestBegins);
 };
 
 const changeRegistrationStatus = async (req, res) => {
   const { id, status } = req.body;
-  const paper = await TestPaper.find({
-    _id: id,
-    isTestConducted: false,
-    isTestBegins: false,
-  });
-  if (!paper) {
-    return res.status(401).send("Invalid Request");
-  }
-  await TestPaper.findByIdAndUpdate(
-    { _id: id },
+  const paper = await TestPaper.findOneAndUpdate(
+    {
+      _id: id,
+      isTestConducted: false,
+      isTestBegins: false,
+    },
     { isRegistrationAvailable: status }
   );
+  if (!paper) {
+    return res.status(404).send("Unable to change Registration status");
+  }
+  // await TestPaper.findByIdAndUpdate(
+  //   { _id: id },
+  //   { isRegistrationAvailable: status }
+  // );
   res.send("Registration status changed");
 };
 
@@ -146,4 +163,5 @@ module.exports = {
   beginTest,
   checkTestStart,
   changeRegistrationStatus,
+  endTest,
 };

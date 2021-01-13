@@ -1,11 +1,12 @@
 const ResponseSheet = require("../models/responseSheet");
 const Result = require("../models/result");
 const SubResult = require("../models/subResult");
+const TestPaper = require("../models/testpaper");
 const { generateExcel } = require("./generateExcel");
 
 const generateResult = async (req, res) => {
   const { studentId, testId } = req.body;
-  const ansMap = ["A", "B", "C", "D", "E"];
+
   const result = await Result.findOne({ testId, studentId }).populate(
     "subResult"
   );
@@ -26,8 +27,8 @@ const generateResult = async (req, res) => {
       },
     });
 
-  if (!responseSheet) return res.send("Not Attempt");
-
+  if (!responseSheet) return res.send("Student not attempt this test");
+  const ansMap = ["A", "B", "C", "D", "E"];
   const { questions, responses } = responseSheet;
   let score = 0;
   const subResults = questions.map((q, i) => {
@@ -107,6 +108,10 @@ const generateResult = async (req, res) => {
 
 const download = async (req, res) => {
   const { testId } = req.body;
+
+  const paper = await TestPaper.find({ _id: testId, isTestConducted: true });
+  if (!paper) return res.status(404).send("Testpaper not found");
+
   const workbook = await generateExcel(testId);
   const fileName = `result_${testId}.xlsx`;
 

@@ -1,10 +1,11 @@
-const { User, validateSignup, validateSignin } = require("../models/user");
+const User = require("../models/user");
 const { jwtPrivateKey, SENDGRID_API_KEY, EMAIL } = require("../config/keys");
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 //const auth = require("../middleware/auth");
 const express = require("express");
+const { validateSignin } = require("../services/validation");
 const router = express.Router();
 
 router.post("/", async (req, res) => {

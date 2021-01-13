@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const express = require("express");
 const { MONOGOURI } = require("./config/keys");
-const { createadmin } = require("./services/createAdmin");
+const createadmin = require("./services/createAdmin");
 const app = express();
 
 const login = require("./routes/login");

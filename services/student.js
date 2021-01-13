@@ -1,13 +1,14 @@
-const { Student, validateStudent } = require("../models/studentRegistered");
+const { Student } = require("../models/studentRegistered");
 const TestPaper = require("../models/testpaper");
 const Question = require("../models/question");
 const Options = require("../models/options");
 const { sendMail } = require("./sendMail");
 const ResponseSheet = require("../models/responseSheet");
 const Response = require("../models/response");
+const { validateStudent } = require("./validation");
 const registerStudent = async (req, res) => {
-  //   const { error } = validateStudent(req.body);
-  //   if (error) return res.status(400).send(error.details[0].message);
+  const { error } = validateStudent(req.body);
+  if (error) return res.status(400).send(error.details[0].message);
 
   const { name, email, phoneNum, link, testId } = req.body;
 
@@ -19,7 +20,7 @@ const registerStudent = async (req, res) => {
     return res.status(422).send("Registration for this test has been closed");
 
   let student = await Student.findOne({ email, testId });
-  if (student) return res.status(400).send("User already registered");
+  if (student) return res.status(422).send("User already registered");
 
   student = new Student({ name, email, phoneNum, testId });
   await student.save();
@@ -33,6 +34,7 @@ const registerStudent = async (req, res) => {
 
 const getTestQuestions = async (req, res) => {
   const paper = await TestPaper.findById(req.body.id)
+    .select("questions")
     .populate("questions")
     .populate({
       path: "questions",
@@ -43,13 +45,13 @@ const getTestQuestions = async (req, res) => {
       },
     });
 
-  if (!paper) return res.status(400).send("Invalid Test Id");
+  if (!paper) return res.status(404).send("Testpaer not found");
   res.send(paper);
 };
 
 const getStudent = async (req, res) => {
   const student = await Student.findById(req.body.id);
-  if (!student) return res.status(400).send("Invalid Student Id");
+  if (!student) return res.status(404).send("Student not exist");
 
   res.send(student);
 };
@@ -63,7 +65,7 @@ const responseSheet = async (req, res) => {
     isTestConducted: false,
   });
 
-  if (!student || !paper) return res.status(400).send("Invalid Request");
+  if (!student || !paper) return res.status(404).send("Invalid Request");
 
   let responseSheet = await ResponseSheet.findOne({ studentId, testId });
 
@@ -101,7 +103,7 @@ const updateResponse = async (req, res) => {
     isCompleted: false,
   });
 
-  if (!paper || !responseSheet) return res.status(400).send("Invalid Request");
+  if (!paper || !responseSheet) return res.status(404).send("Invalid Request");
   //const currentDate = new Date();
   // const pendingTime =
   //   paper.duration * 60000 - (currentDate - responseSheet.startTime);
@@ -110,7 +112,7 @@ const updateResponse = async (req, res) => {
     { questionId, studentId },
     { chosenOption }
   );
-  if (!response) return res.status(400).send("Invalid Request");
+  if (!response) return res.status(404).send("Question not exist");
 
   res.send("Response Updated");
   // } else {
@@ -125,10 +127,11 @@ const updateResponse = async (req, res) => {
 
 const endTest = async (req, res) => {
   const { testId, studentId } = req.body;
-  await ResponseSheet.findOneAndUpdate(
+  const responseSheet = await ResponseSheet.findOneAndUpdate(
     { testId, studentId },
     { isCompleted: true }
   );
+  if (!responseSheet) return res.status(404).send("Unable to submit response");
   res.send("Test Submitted Successfully");
 };
 

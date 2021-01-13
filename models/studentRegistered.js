@@ -1,5 +1,4 @@
 const mongoose = require("mongoose");
-//const Joi = require("joi");
 
 const studentSchema = new mongoose.Schema({
   name: {
@@ -22,14 +21,5 @@ const studentSchema = new mongoose.Schema({
 });
 
 const Student = mongoose.model("Student", studentSchema);
-
-// function validateStudent(student) {
-//   const schema = Joi.object({
-//     email: Joi.string().max(255).required().email(),
-//     name: Joi.string().max(255).required(),
-//     phoneNum: Joi.string().max(13).required(),
-//   });
-//   return schema.validate(student);
-// }
 
 module.exports = { Student };

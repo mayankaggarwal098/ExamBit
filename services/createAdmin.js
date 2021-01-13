@@ -1,4 +1,4 @@
-var { User } = require("../models/user");
+var User = require("../models/user");
 const bcrypt = require("bcrypt");
 
 //create admin
@@ -17,4 +17,4 @@ var createadmin = async () => {
   console.log("Admin created");
 };
 
-exports.createadmin = createadmin;
+module.exports = createadmin;
