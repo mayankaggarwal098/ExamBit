@@ -21,4 +21,13 @@
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root"></div>
   </body>
+  <script>
+    window.addEventListener('navigationhandler', function (e) {
+      window.history.pushState(null, document.title, window.location.href);
+      window.addEventListener('popstate', function (event) {
+        window.history.pushState(null, document.title, window.location.href);
+  });
+});
+  </script>
+
 </html>

@@ -14,6 +14,7 @@ const QuestionList = ({ history }) => {
   const [pageSize, setPageSize] = useState(5);
 
   const { loading, questions } = useSelector(state => state.questionList);
+  const { userInfo } = useSelector(state => state.userLogin);
   // const { loading: loadingCreate } = useSelector(state => state.createQuestion);
 
   // const { loading: loadingDelete } = useSelector(state => state.questionDelete);
@@ -25,6 +26,10 @@ const QuestionList = ({ history }) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
+    if (!userInfo) {
+      history.push('/login');
+    }
+
     if (!questions) {
       dispatch(getAllQuestions());
     }

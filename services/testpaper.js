@@ -73,32 +73,33 @@ const getAllTests = async (req, res) => {
     createdBy: req.user._id,
     isTestConducted: false,
   })
-    // .populate("questions", "questionBody")
-    // .populate({
-    //   path: "questions",
-    //   populate: {
-    //     path: "options",
-    //     //model: Options,
-    //   },
-    // })
-    .select("-questions -createdBy")
+    .populate("questions", "questionBody")
+    .populate({
+      path: "questions",
+      populate: {
+        path: "options",
+        //model: Options,
+      },
+    })
+    .select("-createdBy")
     .sort("-createdAt");
   res.send(papers);
 };
+
 const getAllTestsConducted = async (req, res) => {
   const papers = await TestPaper.find({
     createdBy: req.user._id,
     isTestConducted: true,
   })
-    // .populate("questions", "questionBody")
-    // .populate({
-    //   path: "questions",
-    //   populate: {
-    //     path: "options",
-    //     //model: Options,
-    //   },
-    // })
-    .select("-questions -createdBy")
+    .populate("questions", "questionBody")
+    .populate({
+      path: "questions",
+      populate: {
+        path: "options",
+        //model: Options,
+      },
+    })
+    .select("-createdBy")
     .sort("-createdAt");
   res.send(papers);
 };

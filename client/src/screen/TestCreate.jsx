@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { Form, Container, Button, Row, Col, Modal, ListGroup } from 'react-bootstrap';
+import DatePicker from 'react-datepicker';
 import { useSelector, useDispatch } from 'react-redux';
 import { getAllQuestions } from '../actions/questionAction';
 import { createTest } from '../actions/testAction';
+
+import 'react-datepicker/dist/react-datepicker.css';
 
 const TestCreate = ({ history }) => {
   const [show, setShow] = useState(false);
@@ -11,6 +14,7 @@ const TestCreate = ({ history }) => {
   const [duration, setDuration] = useState('');
   const [selectedQuestions, setSelectedQuestions] = useState([]);
   const [isSnapshots, setSnapshots] = useState(false);
+  const [startTime, setStartTime] = useState(new Date());
   const { questions } = useSelector(state => state.questionList);
 
   const { testPapers } = useSelector(state => state.getTestPaper);
@@ -36,6 +40,7 @@ const TestCreate = ({ history }) => {
 
   const submitHandler = e => {
     e.preventDefault();
+    console.log(startTime);
     dispatch(
       createTest({
         title,
@@ -43,9 +48,10 @@ const TestCreate = ({ history }) => {
         duration,
         selectedQuestions,
         isSnapshots,
+        startTime,
       })
     );
-    history.push('/tests');
+    history.push('/tests/notConducted');
   };
 
   return (
@@ -66,7 +72,7 @@ const TestCreate = ({ history }) => {
           </Form.Group>
 
           <Form.Row>
-            <Form.Group as={Col} controlId="subject">
+            <Form.Group as={Col} md={4} controlId="subject">
               <Form.Label>
                 <i className="fas fa-book"></i> Subject
               </Form.Label>
@@ -78,10 +84,9 @@ const TestCreate = ({ history }) => {
                 onChange={e => setSubject(e.target.value)}
               />
             </Form.Group>
-
-            <Form.Group as={Col} controlId="duration">
+            <Form.Group as={Col} md={2} controlId="duration">
               <Form.Label>
-                <i className="fas fa-clock"></i> Duration
+                <i className="fa fa-clock-o"></i> Duration
               </Form.Label>
               <Form.Control
                 required
@@ -96,21 +101,36 @@ const TestCreate = ({ history }) => {
                 Duration must be filled in term of minutes
               </Form.Text>
             </Form.Group>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <Form.Group>
+              <Form.Label>
+                <i className="fa fa-calendar"></i> Test Date
+              </Form.Label>
+              <br />
+              <DatePicker
+                selected={startTime}
+                onChange={date => setStartTime(date)}
+                timeInputLabel="Time:"
+                dateFormat="MM/dd/yyyy h:mm aa"
+                showTimeInput
+              />
+            </Form.Group>
           </Form.Row>
           <Form.Check
             type="switch"
             id="custom-switch"
-            label="Check this switch"
+            label="Enable WebCam"
             checked={isSnapshots}
             onChange={() => setSnapshots(!isSnapshots)}
           />
-          <Button variant="primary" onClick={() => setShow(true)}>
+          <br />
+          <Button variant="outline-primary" className="btn btn-block" onClick={() => setShow(true)}>
             Select Question
           </Button>
           <br />
           <br />
           <Button
-            variant="primary"
+            variant="outline-primary"
             type="submit"
             disabled={selectedQuestions.length ? false : true}
           >

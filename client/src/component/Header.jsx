@@ -1,14 +1,14 @@
-import React from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { Nav, Navbar, Container, NavDropdown } from "react-bootstrap";
-import { LinkContainer } from "react-router-bootstrap";
-import { logout } from "../actions/userAction";
-import { useEffect } from "react";
+import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { Nav, Navbar, Container, NavDropdown } from 'react-bootstrap';
+import { LinkContainer } from 'react-router-bootstrap';
+import { logout } from '../actions/userAction';
+import { useEffect } from 'react';
 
 const Header = () => {
   const dispatch = useDispatch();
 
-  const { userInfo } = useSelector((state) => state.userLogin);
+  const { userInfo } = useSelector(state => state.userLogin);
 
   const logOutHandler = () => {
     dispatch(logout());
@@ -24,7 +24,7 @@ const Header = () => {
           <Navbar.Toggle aria-controls="responsive-navbar-nav" />
           <Navbar.Collapse id="responsive-navbar-nav">
             <Nav className="mr-auto">
-              {userInfo && userInfo.category === "SUPERVISOR" && (
+              {userInfo && userInfo.category === 'SUPERVISOR' && (
                 <>
                   <LinkContainer to="/questions">
                     <Nav.Link>
@@ -32,15 +32,24 @@ const Header = () => {
                       &nbsp;All Questions
                     </Nav.Link>
                   </LinkContainer>
-                  <LinkContainer to="/tests">
-                    <Nav.Link>
-                      <i className="fas fa-list" />
-                      &nbsp;All Test
-                    </Nav.Link>
-                  </LinkContainer>
+                  <NavDropdown title="All Test" id="test">
+                    <LinkContainer to="/tests/notConducted">
+                      <NavDropdown.Item>
+                        <i className="fas fa-paper-plane"></i>
+                        &nbsp;Test Not Conducted
+                      </NavDropdown.Item>
+                    </LinkContainer>
+
+                    <LinkContainer to="/tests/conducted">
+                      <NavDropdown.Item>
+                        <i className="fas fa-paper-plane"></i>
+                        &nbsp;Test Conducted
+                      </NavDropdown.Item>
+                    </LinkContainer>
+                  </NavDropdown>
                 </>
               )}
-              {userInfo && userInfo.category === "ADMIN" && (
+              {userInfo && userInfo.category === 'ADMIN' && (
                 <>
                   <LinkContainer to="/supervisor">
                     <Nav.Link>

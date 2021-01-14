@@ -50,7 +50,7 @@ export const getTestPaperList = () => async dispatch => {
 
     dispatch({
       type: test.TEST_LIST_SUCCESS,
-      payload: data,
+      payload1: data,
     });
   } catch (ex) {
     errorHandler(ex);
@@ -64,7 +64,22 @@ export const getTestPaperList = () => async dispatch => {
   }
 };
 
-export const testPaperDelete = (testPapers, id) => async dispatch => {
+export const getConductedTestPaper = () => async dispatch => {
+  try {
+    dispatch({ type: test.TEST_LIST_REQUEST });
+
+    const { data } = await http.get('/api/test/conducted/details/all', Token());
+
+    dispatch({
+      type: test.TEST_LIST_SUCCESS,
+      payload2: data,
+    });
+  } catch (ex) {
+    errorHandler(ex);
+  }
+};
+
+export const testPaperDelete = (testPapers, id, show) => async dispatch => {
   try {
     // dispatch({ type: test.TEST_DELETE_REQUEST });
     // const {
@@ -82,7 +97,11 @@ export const testPaperDelete = (testPapers, id) => async dispatch => {
 
     const arr = testPapers.filter(t => t._id !== id);
 
-    dispatch({ type: test.TEST_LIST_SUCCESS, payload: arr });
+    if (show) {
+      dispatch({ type: test.TEST_LIST_SUCCESS, payload1: arr });
+    } else {
+      dispatch({ type: test.TEST_LIST_SUCCESS, payload2: arr });
+    }
 
     toast.success(data);
   } catch (ex) {
@@ -189,6 +208,15 @@ export const getSinglePaper = id => async dispatch => {
 export const checkTestStart = async id => {
   try {
     const { data } = await http.post('/api/test/check-test-start', { id });
+    return data;
+  } catch (ex) {
+    errorHandler(ex);
+  }
+};
+
+export const startTestTime = async testId => {
+  try {
+    const { data } = await http.post('/api/student/test/start-time', { testId });
     return data;
   } catch (ex) {
     errorHandler(ex);

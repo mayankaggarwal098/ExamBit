@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import { Button, Modal } from 'react-bootstrap';
 import { useLocation } from 'react-router-dom';
-import { checkTestStart } from '../actions/testAction';
+import { checkTestStart, startTestTime } from '../actions/testAction';
 
 const Instruction = ({ history }) => {
   const query = new URLSearchParams(useLocation().search);
@@ -10,6 +9,15 @@ const Instruction = ({ history }) => {
   const studentId = query.get('studentid');
 
   const [show, setShow] = useState();
+  const [testTime, setTestTime] = useState(null);
+
+  useEffect(() => {
+    async function getTestTime() {
+      const time = await startTestTime(testId);
+      setTestTime(time);
+    }
+    getTestTime();
+  });
 
   const submitHandler = async () => {
     const start = await checkTestStart(testId);
@@ -57,7 +65,10 @@ const Instruction = ({ history }) => {
       >
         <Modal.Body>
           <div className="d-flex justify-content-center">
-            <p>Test is not started Yet</p>
+            <p>
+              Test is not started Yet
+              {console.log(testTime)}
+            </p>
           </div>
         </Modal.Body>
       </Modal>

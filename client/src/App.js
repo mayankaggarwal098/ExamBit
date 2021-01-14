@@ -17,6 +17,8 @@ import SupervisorReqList from "./screen/SupervisorReqList";
 import StudentResult from "./screen/StudentResult";
 import EmailNotification from "./screen/EmailNotification";
 import Snapshots from "./screen/Snapshots";
+import HomeScreen from "./screen/HomeScreen";
+import TestConductedList from './screen/TestConductedList';
 const App = () => {
   return (
     <BrowserRouter>
@@ -25,10 +27,12 @@ const App = () => {
       <Switch>
         <Route path="/register" component={Register} />
         <Route path="/login" component={Login} />
+        <Route path="/" component={HomeScreen} exact/>
         <Route path="/questions" component={QuestionList} exact />
         <Route path="/questions/create" component={QuestionCreate} />
         <Route path="/tests/create" component={TestCreate} />
-        <Route path="/tests" component={TestList} exact />
+        <Route path="/tests/notConducted" component={TestList} exact />
+        <Route path="/tests/conducted" component={TestConductedList} exact />
         <Route
           path="/student/registration/test/:id/emailsent"
           component={EmailNotification}

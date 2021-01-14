@@ -1,65 +1,30 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { Table, Row, Col, Button, Container, Modal, Tab, Tabs } from 'react-bootstrap';
-import { getTestPaperList, testBegin, testPaperDelete } from '../actions/testAction';
+import { Row, Col, Button, Container } from 'react-bootstrap';
+import { getTestPaperList } from '../actions/testAction';
 import Loader from '../utils/Loader';
-import QuestionPaper from '../component/QuestionPaper';
-import QuestionDetails from '../component/QuestionDetails';
-import { openRegistrationforTest } from '../actions/studentRegistrationAction';
-import { paginate } from '../utils/paginate';
-import Paginations from '../utils/Pagination';
-import Statistics from '../component/Statistics';
-import Trainees from '../component/Trainees';
+import TestTable from '../component/TestTable';
 
 const TestList = ({ history }) => {
-  const [show, setShow] = useState(false);
-  const [pos, setIndex] = useState(0);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [pageSize, setPageSize] = useState(2);
-
-  const { loading, error, testPapers } = useSelector(state => state.getTestPaper);
+  const { loading, error, conductedTestPapers } = useSelector(state => state.getTestPaper);
+  const { userInfo } = useSelector(state => state.userLogin);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (!testPapers) {
+    if (!userInfo) {
+      history.push('/login');
+    }
+
+    if (!conductedTestPapers) {
       dispatch(getTestPaperList());
     }
   }, []);
 
   //PAGINATION
-  const count = testPapers && testPapers.length;
-
-  const handlePageChange = page => {
-    setCurrentPage(page);
-  };
-
-  let testPaperSheet = paginate(testPapers, currentPage, pageSize);
-
-  const [totalCount, setTotalCount] = useState(count);
-
-  const set = index => {
-    setShow(true);
-    setIndex(index);
-  };
-
   const createHandler = () => {
     history.push('/tests/create');
   };
 
-  const deleteHandler = id => {
-    if (window.confirm('Are you sure')) {
-      dispatch(testPaperDelete(testPapers, id));
-      setTotalCount(totalCount => totalCount - 1);
-      let currPage = Math.floor((totalCount - 1) / pageSize);
-      setCurrentPage(currPage);
-      testPaperSheet = paginate(testPapers, currentPage, pageSize);
-    }
-  };
-
-  const handleClick = (id, status) => {
-    status = status ? false : true;
-    dispatch(openRegistrationforTest({ testPapers, id, status }));
-  };
   return (
     <>
       {loading && <Loader />}
@@ -74,113 +39,8 @@ const TestList = ({ history }) => {
             </Button>
           </Col>
         </Row>
-        <Table hover bordered striped responsive style={{ textAlign: 'center' }}>
-          <thead>
-            <tr>
-              <th>SUBJECT</th>
-              <th>TITLE</th>
-              <th>DURATION(in minute)</th>
-              <th>REGISTRATION</th>
-              <th></th>
-              <th>TEST CONDUCT</th>
-              <th>&nbsp;&nbsp;ACTION&nbsp;&nbsp;</th>
-            </tr>
-          </thead>
-          <tbody>
-            {testPaperSheet &&
-              testPaperSheet.map((test, index) => (
-                <tr key={test._id} style={{ textAlign: 'center' }}>
-                  <td>{test.subject}</td>
-                  <td>{test.title}</td>
-                  <td>{test.duration}</td>
-                  <td>
-                    <Button
-                      variant="outline-primary"
-                      className="btn btn-block"
-                      disabled={test.isTestBegins}
-                      onClick={() => handleClick(test._id, test.isRegistrationAvailable)}
-                    >
-                      {test.isRegistrationAvailable ? 'Close' : 'Open'}
-                    </Button>
-                  </td>
-                  <td>
-                    <Button
-                      variant="outline-primary"
-                      className="btn btn-block"
-                      disabled={test.isTestBegins}
-                      onClick={() =>
-                        dispatch(
-                          testBegin(test._id, pageSize * (currentPage - 1) + index, testPapers)
-                        )
-                      }
-                    >
-                      Start Test
-                    </Button>
-                  </td>
-                  <td>
-                    {test.isTestConducted ? (
-                      <i className="fas fa-check" style={{ color: 'green' }}></i>
-                    ) : (
-                      <i className="fa fa-times" style={{ color: 'red' }}></i>
-                    )}
-                  </td>
-                  <td>
-                    <Button variant="outline-primary" className="btn-sm" onClick={() => set(index)}>
-                      <i className="fas fa-info-circle"></i>
-                    </Button>
-                    &nbsp;&nbsp;&nbsp;&nbsp;
-                    <Button
-                      variant="outline-primary"
-                      className="btn-sm"
-                      onClick={() => deleteHandler(test._id)}
-                    >
-                      <i className="fas fa-trash"></i>
-                    </Button>
-                  </td>
-                </tr>
-              ))}
-          </tbody>
-        </Table>
-        <Paginations
-          itemsCount={count}
-          pageSize={pageSize}
-          currentPage={currentPage}
-          onPageChange={handlePageChange}
-        />
+        <TestTable testPapers={conductedTestPapers} isShow={true} />
       </Container>
-      {testPaperSheet && testPaperSheet[pos] && (
-        <Modal
-          show={show}
-          onHide={() => setShow(false)}
-          dialogClassName="my-modal"
-          aria-labelledby="example-custom-modal-styling-title"
-        >
-          {/* <Modal.Header closeButton>
-            <Modal.Title id="example-custom-modal-styling-title">
-              TestID: {testPaperSheet[pos]._id}
-            </Modal.Title>
-          </Modal.Header> */}
-          <Modal.Body>
-            <Tabs defaultActiveKey="details">
-              <Tab eventKey="details" title={<i className="fas fa-info-circle"> Details</i>}>
-                <QuestionDetails testPaperSheet={testPaperSheet} pos={pos} />
-              </Tab>
-              <Tab eventKey="questions" title={<i className="fas fa-question-circle"> Question</i>}>
-                <QuestionPaper testPaperSheet={testPaperSheet} pos={pos} />
-              </Tab>
-              <Tab eventKey="trainee" title={<i className="fas fa-user"> Trainees</i>}>
-                <Trainees id={testPaperSheet[pos]._id} />
-              </Tab>
-              <Tab eventKey="statistics" title={<i className="fas fa-chart-bar"> Statistics</i>}>
-                <Statistics id={testPaperSheet[pos]._id} />
-              </Tab>
-              <Tab eventKey="feedback" title={<i className="fas fa-comments"> FeedBack</i>}>
-                rawat
-              </Tab>
-            </Tabs>
-          </Modal.Body>
-        </Modal>
-      )}
     </>
   );
 };

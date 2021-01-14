@@ -26,6 +26,7 @@ const StudentResult = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
+    window.dispatchEvent(new CustomEvent('navigationhandler'));
     if (!result) {
       dispatch(getSinglePaper(testId));
       dispatch(getStudentDetail(studentId));

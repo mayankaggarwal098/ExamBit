@@ -18,7 +18,11 @@ export const getTestPaperReducer = (state = {}, action) => {
     case test.TEST_LIST_REQUEST:
       return { loading: true };
     case test.TEST_LIST_SUCCESS:
-      return { loading: false, testPapers: action.payload };
+      return {
+        loading: false,
+        conductedTestPapers: action.payload1,
+        notConductedTestPapers: action.payload2,
+      };
     case test.TEST_LIST_FAIL:
       return { loading: false, error: action.payload };
     case test.TEST_LIST_RESET:

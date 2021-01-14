@@ -22,6 +22,7 @@ const TestPaper = ({ history }) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
+    window.dispatchEvent(new CustomEvent('navigationhandler'));
     if (!paper) {
       dispatch(getSinglePaper(testId));
 
