@@ -7,6 +7,12 @@ const test = require("../services/testpaper");
 
 router.post("/create", auth, supervisorAuth, test.createEditTest);
 router.get("/details/all", auth, supervisorAuth, test.getAllTests);
+router.get(
+  "/conducted/details/all",
+  auth,
+  supervisorAuth,
+  test.getAllTestsConducted
+);
 router.get("/details/:id", auth, supervisorAuth, test.getTest);
 router.post("/delete", auth, supervisorAuth, test.deleteTest);
 router.post("/begin", auth, supervisorAuth, test.beginTest);

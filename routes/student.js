@@ -8,5 +8,5 @@ router.post("/responseSheet", student.responseSheet);
 router.post("/updateResponse", student.updateResponse);
 router.post("/endTest", student.endTest);
 router.post("/details", student.getStudent);
-
+router.post("/test/start-time", student.getTestStartTime);
 module.exports = router;
