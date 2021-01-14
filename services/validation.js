@@ -37,6 +37,7 @@ function validateCreateTest(testPaper) {
     duration: Joi.number().min(0).required(),
     selectedQuestions: Joi.array().required(),
     isSnapshots: Joi.boolean().required(),
+    startTime: Joi.date().required(),
   });
   return schema.validate(testPaper);
 }
@@ -60,6 +61,7 @@ function validateEditTest(testPaper) {
     duration: Joi.number().min(0).required(),
     selectedQuestions: Joi.array().required(),
     isSnapshots: Joi.boolean().required(),
+    startTime: Joi.date().required(),
   });
   return schema.validate(testPaper);
 }

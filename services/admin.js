@@ -4,14 +4,18 @@ const getAllAuthSupervisor = async (req, res) => {
   const supervisor = await User.find({
     category: "SUPERVISOR",
     supervisorPerm: true,
-  }).select("-password -category");
+  })
+    .select("-password -category")
+    .sort("-createdAt");
   res.send(supervisor);
 };
 const getAllReqSupervisor = async (req, res) => {
   const supervisor = await User.find({
     category: "SUPERVISOR",
     supervisorPerm: false,
-  }).select("-password -category");
+  })
+    .select("-password -category")
+    .sort("-createdAt");
   res.send(supervisor);
 };
 

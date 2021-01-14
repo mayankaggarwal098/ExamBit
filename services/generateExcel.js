@@ -4,13 +4,13 @@ const TestPaper = require("../models/testpaper");
 
 const generateExcel = async (testId) => {
   const workbook = new ExcelJS.Workbook();
-  const paper = await TestPaper.findById(testId)
-    .select("questions")
-    .populate("questions");
-  let maxMarks = 0;
-  paper.questions.map((m) => {
-    maxMarks += m.weightage;
-  });
+  // const paper = await TestPaper.findById(testId)
+  //   .select("questions")
+  //   .populate("questions");
+  // let maxMarks = 0;
+  // paper.questions.map((m) => {
+  //   maxMarks += m.weightage;
+  // });
   const result = await Result.find({ testId })
     .select("score studentId testId")
     .populate("studentId testId");
@@ -34,7 +34,7 @@ const generateExcel = async (testId) => {
       Email: r.studentId.email,
       PhoneNum: r.studentId.phoneNum,
       Marks: r.score,
-      MaxMarks: maxMarks,
+      MaxMarks: r.maxMarks,
     });
   });
   //await workbook.xlsx.writeFile(`${paper.title}_${testId}.xlsx`);

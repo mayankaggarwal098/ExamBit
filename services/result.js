@@ -30,6 +30,10 @@ const generateResult = async (req, res) => {
   if (!responseSheet) return res.send("Student not attempt this test");
   const ansMap = ["A", "B", "C", "D", "E"];
   const { questions, responses } = responseSheet;
+  let maxMarks = 0;
+  questions.map((m) => {
+    maxMarks += m.weightage;
+  });
   let score = 0;
   const subResults = questions.map((q, i) => {
     const res = responses[i].chosenOption;
@@ -80,6 +84,7 @@ const generateResult = async (req, res) => {
     responseSheet,
     subResult,
     score,
+    maxMarks,
   });
   await resultdata.save();
   res.send(resultdata);

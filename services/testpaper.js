@@ -8,7 +8,14 @@ const createEditTest = async (req, res) => {
   // if (req.user.category !== "SUPERVISOR") {
   //   return res.status(401).send("Permission not granted");
   // }
-  const { title, subject, duration, selectedQuestions, isSnapshots } = req.body;
+  const {
+    title,
+    subject,
+    duration,
+    selectedQuestions,
+    isSnapshots,
+    startTime,
+  } = req.body;
   const _id = req.body._id || null;
   if (_id != null) {
     const { error } = validateEditTest(req.body);
@@ -16,9 +23,16 @@ const createEditTest = async (req, res) => {
 
     const paper = await TestPaper.findOneAndUpdate(
       { _id },
-      { title, questions: selectedQuestions, subject, duration, isSnapshots }
+      {
+        title,
+        questions: selectedQuestions,
+        subject,
+        duration,
+        isSnapshots,
+        startTime,
+      }
     );
-    if (!paper) return res.status(404).send("Testpaper not exists");
+    if (!paper) return res.status(404).send("Testpaper does not exists");
 
     res.send("Successfully Updated");
   } else {
@@ -32,6 +46,7 @@ const createEditTest = async (req, res) => {
       duration,
       createdBy: req.user._id,
       isSnapshots,
+      startTime,
     });
     paper = await paper.save();
     res.send(paper);
@@ -62,7 +77,8 @@ const getAllTests = async (req, res) => {
         path: "options",
         //model: Options,
       },
-    });
+    })
+    .sort("-createdAt -startTime");
   res.send(papers);
 };
 
@@ -146,7 +162,7 @@ const changeRegistrationStatus = async (req, res) => {
 
 const getRegisteredStudents = async (req, res) => {
   const { testId } = req.body;
-  const students = await Student.find({ testId });
+  const students = await Student.find({ testId }).sort("-createdAt");
   // if (students.length === 0) {
   //   return res.status(400).send("Invalid Test Id");
   // }

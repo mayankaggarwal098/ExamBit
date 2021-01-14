@@ -65,9 +65,10 @@ const getAllQuestions = async (req, res) => {
   //   );
   //   res.send(allques);
   // } else {
-  const allques = await Question.find({ createdBy: req.user._id }).populate(
-    "createdBy options"
-  );
+  const allques = await Question.find({ createdBy: req.user._id })
+    .populate("createdBy options")
+    .sort("-createdAt")
+    .select("-createdAt");
   res.send(allques);
   // }
 };

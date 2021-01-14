@@ -27,7 +27,8 @@ const registerStudent = async (req, res) => {
   sendMail(
     email,
     "Registered Successfully",
-    `You have been successfully registered for the test. Click on the link given to take test  "${link}student/test?testid=${testId}&studentid=${student._id}"`
+    `You have been successfully registered for the test.Test starts on ${paper.startTime} and duration is ${paper.duration}.<br>
+     Click on the link given to take test  "${link}student/test?testid=${testId}&studentid=${student._id}"`
   );
   res.send("Successfully Registered Check your mail");
 };
@@ -135,7 +136,14 @@ const endTest = async (req, res) => {
   res.send("Test Submitted Successfully");
 };
 
+const getTestStartTime = async (req, res) => {
+  const { testId } = req.body;
+  const paper = await TestPaper.findById(testId).select("startTime");
+  res.send(paper);
+};
+
 module.exports = {
+  getTestStartTime,
   updateResponse,
   endTest,
   responseSheet,
