@@ -44,13 +44,16 @@ const deleteQuestion = async (req, res) => {
   //   return res.status(401).send("Permission not granted");
   // }
 
-  const ques = await Question.findById(req.params.id);
+  const ques = await Question.findOneAndUpdate(
+    { _id: req.params.id, isDeleted: false },
+    { isDeleted: true }
+  );
   if (!ques) {
-    return res.status(404).send("Question not found");
+    return res.status(404).send("Question does not exist");
   }
 
-  await Options.deleteMany({ _id: ques.options });
-  await ques.remove();
+  // await Options.deleteMany({ _id: ques.options });
+  // await ques.remove();
   res.send("Deleted Successfully");
 };
 
@@ -65,8 +68,11 @@ const getAllQuestions = async (req, res) => {
   //   );
   //   res.send(allques);
   // } else {
-  const allques = await Question.find({ createdBy: req.user._id })
-    .populate("createdBy options")
+  const allques = await Question.find({
+    createdBy: req.user._id,
+    isDeleted: false,
+  })
+    .populate("options")
     .sort("-createdAt")
     .select("-createdAt");
   res.send(allques);
@@ -78,9 +84,10 @@ const getSingleQuestion = async (req, res) => {
   //   return res.status(401).send("Permission not granted");
   // }
   //const { _id } = req.params;
-  const ques = await Question.findById(req.params.id).populate(
-    "createdBy options"
-  );
+  const ques = await Question.find({
+    _id: req.params.id,
+    isDeleted: false,
+  }).populate("options");
 
   if (!ques) {
     return res.status(404).send("Question not found");
@@ -88,9 +95,23 @@ const getSingleQuestion = async (req, res) => {
   res.send(ques);
 };
 
+const searchQuestion = async (req, res) => {
+  const pattern = new RegExp("^" + req.body.query);
+  const questions = await Question.find({
+    subject: { $regex: pattern, $options: "i" },
+    isDeleted: false,
+    createdBy: req.user._id,
+  })
+    .populate("options")
+    .sort("-createdAt")
+    .select("-createdAt");
+  res.send(questions);
+};
+
 module.exports = {
   createQuestion,
   deleteQuestion,
   getAllQuestions,
   getSingleQuestion,
+  searchQuestion,
 };
