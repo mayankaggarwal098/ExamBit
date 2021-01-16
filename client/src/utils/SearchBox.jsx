@@ -1,0 +1,18 @@
+import React from 'react';
+import { Form, Button } from 'react-bootstrap';
+
+const SearchBox = ({ changeHandler }) => {
+  return (
+    <Form inline className="py-2">
+      <Form.Control
+        type="text"
+        onChange={changeHandler}
+        placeholder="Search Subject..."
+      ></Form.Control>
+      &nbsp;
+      <i className="fas fa-search fa-2x"></i>
+    </Form>
+  );
+};
+
+export default SearchBox;

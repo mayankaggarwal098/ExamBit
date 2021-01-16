@@ -20,7 +20,7 @@ export const createTest = testPaper => async dispatch => {
 
     // dispatch({ type: test.TEST_CREATE_SUCCESS });
 
-    dispatch(getTestPaperList());
+    dispatch(getNotConductedTestPaper());
     toast.success(data);
   } catch (ex) {
     errorHandler(ex);
@@ -34,9 +34,9 @@ export const createTest = testPaper => async dispatch => {
   }
 };
 
-export const getTestPaperList = () => async dispatch => {
+export const getNotConductedTestPaper = () => async dispatch => {
   try {
-    dispatch({ type: test.TEST_LIST_REQUEST });
+    // dispatch({ type: test.TEST_LIST_REQUEST });
     // const {
     //   userLogin: { userInfo },
     // } = getState();
@@ -67,7 +67,6 @@ export const getTestPaperList = () => async dispatch => {
 export const getConductedTestPaper = () => async dispatch => {
   try {
     dispatch({ type: test.TEST_LIST_REQUEST });
-
     const { data } = await http.get('/api/test/conducted/details/all', Token());
 
     dispatch({
@@ -140,7 +139,7 @@ export const testBegin = (id, index, testPapers) => async (dispatch, getState) =
 
     dispatch({
       type: test.TEST_LIST_SUCCESS,
-      payload: arr,
+      payload1: arr,
     });
 
     toast.success('test has been started');
@@ -179,6 +178,19 @@ export const testEnd = async ({ testId, studentId }) => {
     //       ? error.response.data.message
     //       : error.message,
     // });
+  }
+};
+
+export const testEndByTeacher = (testPapers, id, index) => async dispatch => {
+  try {
+    const { data } = await http.post('/api/test/end', { id }, Token());
+
+    const arr = testPapers.filter(t => t._id !== id);
+
+    dispatch({ type: test.TEST_LIST_SUCCESS, payload1: arr });
+    toast.success(data);
+  } catch (ex) {
+    errorHandler(ex);
   }
 };
 

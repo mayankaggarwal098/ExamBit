@@ -3,12 +3,13 @@ import { useDispatch } from 'react-redux';
 import { Table, Button, Container, Modal, Tab, Tabs } from 'react-bootstrap';
 import QuestionPaper from '../component/QuestionPaper';
 import QuestionDetails from '../component/QuestionDetails';
-import { testBegin, testPaperDelete } from '../actions/testAction';
+import { testBegin, testEndByTeacher, testPaperDelete } from '../actions/testAction';
 import { openRegistrationforTest } from '../actions/studentRegistrationAction';
 import { paginate } from '../utils/paginate';
 import Paginations from '../utils/Pagination';
 import Statistics from '../component/Statistics';
 import Trainees from '../component/Trainees';
+import Timer from '../utils/Timer';
 
 const TestTable = ({ testPapers, isShow }) => {
   const [show, setShow] = useState(false);
@@ -47,6 +48,10 @@ const TestTable = ({ testPapers, isShow }) => {
     dispatch(openRegistrationforTest({ testPapers, id, status }));
   };
 
+  const endTest = id => {
+    dispatch(testEndByTeacher(testPaperSheet, id));
+  };
+
   return (
     <>
       <Container>
@@ -60,6 +65,7 @@ const TestTable = ({ testPapers, isShow }) => {
                 <>
                   <th>REGISTRATION</th>
                   <th>START TEST</th>
+                  <th>TIME LEFT</th>
                 </>
               )}
 
@@ -99,6 +105,18 @@ const TestTable = ({ testPapers, isShow }) => {
                         >
                           Start Test
                         </Button>
+                      </td>
+                      <td>
+                        {test.isTestBegins
+                          ? !test.isTestConducted && (
+                              <Timer
+                                time={test.startTime}
+                                duration={test.duration}
+                                endTest={endTest}
+                                testId={test._id}
+                              />
+                            )
+                          : '00:00:00'}
                       </td>
                     </>
                   )}

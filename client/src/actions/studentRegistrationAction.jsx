@@ -50,7 +50,7 @@ export const openRegistrationforTest = ({ testPapers, id, status }) => async dis
 
     dispatch({
       type: test.TEST_LIST_SUCCESS,
-      payload: arr,
+      payload1: arr,
     });
     toast.success(data);
   } catch (ex) {

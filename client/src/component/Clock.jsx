@@ -1,70 +1,73 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Button } from 'react-bootstrap';
 import { useSelector } from 'react-redux';
+import Timer from '../utils/Timer';
 
-const Clock = ({ totalTime, testSubmitHandler }) => {
-  const [timer, setTimer] = useState(totalTime);
-  // const [isActive, setIsActive] = useState(false);
-  // const [isPaused, setIsPaused] = useState(false);
-  const countRef = useRef(null);
+const Clock = ({ testId, time, duration, endTest }) => {
+  // const [timer, setTimer] = useState(totalTime);
+  // // const [isActive, setIsActive] = useState(false);
+  // // const [isPaused, setIsPaused] = useState(false);
+  // const countRef = useRef(null);
 
-  const handleStart = () => {
-    // start button logic here
-    // setIsActive(true);
-    // setIsPaused(true);
-    const count = parseInt(localStorage.getItem('time')) || totalTime;
-    setTimer(count);
-    countRef.current = setInterval(() => {
-      setTimer(timer => timer - 1);
-    }, 1000);
-  };
+  // const handleStart = () => {
+  //   // start button logic here
+  //   // setIsActive(true);
+  //   // setIsPaused(true);
+  //   const count = parseInt(localStorage.getItem('time')) || totalTime;
+  //   setTimer(count);
+  //   countRef.current = setInterval(() => {
+  //     setTimer(timer => timer - 1);
+  //   }, 1000);
+  // };
 
-  //   const handlePause = () => {
-  //     // Pause button logic here
-  //     clearInterval(countRef.current);
-  //     setIsPaused(false);
-  //   };
+  // //   const handlePause = () => {
+  // //     // Pause button logic here
+  // //     clearInterval(countRef.current);
+  // //     setIsPaused(false);
+  // //   };
 
-  //   const handleResume = () => {
-  //     // Resume button logic here
-  //     setIsPaused(true);
-  //     countRef.current = setInterval(() => {
-  //       setTimer(timer => timer + 1);
-  //     }, 1000);
-  //   };
+  // //   const handleResume = () => {
+  // //     // Resume button logic here
+  // //     setIsPaused(true);
+  // //     countRef.current = setInterval(() => {
+  // //       setTimer(timer => timer + 1);
+  // //     }, 1000);
+  // //   };
 
-  //   const handleReset = () => {
-  //     // Reset button logic here
-  //     clearInterval(countRef.current);
-  //     setIsActive(false);
-  //     setIsPaused(false);
-  //     setTimer(0);
-  //   };
+  // //   const handleReset = () => {
+  // //     // Reset button logic here
+  // //     clearInterval(countRef.current);
+  // //     setIsActive(false);
+  // //     setIsPaused(false);
+  // //     setTimer(0);
+  // //   };
 
-  // const { loading } = useSelector(state => state.studentResponseSheet);
-  useEffect(() => {
-    // if (loading) {
-    handleStart();
-    // }
-  }, []);
-  const formatTime = () => {
-    if (localStorage.getItem('time') === null) localStorage.setItem('time', timer);
-    else if (timer !== totalTime) localStorage.setItem('time', timer);
+  // // const { loading } = useSelector(state => state.studentResponseSheet);
+  // useEffect(() => {
+  //   // if (loading) {
+  //   handleStart();
+  //   // }
+  // }, []);
+  // const formatTime = () => {
+  //   // if (localStorage.getItem('time') === null) localStorage.setItem('time', timer);
+  //   // else if (timer !== totalTime) localStorage.setItem('time', timer);
 
-    if (timer === 0) testSubmitHandler();
+  //   if (timer === 0) testSubmitHandler();
 
-    const getSeconds = `0${timer % 60}`.slice(-2);
-    const minutes = `${Math.floor(timer / 60)}`;
-    const getMinutes = `0${minutes % 60}`.slice(-2);
-    const getHours = `0${Math.floor(timer / 3600)}`.slice(-2);
+  //   const getSeconds = `0${timer % 60}`.slice(-2);
+  //   const minutes = `${Math.floor(timer / 60)}`;
+  //   const getMinutes = `0${minutes % 60}`.slice(-2);
+  //   const getHours = `0${Math.floor(timer / 3600)}`.slice(-2);
 
-    return `${getHours} : ${getMinutes} : ${getSeconds}`;
-  };
+  //   return `${getHours} : ${getMinutes} : ${getSeconds}`;
+  // };
   return (
     <div className="clock" style={{ marginTop: '100px', marginLeft: '80px' }}>
       <h3>Remaining Time</h3>
       <div className="stopwatch-card">
-        <p>{formatTime()}</p>
+        <p>
+          <Timer endTest={endTest} testId={testId} duration={duration} time={time} />
+        </p>
         {/* <i className="fas fa-clock fa-4x"></i> */}
         <div className="buttons">
           {/* {!isActive && !isPaused ? ( */}

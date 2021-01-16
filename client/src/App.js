@@ -7,7 +7,6 @@ import Register from "./screen/Register";
 import Login from "./screen/Login";
 import QuestionList from "./screen/QuestionList";
 import QuestionCreate from "./screen/QuestionCreate";
-import TestList from "./screen/TestList";
 import TestCreate from "./screen/TestCreate";
 import StudentRegistered from "./screen/StudentRegistered";
 import TestPaper from "./screen/TestPaper";
@@ -19,6 +18,7 @@ import EmailNotification from "./screen/EmailNotification";
 import Snapshots from "./screen/Snapshots";
 import HomeScreen from "./screen/HomeScreen";
 import TestConductedList from './screen/TestConductedList';
+import TestNotConductedList from "./screen/TestNotConductedList";
 const App = () => {
   return (
     <BrowserRouter>
@@ -31,7 +31,7 @@ const App = () => {
         <Route path="/questions" component={QuestionList} exact />
         <Route path="/questions/create" component={QuestionCreate} />
         <Route path="/tests/create" component={TestCreate} />
-        <Route path="/tests/notConducted" component={TestList} exact />
+        <Route path="/tests/notConducted" component={TestNotConductedList} exact />
         <Route path="/tests/conducted" component={TestConductedList} exact />
         <Route
           path="/student/registration/test/:id/emailsent"

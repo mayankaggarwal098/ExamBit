@@ -6,23 +6,27 @@ import { deleteQuestion } from '../actions/questionAction';
 import Loader from '../utils/Loader';
 import { paginate } from '../utils/paginate';
 import Paginations from '../utils/Pagination';
+import SearchBox from '../utils/SearchBox';
+import QuestionsTable from '../component/QuestionsTable';
 
 const QuestionList = ({ history }) => {
-  const [show, setShow] = useState(false);
-  const [pos, setIndex] = useState(0);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [pageSize, setPageSize] = useState(5);
+  // const [show, setShow] = useState(false);
+  // const [pos, setIndex] = useState(0);
+  // const [currentPage, setCurrentPage] = useState(1);
+  // const [pageSize, setPageSize] = useState(5);
 
   const { loading, questions } = useSelector(state => state.questionList);
   const { userInfo } = useSelector(state => state.userLogin);
+  const [query, setQuery] = useState('');
+
   // const { loading: loadingCreate } = useSelector(state => state.createQuestion);
 
   // const { loading: loadingDelete } = useSelector(state => state.questionDelete);
 
-  const count = questions && questions.length;
-  let ques = paginate(questions, currentPage, pageSize);
+  // const count = questions && questions.length;
+  // let ques = paginate(questions, currentPage, pageSize);
 
-  const [totalCount, setTotalCount] = useState(count);
+  // const [totalCount, setTotalCount] = useState(count);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -39,24 +43,34 @@ const QuestionList = ({ history }) => {
     history.push('/questions/create');
   };
 
-  const deleteHandler = id => {
-    if (window.confirm('Are you sure ')) {
-      dispatch(deleteQuestion(questions, id));
-      setTotalCount(totalCount => totalCount - 1);
-      let currPage = Math.floor((totalCount - 1) / pageSize);
-      setCurrentPage(currPage);
-      ques = paginate(ques, currentPage, pageSize);
-    }
+  // const deleteHandler = id => {
+  //   if (window.confirm('Are you sure ')) {
+  //     dispatch(deleteQuestion(questions, id));
+  //     setTotalCount(totalCount => totalCount - 1);
+  //     let currPage = Math.floor((totalCount - 1) / pageSize);
+  //     setCurrentPage(currPage);
+  //     ques = paginate(ques, currentPage, pageSize);
+  //   }
+  // };
+
+  // const set = index => {
+  //   setShow(true);
+  //   setIndex(index);
+  // };
+
+  // const handlePageChange = page => {
+  //   setCurrentPage(page);
+  // };
+
+  const changeHandler = e => {
+    e.preventDefault();
+    setQuery(e.target.value);
+    // let filtered = questions.filter(m => m.subject.toLowerCase().startsWith(query.toLowerCase()));
   };
 
-  const set = index => {
-    setShow(true);
-    setIndex(index);
-  };
-
-  const handlePageChange = page => {
-    setCurrentPage(page);
-  };
+  const results = !query
+    ? questions
+    : questions.filter(q => q.subject.toLowerCase().includes(query.toLocaleLowerCase()));
 
   return (
     <>
@@ -74,7 +88,11 @@ const QuestionList = ({ history }) => {
             </Button>
           </Col>
         </Row>
-        <Table hover bordered striped responsive className="table-lg">
+
+        <SearchBox changeHandler={changeHandler} />
+        <QuestionsTable questions={results} />
+
+        {/* <Table hover bordered striped responsive className="table-lg">
           <thead>
             <tr>
               <th>SUBJECT</th>
@@ -112,9 +130,9 @@ const QuestionList = ({ history }) => {
           pageSize={pageSize}
           currentPage={currentPage}
           onPageChange={handlePageChange}
-        />
+        /> */}
       </Container>
-      {ques && ques[pos] && (
+      {/* {ques && ques[pos] && (
         <Modal
           show={show}
           onHide={() => setShow(false)}
@@ -165,7 +183,7 @@ const QuestionList = ({ history }) => {
                   <>
                     {opt.isAnswer && (
                       <>
-                        <strong>Option{index + 1}</strong>: {opt.optionBody}
+                        <strong key={index}>Option{index + 1}</strong>: {opt.optionBody}
                         ,&nbsp;
                       </>
                     )}
@@ -181,7 +199,7 @@ const QuestionList = ({ history }) => {
             </ListGroup>
           </Modal.Body>
         </Modal>
-      )}
+      )} */}
     </>
   );
 };

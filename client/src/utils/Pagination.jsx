@@ -24,7 +24,7 @@ const Paginations = ({ itemsCount, pageSize, currentPage, onPageChange }) => {
       <Pagination>
         {pages.map(page => (
           <div
-            class="mypost"
+            className="mypost"
             key={page}
             className={page === currentPage ? 'page-item active' : 'page-item'}
           >

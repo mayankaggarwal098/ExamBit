@@ -6,11 +6,11 @@ import TestTable from '../component/TestTable';
 import Loader from '../utils/Loader';
 
 const TestConductedList = () => {
-  const { loading, error, notConductedTestPapers } = useSelector(state => state.getTestPaper);
+  const { loading, error, conductedTestPapers } = useSelector(state => state.getTestPaper);
 
   const dispatch = useDispatch();
   useEffect(() => {
-    if (!notConductedTestPapers) {
+    if (!conductedTestPapers) {
       dispatch(getConductedTestPaper());
     }
   }, []);
@@ -23,12 +23,16 @@ const TestConductedList = () => {
             <h3 style={{ color: 'black' }}>All Tests</h3>
           </Col>
           <Col className="text-right">
-            <Button className="my-3" variant="outline-primary">
+            <Button
+              onClick={() => dispatch(getConductedTestPaper())}
+              className="my-3"
+              variant="outline-primary"
+            >
               <i className="fas fa-sync"></i>&nbsp;&nbsp;Reload
             </Button>
           </Col>
         </Row>
-        <TestTable testPapers={notConductedTestPapers} isShow={false} />
+        <TestTable testPapers={conductedTestPapers} isShow={false} />
       </Container>
     </>
   );

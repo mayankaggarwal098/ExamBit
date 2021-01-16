@@ -35,7 +35,7 @@ const registerStudent = async (req, res) => {
 
 const getTestQuestions = async (req, res) => {
   const paper = await TestPaper.findById(req.body.id)
-    .select("questions duration isSnapshots")
+    .select("questions duration isSnapshots startTime")
     .populate("questions")
     .populate({
       path: "questions",

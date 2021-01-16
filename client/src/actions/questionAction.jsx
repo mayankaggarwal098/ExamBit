@@ -1,7 +1,7 @@
 import * as question from '../constants/questionConstant';
 import http from '../utils/httpService';
 import { toast } from 'react-toastify';
-import { getTestPaperList } from './testAction';
+import { getNotConductedTestPaper } from './testAction';
 import Token from '../utils/Token';
 import errorHandler from '../errorHandler';
 
@@ -93,7 +93,7 @@ export const deleteQuestion = (questions, id) => async (dispatch, getState) => {
     // dispatch({ type: question.QUESTION_DELETE_SUCCESS });
 
     dispatch({ type: question.QUESTION_LIST_SUCCESS, payload: arr });
-    dispatch(getTestPaperList());
+    dispatch(getNotConductedTestPaper());
 
     toast.success(data);
   } catch (ex) {
