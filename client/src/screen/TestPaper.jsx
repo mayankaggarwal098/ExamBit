@@ -1,29 +1,33 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { Button, Container, Form, ListGroup, Row, Col } from 'react-bootstrap';
-import { useDispatch, useSelector } from 'react-redux';
-import { useLocation } from 'react-router-dom';
-import Webcam from 'react-webcam';
-import { responseSheetOfStudent, addAnswerForGivenQuestion } from '../actions/responseSheetAction';
-import { getSinglePaper, testEnd } from '../actions/testAction';
-import Clock from '../component/Clock';
-import { uploadImage } from './../actions/snapshots';
+import React, { useState, useEffect, useRef } from "react";
+import { Button, Container, Form, ListGroup, Row, Col } from "react-bootstrap";
+import { useDispatch, useSelector } from "react-redux";
+import { useLocation } from "react-router-dom";
+import Webcam from "react-webcam";
+import {
+  responseSheetOfStudent,
+  addAnswerForGivenQuestion,
+} from "../actions/responseSheetAction";
+import { getSinglePaper, testEnd } from "../actions/testAction";
+import Clock from "../component/Clock";
+import { uploadImage } from "./../actions/snapshots";
 
 const TestPaper = ({ history }) => {
   const query = new URLSearchParams(useLocation().search);
-  const testId = query.get('testId');
-  const studentId = query.get('studentId');
+  const testId = query.get("testId");
+  const studentId = query.get("studentId");
   const webcamRef = useRef(null);
   let intervalId = useRef(null);
+  let testEnds = useRef(0);
   const [answer, setAnswer] = useState([]);
   const [saveAnswer, setSaveAnswer] = useState([]);
   const [questionNumber, setQuestionNumber] = useState(1);
 
-  const { paper } = useSelector(state => state.singleTestPaper);
+  const { paper } = useSelector((state) => state.singleTestPaper);
 
   const dispatch = useDispatch();
 
   useEffect(() => {
-    window.dispatchEvent(new CustomEvent('navigationhandler'));
+    window.dispatchEvent(new CustomEvent("navigationhandler"));
     if (!paper) {
       dispatch(getSinglePaper(testId));
 
@@ -33,36 +37,43 @@ const TestPaper = ({ history }) => {
 
       responseSheet();
     }
-
+  }, []);
+  useEffect(() => {
     if (paper && paper.isSnapshots === true) {
       intervalId.current = setInterval(async function () {
-        const image = webcamRef.current.getScreenshot({
-          height: 420,
-          width: 480,
-        });
-        await uploadImage(testId, studentId, image);
+        if (testEnds.current === 0) {
+          const image = webcamRef.current.getScreenshot({
+            height: 420,
+            width: 480,
+          });
+          await uploadImage(testId, studentId, image);
+        } else {
+          clearInterval(intervalId.current);
+        }
+        console.log(intervalId);
+        console.log(paper);
       }, 5000);
     }
-  }, []);
+  }, [paper]);
 
   const totalCount = paper && paper.questions.length;
   const arr = [];
   for (var i = 0; i < totalCount; i++) arr.push(i + 1);
 
-  const submitOptionHandler = e => {
+  const submitOptionHandler = (e) => {
     let arr = [...answer];
 
     if (e.target.checked) {
       arr.push(e.target.value);
     } else {
-      arr = arr.filter(a => a !== e.target.value);
+      arr = arr.filter((a) => a !== e.target.value);
     }
 
     setAnswer(arr);
 
     if (!e.target.checked) {
       let temp = [...saveAnswer];
-      temp = temp.filter(t => t !== e.target.value);
+      temp = temp.filter((t) => t !== e.target.value);
       setSaveAnswer(temp);
     }
   };
@@ -85,14 +96,17 @@ const TestPaper = ({ history }) => {
     resetAnswerHandler();
   };
 
-  const testSubmitHandler = async id => {
+  const testSubmitHandler = async (id) => {
     clearInterval(intervalId.current);
+    testEnds.current = 1;
     await testEnd({ testId, studentId });
-    history.push(`/student/test/result?testId=${testId}&studentId=${studentId}`);
+    history.push(
+      `/student/test/result?testId=${testId}&studentId=${studentId}`
+    );
   };
 
   return (
-    <div style={{ marginLeft: '100px', marginTop: '80px', padding: '20px' }}>
+    <div style={{ marginLeft: "100px", marginTop: "80px", padding: "20px" }}>
       {paper && paper.isSnapshots && (
         <Webcam
           audio={false}
@@ -109,29 +123,29 @@ const TestPaper = ({ history }) => {
               <ListGroup variant="flush">
                 <ListGroup.Item>
                   <h4>QUESTION: {questionNumber}</h4>
-                  <p style={{ fontSize: '20px' }}>
+                  <p style={{ fontSize: "20px" }}>
                     {paper.questions[questionNumber - 1].questionBody}
                   </p>
                 </ListGroup.Item>
                 <ListGroup.Item>
-                  <h4 style={{ textAlign: 'left' }}>
+                  <h4 style={{ textAlign: "left" }}>
                     <strong>Options:</strong>
                   </h4>
 
-                  {paper.questions[questionNumber - 1].options.map(opt => (
-                    <p style={{ fontSize: '20px' }} key={opt._id}>
+                  {paper.questions[questionNumber - 1].options.map((opt) => (
+                    <p style={{ fontSize: "20px" }} key={opt._id}>
                       <Form.Check
                         type="checkbox"
                         value={opt._id}
                         label={opt.optionBody}
                         checked={
-                          saveAnswer.filter(ans => ans === opt._id).length
+                          saveAnswer.filter((ans) => ans === opt._id).length
                             ? true
-                            : answer.filter(a => a === opt._id).length
+                            : answer.filter((a) => a === opt._id).length
                             ? true
                             : false
                         }
-                        onChange={e => submitOptionHandler(e)}
+                        onChange={(e) => submitOptionHandler(e)}
                       />
                     </p>
                   ))}
@@ -145,18 +159,20 @@ const TestPaper = ({ history }) => {
                 disabled={questionNumber === 1}
               >
                 Prev
-              </Button>{' '}
+              </Button>{" "}
               <Button
                 variant="outline-primary"
                 onClick={() => resetAnswerHandler()}
                 disabled={questionNumber === totalCount}
               >
                 Next
-              </Button>{' '}
+              </Button>{" "}
               <Button
                 variant="outline-primary"
                 onClick={() => submitHandler()}
-                disabled={questionNumber - 1 === totalCount || answer.length === 0}
+                disabled={
+                  questionNumber - 1 === totalCount || answer.length === 0
+                }
               >
                 Save & Next
               </Button>
@@ -165,7 +181,7 @@ const TestPaper = ({ history }) => {
         </Col>
 
         <Col md={3.5}>
-          <Row style={{ marginTop: '-100px' }}>
+          <Row style={{ marginTop: "-100px" }}>
             {paper && (
               <Clock
                 testId={paper._id}
@@ -178,19 +194,21 @@ const TestPaper = ({ history }) => {
           <Row>
             <Button
               variant="outline-primary"
-              style={{ marginLeft: '180px', marginTop: '10px' }}
+              style={{ marginLeft: "180px", marginTop: "10px" }}
               onClick={() => testSubmitHandler()}
             >
               End Test
             </Button>
           </Row>
-          <Row style={{ position: 'center' }}>
+          <Row style={{ position: "center" }}>
             {arr &&
-              arr.map(a => (
+              arr.map((a) => (
                 <div
                   className="box"
                   style={{
-                    backgroundColor: `${questionNumber === a ? 'green' : 'lightblue'}`,
+                    backgroundColor: `${
+                      questionNumber === a ? "green" : "lightblue"
+                    }`,
                   }}
                 >
                   {a}

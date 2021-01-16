@@ -95,23 +95,23 @@ const getSingleQuestion = async (req, res) => {
   res.send(ques);
 };
 
-const searchQuestion = async (req, res) => {
-  const pattern = new RegExp("^" + req.body.query);
-  const questions = await Question.find({
-    subject: { $regex: pattern, $options: "i" },
-    isDeleted: false,
-    createdBy: req.user._id,
-  })
-    .populate("options")
-    .sort("-createdAt")
-    .select("-createdAt");
-  res.send(questions);
-};
+// const searchQuestion = async (req, res) => {
+//   const pattern = new RegExp("^" + req.body.query);
+//   const questions = await Question.find({
+//     subject: { $regex: pattern, $options: "i" },
+//     isDeleted: false,
+//     createdBy: req.user._id,
+//   })
+//     .populate("options")
+//     .sort("-createdAt")
+//     .select("-createdAt");
+//   res.send(questions);
+// };
 
 module.exports = {
   createQuestion,
   deleteQuestion,
   getAllQuestions,
   getSingleQuestion,
-  searchQuestion,
+  //searchQuestion,
 };
