@@ -27,7 +27,7 @@ const registerStudent = async (req, res) => {
   sendMail(
     email,
     "Registered Successfully",
-    `You have been successfully registered for the test.Test starts on ${paper.startTime} and duration is ${paper.duration}.<br>
+    `You have been successfully registered for the test.Test starts on ${paper.startTime} and duration is ${paper.duration} minutes.<br><br>
      Click on the link given to take test  "${link}student/test?testid=${testId}&studentid=${student._id}"`
   );
   res.send("Successfully Registered Check your mail");

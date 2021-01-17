@@ -16,8 +16,9 @@ const TestPaper = ({ history }) => {
   const testId = query.get("testId");
   const studentId = query.get("studentId");
   const webcamRef = useRef(null);
+  const webcamRef2 = useRef(null);
   let intervalId = useRef(null);
-  let testEnds = useRef(0);
+  let intervalId2 = useRef(null);
   const [answer, setAnswer] = useState([]);
   const [saveAnswer, setSaveAnswer] = useState([]);
   const [questionNumber, setQuestionNumber] = useState(1);
@@ -41,17 +42,24 @@ const TestPaper = ({ history }) => {
   useEffect(() => {
     if (paper && paper.isSnapshots === true) {
       intervalId.current = setInterval(async function () {
-        if (testEnds.current === 0) {
-          const image = webcamRef.current.getScreenshot({
-            height: 420,
-            width: 480,
-          });
-          await uploadImage(testId, studentId, image);
-        } else {
-          clearInterval(intervalId.current);
-        }
+        const image = webcamRef.current.getScreenshot({
+          height: 420,
+          width: 480,
+        });
+        if (image) await uploadImage(testId, studentId, image);
+
         console.log(intervalId);
-        console.log(paper);
+        console.log(image);
+      }, 10000);
+      intervalId2.current = setInterval(function () {
+        const img = webcamRef2.current.getScreenshot();
+        if (img) {
+          clearInterval(intervalId2.current);
+        } else {
+          window.alert("Allow permission to camera");
+          //console.log("allow permission to camer");
+        }
+        console.log("checking", img);
       }, 5000);
     }
   }, [paper]);
@@ -98,7 +106,7 @@ const TestPaper = ({ history }) => {
 
   const testSubmitHandler = async (id) => {
     clearInterval(intervalId.current);
-    testEnds.current = 1;
+    clearInterval(intervalId2.current);
     await testEnd({ testId, studentId });
     history.push(
       `/student/test/result?testId=${testId}&studentId=${studentId}`
@@ -108,13 +116,22 @@ const TestPaper = ({ history }) => {
   return (
     <div style={{ marginLeft: "100px", marginTop: "80px", padding: "20px" }}>
       {paper && paper.isSnapshots && (
-        <Webcam
-          audio={false}
-          ref={webcamRef}
-          screenshotFormat="image/jpeg"
-          screenshotQuality={0.3}
-          width={0}
-        />
+        <>
+          <Webcam
+            audio={false}
+            ref={webcamRef}
+            screenshotFormat="image/jpeg"
+            screenshotQuality={0.3}
+            width={0}
+          />
+          <Webcam
+            audio={false}
+            ref={webcamRef2}
+            screenshotFormat="image/jpeg"
+            screenshotQuality={0.3}
+            width={0}
+          />
+        </>
       )}
       <Row>
         <Col md={8}>
