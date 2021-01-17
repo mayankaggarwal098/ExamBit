@@ -226,6 +226,14 @@ export const checkTestStart = async id => {
   }
 };
 
+export const getTestDetails = async id => {
+  try {
+    const { data } = await http.get(`/api/test/get/${id}`, Token());
+    return data;
+  } catch (ex) {
+    errorHandler(ex);
+  }
+};
 export const startTestTime = async testId => {
   try {
     const { data } = await http.post('/api/student/test/start-time', { testId });

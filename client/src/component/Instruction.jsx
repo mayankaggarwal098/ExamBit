@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Button, Modal } from 'react-bootstrap';
 import { useLocation } from 'react-router-dom';
 import { checkTestStart, startTestTime } from '../actions/testAction';
+import Timer from '../utils/Timer';
 
 const Instruction = ({ history }) => {
   const query = new URLSearchParams(useLocation().search);
@@ -11,15 +12,16 @@ const Instruction = ({ history }) => {
   const [show, setShow] = useState();
   const [testTime, setTestTime] = useState(null);
 
+  console.log(testTime);
   useEffect(() => {
     async function getTestTime() {
       const time = await startTestTime(testId);
-      setTestTime(time);
+      setTestTime(time.startTime);
     }
     getTestTime();
   });
 
-  const submitHandler = async () => {
+  const submitHandler = async id => {
     const start = await checkTestStart(testId);
     if (start) {
       history.push(`/student/test/start?testId=${testId}&studentId=${studentId}`);
@@ -64,13 +66,15 @@ const Instruction = ({ history }) => {
         variant="success"
       >
         <Modal.Body>
-          <div className="d-flex justify-content-center">
-            <p>
-              Test is not started Yet
-              {console.log(testTime)}
-            </p>
+          <div className="justify-content-centre">
+            <p style={{ marginLeft: '80px' }}>Test is not started Yet</p>
+            <div className="d-flex">
+              <p style={{ marginLeft: '80px' }}>Time Left To Start</p>&nbsp;&nbsp;&nbsp;&nbsp;
+              <Timer time={testTime} duration={-1} testId={testId} endTest={submitHandler} />
+            </div>
           </div>
         </Modal.Body>
+        <Modal.Body></Modal.Body>
       </Modal>
     </div>
   );

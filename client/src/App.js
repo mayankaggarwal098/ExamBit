@@ -31,6 +31,7 @@ const App = () => {
         <Route path="/questions" component={QuestionList} exact />
         <Route path="/questions/create" component={QuestionCreate} />
         <Route path="/tests/create" component={TestCreate} />
+        <Route path="/tests/edit/:testId" component={TestCreate} />
         <Route path="/tests/notConducted" component={TestNotConductedList} exact />
         <Route path="/tests/conducted" component={TestConductedList} exact />
         <Route

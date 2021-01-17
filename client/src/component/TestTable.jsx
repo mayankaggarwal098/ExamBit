@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 import { Table, Button, Container, Modal, Tab, Tabs } from 'react-bootstrap';
 import QuestionPaper from '../component/QuestionPaper';
 import QuestionDetails from '../component/QuestionDetails';
@@ -52,6 +53,11 @@ const TestTable = ({ testPapers, isShow }) => {
     dispatch(testEndByTeacher(testPaperSheet, id));
   };
 
+  const history = useHistory();
+  const editTestPaper = index => {
+    history.push(`/tests/edit/${testPaperSheet[index]._id}`);
+  };
+
   return (
     <>
       <Container>
@@ -61,15 +67,15 @@ const TestTable = ({ testPapers, isShow }) => {
               <th>SUBJECT</th>
               <th>TITLE</th>
               <th>DURATION(IN MIN)</th>
+              <th>CREATED AT</th>
               {isShow && (
                 <>
                   <th>REGISTRATION</th>
                   <th>START TEST</th>
                   <th>TIME LEFT</th>
+                  <th>Edit Test</th>
                 </>
               )}
-
-              <th>CREATED AT</th>
               <th>&nbsp;&nbsp;ACTION&nbsp;&nbsp;</th>
             </tr>
           </thead>
@@ -80,6 +86,14 @@ const TestTable = ({ testPapers, isShow }) => {
                   <td>{test.subject}</td>
                   <td>{test.title}</td>
                   <td>{test.duration}</td>
+                  <td>
+                    {/* {test.isTestConducted ? (
+                      <i className="fas fa-check" style={{ color: 'green' }}></i>
+                    ) : (
+                      <i className="fa fa-times" style={{ color: 'red' }}></i>
+                    )} */}
+                    {test.createdAt.substring(0, 10)}
+                  </td>
                   {!test.isTestConducted && (
                     <>
                       <td>
@@ -116,19 +130,20 @@ const TestTable = ({ testPapers, isShow }) => {
                                 testId={test._id}
                               />
                             )
-                          : '00:00:00'}
+                          : 'Not Started'}
+                      </td>
+                      <td>
+                        <Button
+                          variant="outline-primary"
+                          className="btn-sm"
+                          onClick={() => editTestPaper(index)}
+                        >
+                          <i className="fas fa-edit"></i>
+                        </Button>
                       </td>
                     </>
                   )}
 
-                  <td>
-                    {/* {test.isTestConducted ? (
-                      <i className="fas fa-check" style={{ color: 'green' }}></i>
-                    ) : (
-                      <i className="fa fa-times" style={{ color: 'red' }}></i>
-                    )} */}
-                    {test.createdAt.substring(0, 10)}
-                  </td>
                   <td>
                     <Button variant="outline-primary" className="btn-sm" onClick={() => set(index)}>
                       <i className="fas fa-info-circle"></i>
@@ -175,8 +190,8 @@ const TestTable = ({ testPapers, isShow }) => {
               </Tab>
               <Tab
                 eventKey="trainee"
-                disabled={!testPaperSheet[pos].isTestConducted}
-                title={<i className="fas fa-user"> Trainees</i>}
+                // disabled={!testPaperSheet[pos].isTestConducted}
+                title={<i className="fas fa-user"> Students</i>}
               >
                 <Trainees id={testPaperSheet[pos]._id} />
               </Tab>

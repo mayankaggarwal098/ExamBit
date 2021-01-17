@@ -69,7 +69,7 @@ const getDetailedTest = async (req, res) => {
 };
 
 const getTest = async (req, res) => {
-  const paper = await TestPaper.findById(req, params.id).select(
+  const paper = await TestPaper.findById(req.params.id).select(
     "title subject duration isSnapshots questions startTime"
   );
   if (!paper) res.status(404).send("Testpaper does not exists");

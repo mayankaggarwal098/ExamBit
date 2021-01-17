@@ -6,10 +6,18 @@ const Timer = ({ testId, time, duration, endTest }) => {
   let t2 = new Date();
   t2 = moment(t2);
 
-  let sec = t2.diff(t1, 'second');
-  //   let min = t2.diff(t1, 'minute');
-  //   let hours = t2.diff(t1, 'hour');
-  let d = duration * 60 - sec;
+  let sec;
+  let d;
+  if (duration <= 0) {
+    sec = t1.diff(t2, 'second');
+    d = sec;
+  } else {
+    sec = t2.diff(t1, 'second');
+    //   let min = t2.diff(t1, 'minute');
+    //   let hours = t2.diff(t1, 'hour');
+    d = duration * 60 - sec;
+  }
+
   const [timer, setTimer] = useState(d);
   const countRef = useRef(null);
 

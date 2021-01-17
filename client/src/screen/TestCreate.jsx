@@ -1,29 +1,51 @@
 import React, { useState, useEffect } from 'react';
 import { Form, Container, Button, Row, Col, Modal, ListGroup } from 'react-bootstrap';
+import { useParams } from 'react-router-dom';
 import DatePicker from 'react-datepicker';
 import { useSelector, useDispatch } from 'react-redux';
 import { getAllQuestions } from '../actions/questionAction';
-import { createTest } from '../actions/testAction';
+import { createTest, getTestDetails } from '../actions/testAction';
 
 import 'react-datepicker/dist/react-datepicker.css';
+import SearchBox from '../utils/SearchBox';
 
 const TestCreate = ({ history }) => {
   const [show, setShow] = useState(false);
+  const [_id, setID] = useState(null);
   const [title, setTitle] = useState('');
   const [subject, setSubject] = useState('');
   const [duration, setDuration] = useState('');
   const [selectedQuestions, setSelectedQuestions] = useState([]);
   const [isSnapshots, setSnapshots] = useState(false);
   const [startTime, setStartTime] = useState(new Date());
+  const [query, setQuery] = useState('');
+
   const { questions } = useSelector(state => state.questionList);
 
   const { testPapers } = useSelector(state => state.getTestPaper);
   const dispatch = useDispatch();
 
+  const { testId } = useParams();
   useEffect(() => {
     if (!questions) {
       dispatch(getAllQuestions());
     }
+
+    async function getPaper() {
+      const paper = await getTestDetails(testId);
+      console.log(paper.startTime);
+      if (paper) {
+        setTitle(paper.title);
+        setSubject(paper.subject);
+        setDuration(paper.duration);
+        setSelectedQuestions(paper.questions);
+        setSnapshots(paper.isSnapshots);
+        // setStartTime(paper.startTime);
+        setID(paper._id);
+      }
+    }
+
+    getPaper();
   }, []);
 
   const submitQuestionHandler = e => {
@@ -38,11 +60,28 @@ const TestCreate = ({ history }) => {
     setSelectedQuestions(arr);
   };
 
+  const modalOpenHandler = () => {
+    setShow(true);
+    setQuery('');
+  };
+
+  const changeHandler = e => {
+    e.preventDefault();
+    setQuery(e.target.value);
+    // let filtered = questions.filter(m => m.subject.toLowerCase().startsWith(query.toLowerCase()));
+  };
+
+  const ques = !query
+    ? questions
+    : questions.filter(q => q.subject.toLowerCase().includes(query.toLocaleLowerCase()));
+
   const submitHandler = e => {
     e.preventDefault();
-    console.log(startTime);
+    startTime.setMilliseconds(0);
+    startTime.setSeconds(0);
     dispatch(
       createTest({
+        _id,
         title,
         subject,
         duration,
@@ -124,7 +163,11 @@ const TestCreate = ({ history }) => {
             onChange={() => setSnapshots(!isSnapshots)}
           />
           <br />
-          <Button variant="outline-primary" className="btn btn-block" onClick={() => setShow(true)}>
+          <Button
+            variant="outline-primary"
+            className="btn btn-block"
+            onClick={() => modalOpenHandler()}
+          >
             Select Question
           </Button>
           <br />
@@ -144,10 +187,13 @@ const TestCreate = ({ history }) => {
         dialogClassName="my-modal"
         aria-labelledby="example-custom-modal-styling-title"
       >
+        <Modal.Header closeButton>
+          <SearchBox changeHandler={changeHandler} />
+        </Modal.Header>
         <Modal.Body>
           <ListGroup>
-            {questions &&
-              questions.map((question, index) => (
+            {ques &&
+              ques.map((question, index) => (
                 <ListGroup.Item key={index}>
                   <Row>
                     <Col md={0.6}>
