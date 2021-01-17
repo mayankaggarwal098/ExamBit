@@ -53,7 +53,7 @@ const createEditTest = async (req, res) => {
   }
 };
 
-const getTest = async (req, res) => {
+const getDetailedTest = async (req, res) => {
   const paper = await TestPaper.findById(req.params.id)
     .populate("createdBy", "name")
     .populate("questions", "questionBody")
@@ -64,6 +64,14 @@ const getTest = async (req, res) => {
         model: Options,
       },
     });
+  if (!paper) res.status(404).send("Testpaper does not exists");
+  res.send(paper);
+};
+
+const getTest = async (req, res) => {
+  const paper = await TestPaper.findById(req, params.id).select(
+    "title subject duration isSnapshots questions startTime"
+  );
   if (!paper) res.status(404).send("Testpaper does not exists");
   res.send(paper);
 };
@@ -195,7 +203,7 @@ const getRegisteredStudents = async (req, res) => {
 module.exports = {
   getRegisteredStudents,
   createEditTest,
-  getTest,
+  getDetailedTest,
   getAllTests,
   deleteTest,
   beginTest,
@@ -203,4 +211,5 @@ module.exports = {
   changeRegistrationStatus,
   endTest,
   getAllTestsConducted,
+  getTest,
 };

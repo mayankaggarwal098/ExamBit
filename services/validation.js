@@ -34,7 +34,7 @@ function validateCreateTest(testPaper) {
   const schema = Joi.object({
     title: Joi.string().max(50).required(),
     subject: Joi.string().max(50).required(),
-    duration: Joi.number().min(0).required(),
+    duration: Joi.number().min(1).required(),
     selectedQuestions: Joi.array().required(),
     isSnapshots: Joi.boolean().required(),
     startTime: Joi.date().required(),

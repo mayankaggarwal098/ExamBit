@@ -13,7 +13,8 @@ router.get(
   supervisorAuth,
   test.getAllTestsConducted
 );
-router.get("/details/:id", auth, supervisorAuth, test.getTest);
+router.get("/details/:id", auth, supervisorAuth, test.getDetailedTest);
+router.get("/get/:id", auth, supervisorAuth, test.getTest);
 router.post("/delete", auth, supervisorAuth, test.deleteTest);
 router.post("/begin", auth, supervisorAuth, test.beginTest);
 router.post("/end", auth, supervisorAuth, test.endTest);
