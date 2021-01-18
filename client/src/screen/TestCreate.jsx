@@ -33,7 +33,6 @@ const TestCreate = ({ history }) => {
 
     async function getPaper() {
       const paper = await getTestDetails(testId);
-      console.log(paper.startTime);
       if (paper) {
         setTitle(paper.title);
         setSubject(paper.subject);
@@ -45,7 +44,7 @@ const TestCreate = ({ history }) => {
       }
     }
 
-    getPaper();
+    if (testId) getPaper();
   }, []);
 
   const submitQuestionHandler = e => {

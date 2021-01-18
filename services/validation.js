@@ -32,6 +32,7 @@ function validateStudent(student) {
 
 function validateCreateTest(testPaper) {
   const schema = Joi.object({
+    _id: Joi.any(),
     title: Joi.string().max(50).required(),
     subject: Joi.string().max(50).required(),
     duration: Joi.number().min(1).required(),
