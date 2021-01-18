@@ -52,7 +52,7 @@ const TestCreate = ({ history }) => {
       }
     }
 
-    getPaper();
+    if (testId) getPaper();
   }, []);
 
   const submitQuestionHandler = (e) => {

@@ -136,6 +136,7 @@ const TestTable = ({ testPapers, isShow }) => {
                         <Button
                           variant="outline-primary"
                           className="btn-sm"
+                          disabled={test.isTestBegins}
                           onClick={() => editTestPaper(index)}
                         >
                           <i className="fas fa-edit"></i>
