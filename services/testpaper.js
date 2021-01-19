@@ -14,6 +14,7 @@ const createEditTest = async (req, res) => {
     duration,
     selectedQuestions,
     isSnapshots,
+    isAudioRec,
     startTime,
   } = req.body;
   const _id = req.body._id || null;
@@ -30,6 +31,7 @@ const createEditTest = async (req, res) => {
         duration,
         isSnapshots,
         startTime,
+        isAudioRec,
       }
     );
     if (!paper) return res.status(404).send("Testpaper does not exists");
@@ -47,6 +49,7 @@ const createEditTest = async (req, res) => {
       createdBy: req.user._id,
       isSnapshots,
       startTime,
+      isAudioRec,
     });
     paper = await paper.save();
     res.send(paper);
@@ -70,7 +73,7 @@ const getDetailedTest = async (req, res) => {
 
 const getTest = async (req, res) => {
   const paper = await TestPaper.findById(req.params.id).select(
-    "title subject duration isSnapshots questions startTime"
+    "title subject duration isSnapshots questions startTime isAudioRec"
   );
   if (!paper) res.status(404).send("Testpaper does not exists");
   res.send(paper);

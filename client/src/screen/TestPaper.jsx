@@ -3,6 +3,7 @@ import { Button, Container, Form, ListGroup, Row, Col } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
 import Webcam from "react-webcam";
+import { ReactMic } from "react-mic";
 import {
   responseSheetOfStudent,
   addAnswerForGivenQuestion,
@@ -10,6 +11,7 @@ import {
 import { getSinglePaper, testEnd } from "../actions/testAction";
 import Clock from "../component/Clock";
 import { uploadImage } from "./../actions/snapshots";
+import { uploadAudio } from "./../actions/audio";
 
 const TestPaper = ({ history }) => {
   const query = new URLSearchParams(useLocation().search);
@@ -19,11 +21,12 @@ const TestPaper = ({ history }) => {
   const webcamRef2 = useRef(null);
   let intervalId = useRef(null);
   let intervalId2 = useRef(null);
+  let audioIntervalId = useRef(null);
   const [answer, setAnswer] = useState([]);
   const [saveAnswer, setSaveAnswer] = useState([]);
   const [questionNumber, setQuestionNumber] = useState(1);
-
-  const { paper } = useSelector((state) => state.singleTestPaper);
+  const [record, setRecord] = useState(false);
+  let { paper } = useSelector((state) => state.singleTestPaper);
 
   const dispatch = useDispatch();
 
@@ -62,6 +65,15 @@ const TestPaper = ({ history }) => {
         console.log("checking", img);
       }, 5000);
     }
+    if (paper && paper.isAudioRec === true) {
+      checkMicPerm();
+      audioIntervalId.current = setInterval(function () {
+        setRecord(true);
+        setTimeout(function () {
+          setRecord(false);
+        }, 10000);
+      }, 30000);
+    }
   }, [paper]);
 
   const totalCount = paper && paper.questions.length;
@@ -86,6 +98,17 @@ const TestPaper = ({ history }) => {
     }
   };
 
+  const checkMicPerm = () => {
+    navigator.mediaDevices
+      .getUserMedia({ audio: true })
+      .then((stream) => {
+        console.log("success!");
+      })
+      .catch((e) => {
+        window.alert("Allow Mic permission");
+      });
+  };
+
   const resetAnswerHandler = () => {
     setAnswer([]);
     if (questionNumber !== totalCount) setQuestionNumber(questionNumber + 1);
@@ -107,14 +130,30 @@ const TestPaper = ({ history }) => {
   const testSubmitHandler = async (id) => {
     clearInterval(intervalId.current);
     clearInterval(intervalId2.current);
+    clearInterval(audioIntervalId.current);
     await testEnd({ testId, studentId });
     history.push(
       `/student/test/result?testId=${testId}&studentId=${studentId}`
     );
   };
 
+  function onStop(recordedBlob) {
+    console.log("recordedBlob is: ", recordedBlob);
+    const reader = new FileReader();
+    reader.readAsDataURL(recordedBlob.blob);
+    reader.onloadend = async function () {
+      const base64String = reader.result;
+      //      console.log("Base64 String - ", base64String);
+      await uploadAudio(testId, studentId, base64String);
+    };
+  }
   return (
     <div style={{ marginLeft: "100px", marginTop: "80px", padding: "20px" }}>
+      {paper && paper.isAudioRec && (
+        <div style={{ display: "none" }}>
+          <ReactMic record={record} onStop={onStop} />
+        </div>
+      )}
       {paper && paper.isSnapshots && (
         <>
           <Webcam

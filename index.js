@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const express = require("express");
+const bodyParser = require("body-parser");
 const { MONOGOURI } = require("./config/keys");
 const createadmin = require("./services/createAdmin");
 const app = express();
@@ -12,12 +13,21 @@ const student = require("./routes/student");
 const result = require("./routes/result");
 const admin = require("./routes/admin");
 const snapshots = require("./routes/snapshots");
+const audio = require("./routes/audio");
 const PORT = process.env.PORT || 3900;
 mongoose
   .connect(MONOGOURI, { useUnifiedTopology: true, useNewUrlParser: true })
   .then(() => console.log("Connected to MongoDB..."))
   .catch((err) => console.error("Could not connect to MongoDB..."));
 
+app.use(bodyParser.json({ limit: "50mb" }));
+app.use(
+  bodyParser.urlencoded({
+    limit: "50mb",
+    extended: true,
+    parameterLimit: 50000,
+  })
+);
 app.use(express.json());
 app.use("/api/login", login);
 app.use("/api/signup", signup);
@@ -27,6 +37,7 @@ app.use("/api/student", student);
 app.use("/api/result", result);
 app.use("/api/supervisor", admin);
 app.use("/api/snapshot", snapshots);
+app.use("/api/audio", audio);
 //createadmin();
 
 if (process.env.NODE_ENV == "production") {

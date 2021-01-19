@@ -50,6 +50,10 @@ const testSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    isAudioRec: {
+      type: Boolean,
+      default: false,
+    },
     startTime: {
       type: Date,
       required: true,

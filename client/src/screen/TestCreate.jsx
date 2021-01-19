@@ -25,6 +25,7 @@ const TestCreate = ({ history }) => {
   const [duration, setDuration] = useState("");
   const [selectedQuestions, setSelectedQuestions] = useState([]);
   const [isSnapshots, setSnapshots] = useState(false);
+  const [isAudioRec, setAudioRec] = useState(false);
   const [startTime, setStartTime] = useState(new Date());
   const [query, setQuery] = useState("");
 
@@ -47,6 +48,7 @@ const TestCreate = ({ history }) => {
         setDuration(paper.duration);
         setSelectedQuestions(paper.questions);
         setSnapshots(paper.isSnapshots);
+        setAudioRec(paper.isAudioRec);
         // setStartTime(paper.startTime);
         setID(paper._id);
       }
@@ -96,6 +98,7 @@ const TestCreate = ({ history }) => {
         duration,
         selectedQuestions,
         isSnapshots,
+        isAudioRec,
         startTime,
       })
     );
@@ -170,6 +173,13 @@ const TestCreate = ({ history }) => {
             label="Enable WebCam"
             checked={isSnapshots}
             onChange={() => setSnapshots(!isSnapshots)}
+          />
+          <Form.Check
+            type="switch"
+            id="audio-switch"
+            label="Enable Audio Recording"
+            checked={isAudioRec}
+            onChange={() => setAudioRec(!isAudioRec)}
           />
           <br />
           <Button
