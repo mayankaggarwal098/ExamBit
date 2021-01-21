@@ -27,7 +27,7 @@ const TestPaper = ({ history }) => {
   const [questionNumber, setQuestionNumber] = useState(1);
   const [record, setRecord] = useState(false);
   let { paper } = useSelector((state) => state.singleTestPaper);
-
+  const [flag, setFlag] = useState(true);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -44,6 +44,7 @@ const TestPaper = ({ history }) => {
   }, []);
   useEffect(() => {
     if (paper && paper.isSnapshots === true) {
+      checkCameraPerm();
       intervalId.current = setInterval(async function () {
         const image = webcamRef.current.getScreenshot({
           height: 420,
@@ -54,16 +55,16 @@ const TestPaper = ({ history }) => {
         console.log(intervalId);
         console.log(image);
       }, 10000);
-      intervalId2.current = setInterval(function () {
-        const img = webcamRef2.current.getScreenshot();
-        if (img) {
-          clearInterval(intervalId2.current);
-        } else {
-          window.alert("Allow permission to camera");
-          //console.log("allow permission to camer");
-        }
-        console.log("checking", img);
-      }, 5000);
+      // intervalId2.current = setInterval(function () {
+      //   const img = webcamRef2.current.getScreenshot();
+      //   if (img) {
+      //     clearInterval(intervalId2.current);
+      //   } else {
+      //     window.alert("Allow permission to camera");
+      //     //console.log("allow permission to camer");
+      //   }
+      //   console.log("checking", img);
+      // }, 5000);
     }
     if (paper && paper.isAudioRec === true) {
       checkMicPerm();
@@ -105,7 +106,26 @@ const TestPaper = ({ history }) => {
         console.log("success!");
       })
       .catch((e) => {
+        setFlag(false);
         window.alert("Allow Mic permission");
+        setTimeout(function () {
+          checkMicPerm();
+        }, 5000);
+      });
+  };
+
+  const checkCameraPerm = () => {
+    navigator.mediaDevices
+      .getUserMedia({ video: true })
+      .then((stream) => {
+        console.log("success!");
+      })
+      .catch((e) => {
+        setFlag(false);
+        window.alert("Allow Camera permission");
+        setTimeout(function () {
+          checkCameraPerm();
+        }, 5000);
       });
   };
 
@@ -129,7 +149,7 @@ const TestPaper = ({ history }) => {
 
   const testSubmitHandler = async (id) => {
     clearInterval(intervalId.current);
-    clearInterval(intervalId2.current);
+    //clearInterval(intervalId2.current);
     clearInterval(audioIntervalId.current);
     await testEnd({ testId, studentId });
     history.push(
@@ -163,18 +183,18 @@ const TestPaper = ({ history }) => {
             screenshotQuality={0.3}
             width={0}
           />
-          <Webcam
+          {/* <Webcam
             audio={false}
             ref={webcamRef2}
             screenshotFormat="image/jpeg"
             screenshotQuality={0.3}
             width={0}
-          />
+          /> */}
         </>
       )}
       <Row>
         <Col md={8}>
-          {paper && (
+          {flag && paper && (
             <Container>
               <ListGroup variant="flush">
                 <ListGroup.Item>
