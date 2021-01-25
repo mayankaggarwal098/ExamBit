@@ -28,9 +28,10 @@ const TestCreate = ({ history }) => {
   const [isAudioRec, setAudioRec] = useState(false);
   const [startTime, setStartTime] = useState(new Date());
   const [query, setQuery] = useState("");
-
+  const [category, setCategory] = useState("");
+  const [selectedFile, setSelectedFile] = useState("upload pdf");
   const { questions } = useSelector((state) => state.questionList);
-
+  const [pdf, setPdf] = useState(null);
   const { testPapers } = useSelector((state) => state.getTestPaper);
   const dispatch = useDispatch();
 
@@ -85,7 +86,15 @@ const TestCreate = ({ history }) => {
     : questions.filter((q) =>
         q.subject.toLowerCase().includes(query.toLocaleLowerCase())
       );
-
+  const fileInputHandler = (event) => {
+    setSelectedFile(event.target.files[0].name);
+    const file = event.target.files[0];
+    let reader = new FileReader();
+    reader.onload = function () {
+      setPdf(reader.result);
+    };
+    reader.readAsDataURL(file);
+  };
   const submitHandler = (e) => {
     e.preventDefault();
     startTime.setMilliseconds(0);
@@ -94,6 +103,8 @@ const TestCreate = ({ history }) => {
       createTest({
         _id,
         title,
+        category,
+        pdf,
         subject,
         duration,
         selectedQuestions,
@@ -104,11 +115,23 @@ const TestCreate = ({ history }) => {
     );
     history.push("/tests/notConducted");
   };
-
+  // console.log(category);
   return (
     <>
       <Container className="my-5">
         <Form onSubmit={submitHandler}>
+          <Form.Group controlId="category">
+            <Form.Label>Category</Form.Label>
+            <Form.Control
+              as="select"
+              value={category}
+              onChange={(e) => setCategory(e.target.value)}
+            >
+              <option value="">Select Category</option>
+              <option value="MCQ">MCQ</option>
+              <option value="PDF">Subjective(pdf)</option>
+            </Form.Control>
+          </Form.Group>
           <Form.Group controlId="title">
             <Form.Label>
               <i className="fas fa-pen"></i> Title
@@ -182,19 +205,32 @@ const TestCreate = ({ history }) => {
             onChange={() => setAudioRec(!isAudioRec)}
           />
           <br />
-          <Button
-            variant="outline-primary"
-            className="btn btn-block"
-            onClick={() => modalOpenHandler()}
-          >
-            Select Question
-          </Button>
+          {category === "MCQ" ? (
+            <Button
+              variant="outline-primary"
+              className="btn btn-block"
+              onClick={() => modalOpenHandler()}
+            >
+              Select Question
+            </Button>
+          ) : (
+            <Form>
+              <Form.File
+                id="custom-file"
+                label={selectedFile}
+                onChange={(e) => fileInputHandler(e)}
+                custom
+              />
+            </Form>
+          )}
           <br />
           <br />
           <Button
             variant="outline-primary"
             type="submit"
-            disabled={selectedQuestions.length ? false : true}
+            disabled={
+              selectedQuestions.length || category === "PDF" ? false : true
+            }
           >
             Submit
           </Button>

@@ -8,10 +8,16 @@ import {
   responseSheetOfStudent,
   addAnswerForGivenQuestion,
 } from "../actions/responseSheetAction";
-import { getSinglePaper, testEnd } from "../actions/testAction";
+import {
+  getSinglePaper,
+  getTestCategory,
+  testEnd,
+} from "../actions/testAction";
 import Clock from "../component/Clock";
 import { uploadImage } from "./../actions/snapshots";
 import { uploadAudio } from "./../actions/audio";
+import { getTestPdf } from "./../actions/testAction";
+import { download } from "downloadjs";
 
 const TestPaper = ({ history }) => {
   const query = new URLSearchParams(useLocation().search);
@@ -28,18 +34,26 @@ const TestPaper = ({ history }) => {
   const [record, setRecord] = useState(false);
   let { paper } = useSelector((state) => state.singleTestPaper);
   const [flag, setFlag] = useState(true);
+  const [testCategory, setTestCategory] = useState("");
+  const pdf = useRef(null);
   const dispatch = useDispatch();
 
   useEffect(() => {
     window.dispatchEvent(new CustomEvent("navigationhandler"));
     if (!paper) {
-      dispatch(getSinglePaper(testId));
+      const category = getTestCategory(testId);
+      setTestCategory(category);
+      if (category === "PDF") {
+        pdf.current = getTestPdf(testId);
+      } else {
+        dispatch(getSinglePaper(testId));
 
-      async function responseSheet() {
-        await responseSheetOfStudent({ testId, studentId });
+        async function responseSheet() {
+          await responseSheetOfStudent({ testId, studentId });
+        }
+
+        responseSheet();
       }
-
-      responseSheet();
     }
   }, []);
   useEffect(() => {
@@ -157,6 +171,10 @@ const TestPaper = ({ history }) => {
     );
   };
 
+  const downloadPdf = () => {
+    download(pdf, "paper.pdf", "application/pdf");
+  };
+
   function onStop(recordedBlob) {
     console.log("recordedBlob is: ", recordedBlob);
     const reader = new FileReader();
@@ -194,66 +212,86 @@ const TestPaper = ({ history }) => {
       )}
       <Row>
         <Col md={8}>
-          {flag && paper && (
-            <Container>
-              <ListGroup variant="flush">
-                <ListGroup.Item>
-                  <h4>QUESTION: {questionNumber}</h4>
-                  <p style={{ fontSize: "20px" }}>
-                    {paper.questions[questionNumber - 1].questionBody}
-                  </p>
-                </ListGroup.Item>
-                <ListGroup.Item>
-                  <h4 style={{ textAlign: "left" }}>
-                    <strong>Options:</strong>
-                  </h4>
+          {flag &&
+            paper &&
+            testCategory ===
+              "MCQ"(
+                <Container>
+                  <ListGroup variant="flush">
+                    <ListGroup.Item>
+                      <h4>QUESTION: {questionNumber}</h4>
+                      <p style={{ fontSize: "20px" }}>
+                        {paper.questions[questionNumber - 1].questionBody}
+                      </p>
+                    </ListGroup.Item>
+                    <ListGroup.Item>
+                      <h4 style={{ textAlign: "left" }}>
+                        <strong>Options:</strong>
+                      </h4>
 
-                  {paper.questions[questionNumber - 1].options.map((opt) => (
-                    <p style={{ fontSize: "20px" }} key={opt._id}>
-                      <Form.Check
-                        type="checkbox"
-                        value={opt._id}
-                        label={opt.optionBody}
-                        checked={
-                          saveAnswer.filter((ans) => ans === opt._id).length
-                            ? true
-                            : answer.filter((a) => a === opt._id).length
-                            ? true
-                            : false
-                        }
-                        onChange={(e) => submitOptionHandler(e)}
-                      />
-                    </p>
-                  ))}
-                </ListGroup.Item>
-                <br />
-                <br />
-              </ListGroup>
-              <Button
-                variant="outline-primary"
-                onClick={() => setQuestionNumber(questionNumber - 1)}
-                disabled={questionNumber === 1}
-              >
-                Prev
-              </Button>{" "}
-              <Button
-                variant="outline-primary"
-                onClick={() => resetAnswerHandler()}
-                disabled={questionNumber === totalCount}
-              >
-                Next
-              </Button>{" "}
-              <Button
-                variant="outline-primary"
-                onClick={() => submitHandler()}
-                disabled={
-                  questionNumber - 1 === totalCount || answer.length === 0
-                }
-              >
-                Save & Next
-              </Button>
-            </Container>
-          )}
+                      {paper.questions[questionNumber - 1].options.map(
+                        (opt) => (
+                          <p style={{ fontSize: "20px" }} key={opt._id}>
+                            <Form.Check
+                              type="checkbox"
+                              value={opt._id}
+                              label={opt.optionBody}
+                              checked={
+                                saveAnswer.filter((ans) => ans === opt._id)
+                                  .length
+                                  ? true
+                                  : answer.filter((a) => a === opt._id).length
+                                  ? true
+                                  : false
+                              }
+                              onChange={(e) => submitOptionHandler(e)}
+                            />
+                          </p>
+                        )
+                      )}
+                    </ListGroup.Item>
+                    <br />
+                    <br />
+                  </ListGroup>
+                  <Button
+                    variant="outline-primary"
+                    onClick={() => setQuestionNumber(questionNumber - 1)}
+                    disabled={questionNumber === 1}
+                  >
+                    Prev
+                  </Button>{" "}
+                  <Button
+                    variant="outline-primary"
+                    onClick={() => resetAnswerHandler()}
+                    disabled={questionNumber === totalCount}
+                  >
+                    Next
+                  </Button>{" "}
+                  <Button
+                    variant="outline-primary"
+                    onClick={() => submitHandler()}
+                    disabled={
+                      questionNumber - 1 === totalCount || answer.length === 0
+                    }
+                  >
+                    Save & Next
+                  </Button>
+                </Container>
+              )}
+          {flag &&
+            paper &&
+            testCategory ===
+              "PDF"(
+                <Container>
+                  Test Paper:{" "}
+                  <Button
+                    variant="outline-primary"
+                    onClick={() => downloadPdf()}
+                  >
+                    Download
+                  </Button>
+                </Container>
+              )}
         </Col>
 
         <Col md={3.5}>

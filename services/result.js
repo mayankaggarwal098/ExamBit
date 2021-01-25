@@ -127,6 +127,7 @@ const download = async (req, res) => {
   res.setHeader("Content-Disposition", "attachment; filename=" + fileName);
 
   await workbook.xlsx.writeFile(fileName);
+  //console.log(workbook);
   res.end();
 };
 

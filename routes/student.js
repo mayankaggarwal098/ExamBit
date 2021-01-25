@@ -9,4 +9,6 @@ router.post("/updateResponse", student.updateResponse);
 router.post("/endTest", student.endTest);
 router.post("/details", student.getStudent);
 router.post("/test/start-time", student.getTestStartTime);
+router.post("/test/category", student.getTestCategory);
+router.post("/test/pdf", student.getPdf);
 module.exports = router;

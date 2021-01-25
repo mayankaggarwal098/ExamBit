@@ -6,13 +6,21 @@ const testSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    category: {
+      type: String,
+      required: true,
+    },
     questions: [
       {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Question",
-        required: true,
+        // required: true,
       },
     ],
+    pdf: {
+      type: String,
+      //required: true,
+    },
     subject: {
       type: String,
       required: true,

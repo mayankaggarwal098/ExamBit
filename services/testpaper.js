@@ -10,6 +10,8 @@ const createEditTest = async (req, res) => {
   // }
   const {
     title,
+    category,
+    pdf,
     subject,
     duration,
     selectedQuestions,
@@ -26,6 +28,8 @@ const createEditTest = async (req, res) => {
       { _id },
       {
         title,
+        category,
+        pdf,
         questions: selectedQuestions,
         subject,
         duration,
@@ -43,6 +47,8 @@ const createEditTest = async (req, res) => {
 
     let paper = new TestPaper({
       title,
+      category,
+      pdf,
       subject,
       questions: selectedQuestions,
       duration,
@@ -66,7 +72,8 @@ const getDetailedTest = async (req, res) => {
         path: "options",
         model: Options,
       },
-    });
+    })
+    .select("-pdf");
   if (!paper) res.status(404).send("Testpaper does not exists");
   res.send(paper);
 };
@@ -92,7 +99,7 @@ const getAllTests = async (req, res) => {
         //model: Options,
       },
     })
-    .select("-createdBy")
+    .select("-createdBy -pdf")
     .sort("-createdAt");
   res.send(papers);
 };
@@ -110,7 +117,7 @@ const getAllTestsConducted = async (req, res) => {
         //model: Options,
       },
     })
-    .select("-createdBy")
+    .select("-createdBy -pdf")
     .sort("-createdAt");
   res.send(papers);
 };

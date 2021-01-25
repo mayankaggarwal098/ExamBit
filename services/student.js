@@ -139,10 +139,31 @@ const endTest = async (req, res) => {
 const getTestStartTime = async (req, res) => {
   const { testId } = req.body;
   const paper = await TestPaper.findById(testId).select("startTime");
+  if (!paper) return res.status(404).send("Testpaper not found");
+
+  res.send(paper);
+};
+
+const getTestCategory = async (req, res) => {
+  const { testId } = req.body;
+  const paper = await TestPaper.findById(testId).select("category");
+  if (!paper) return res.status(404).send("Testpaper not found");
+
+  res.send(paper);
+};
+
+const getPdf = async (req, res) => {
+  const paper = await TestPaper.findById(req.body.id).select(
+    "pdf duration isSnapshots startTime isAudioRec"
+  );
+
+  if (!paper) return res.status(404).send("Testpaper not found");
   res.send(paper);
 };
 
 module.exports = {
+  getPdf,
+  getTestCategory,
   getTestStartTime,
   updateResponse,
   endTest,

@@ -36,7 +36,9 @@ function validateCreateTest(testPaper) {
     title: Joi.string().max(50).required(),
     subject: Joi.string().max(50).required(),
     duration: Joi.number().min(1).required(),
-    selectedQuestions: Joi.array().required(),
+    selectedQuestions: Joi.any(),
+    pdf: Joi.any(),
+    category: Joi.string().required(),
     isSnapshots: Joi.boolean().required(),
     isAudioRec: Joi.boolean().required(),
     startTime: Joi.date().required(),
@@ -46,7 +48,7 @@ function validateCreateTest(testPaper) {
 
 function validateQuestionCreate(question) {
   const schema = Joi.object({
-    questionBody: Joi.string().max(200).required(),
+    questionBody: Joi.string().required(),
     options: Joi.array().required(),
     subject: Joi.string().max(50).required(),
     weightage: Joi.number().min(0),
@@ -61,7 +63,9 @@ function validateEditTest(testPaper) {
     title: Joi.string().max(50).required(),
     subject: Joi.string().max(50).required(),
     duration: Joi.number().min(0).required(),
-    selectedQuestions: Joi.array().required(),
+    selectedQuestions: Joi.any(),
+    pdf: Joi.any(),
+    category: Joi.string().required(),
     isSnapshots: Joi.boolean().required(),
     isAudioRec: Joi.boolean().required(),
     startTime: Joi.date().required(),
