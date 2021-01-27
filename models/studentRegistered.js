@@ -10,8 +10,8 @@ const studentSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    password:{
-      type:String,
+    phoneNum: {
+      type: Number,
       required: true
     },
     group:[{
