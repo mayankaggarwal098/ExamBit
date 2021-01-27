@@ -27,7 +27,11 @@ export const studentRegistrationForTest = async (students, history) => {
   }
 };
 
-export const openRegistrationforTest = ({ testPapers, id, status }) => async dispatch => {
+export const openRegistrationforTest = ({
+  testPapers,
+  id,
+  status,
+}) => async dispatch => {
   // const STATUS = status ? 'OPEN' : 'CLOSE';
   try {
     // const {
@@ -39,7 +43,11 @@ export const openRegistrationforTest = ({ testPapers, id, status }) => async dis
     //   },
     // };
 
-    const { data } = http.post('/api/test/change-registration-status', { id, status }, Token());
+    const { data } = http.post(
+      '/api/test/change-registration-status',
+      { id, status },
+      Token()
+    );
 
     // dispatch({ type: `REGISTRATION_${STATUS}_SUCCESS` });
 
@@ -102,7 +110,11 @@ export const downloadResult = async testId => {
     //   },
     // };
 
-    const { data } = await http.post('/api/result/download', { testId }, Token());
+    const { data } = await http.post(
+      '/api/result/download',
+      { testId },
+      Token()
+    );
 
     // dispatch({ type: student_reg.RESULT_DOWNLOAD_SUCCESS });
   } catch (ex) {
@@ -131,7 +143,11 @@ export const getAllRegisteredStudent = testId => async dispatch => {
     //   },
     // };
 
-    const { data } = await http.post('/api/test/students/all', { testId }, Token());
+    const { data } = await http.post(
+      '/api/test/students/all',
+      { testId },
+      Token()
+    );
 
     dispatch({
       type: student_reg.GET_ALL_REGISTERED_SUCCESS,
@@ -147,5 +163,14 @@ export const getAllRegisteredStudent = testId => async dispatch => {
     //       ? ex.response.data.message
     //       : ex.message,
     // });
+  }
+};
+
+export const studentsPrevPaper = async () => {
+  try {
+    const { data } = await http.get('/api/student/previous-paper', Token());
+    return data;
+  } catch (ex) {
+    errorHandler(ex);
   }
 };

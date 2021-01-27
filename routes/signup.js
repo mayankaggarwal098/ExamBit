@@ -13,7 +13,7 @@ router.post("/", async (req, res) => {
   if (error) return res.status(400).send(error.details[0].message);
 
   const { name, email, password, category } = req.body;
-
+  
   let user = await User.findOne({ email: req.body.email });
   if (user) return res.status(409).send("User already registered");
 

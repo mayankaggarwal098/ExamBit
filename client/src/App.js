@@ -19,7 +19,12 @@ import Snapshots from "./screen/Snapshots";
 import HomeScreen from "./screen/HomeScreen";
 import TestConductedList from "./screen/TestConductedList";
 import TestNotConductedList from "./screen/TestNotConductedList";
+import GivenTest from './screen/GivenTest'
 import Audio from "./screen/Audio";
+import Profile from "./screen/Profile";
+import SupervisorGroup from "./screen/SupervisorGroup";
+import StudentGroup from './screen/StudentGroup';
+
 const App = () => {
   return (
     <BrowserRouter>
@@ -28,8 +33,14 @@ const App = () => {
       <Switch>
         <Route path="/register" component={Register} />
         <Route path="/login" component={Login} />
+        <Route path="/profile" component={Profile}  />
         <Route path="/" component={HomeScreen} exact />
         <Route path="/questions" component={QuestionList} exact />
+        <Route path="/pastTest" component={GivenTest}  />
+        <Route path="/supervisor/groups" component={SupervisorGroup}  />
+        <Route path="/student/groups" component={StudentGroup}  />
+        
+        
         <Route path="/questions/create" component={QuestionCreate} />
         <Route path="/tests/create" component={TestCreate} />
         <Route path="/tests/edit/:testId" component={TestCreate} />

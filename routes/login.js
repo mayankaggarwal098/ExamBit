@@ -29,7 +29,7 @@ router.post("/", async (req, res) => {
     _id: user._id,
     name: user.name,
     email: user.email,
-    category: user.category,
+    category: user.category
   });
 });
 

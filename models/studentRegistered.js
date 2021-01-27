@@ -10,15 +10,14 @@ const studentSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    phoneNum: {
-      type: String,
-      required: true,
+    password:{
+      type:String,
+      required: true
     },
-    testId: {
+    group:[{
       type: mongoose.Schema.Types.ObjectId,
-      ref: "TestPaper",
-      required: true,
-    },
+      ref: "Group"
+    }],
   },
   {
     timestamps: { createdAt: true, updatedAt: false },

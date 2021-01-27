@@ -32,6 +32,7 @@ const Header = () => {
                       &nbsp;All Questions
                     </Nav.Link>
                   </LinkContainer>
+
                   <NavDropdown title="All Test" id="test">
                     <LinkContainer to="/tests/notConducted">
                       <NavDropdown.Item>
@@ -47,6 +48,12 @@ const Header = () => {
                       </NavDropdown.Item>
                     </LinkContainer>
                   </NavDropdown>
+                  <LinkContainer to="/supervisor/groups">
+                    <Nav.Link>
+                      <i className="fa fa-users"></i>
+                      &nbsp;Groups
+                    </Nav.Link>
+                  </LinkContainer>
                 </>
               )}
               {userInfo && userInfo.category === 'ADMIN' && (
@@ -61,6 +68,34 @@ const Header = () => {
                     <Nav.Link>
                       <i className="fas fa-list" />
                       &nbsp;REQUEST
+                    </Nav.Link>
+                  </LinkContainer>
+                </>
+              )}
+              {userInfo && userInfo.category === 'STUDENT' && (
+                <>
+                  <LinkContainer to="/practicePaper">
+                    <Nav.Link>
+                      <i className="fas fa-list" />
+                      &nbsp;PRACTICE PAPER
+                    </Nav.Link>
+                  </LinkContainer>
+                  <LinkContainer to="/pastTest">
+                    <Nav.Link>
+                      <i className="fas fa-list" />
+                      &nbsp;PAST TEST
+                    </Nav.Link>
+                  </LinkContainer>
+                  <LinkContainer to="/Upcomingtest">
+                    <Nav.Link>
+                      <i className="fas fa-list" />
+                      &nbsp;UPCOMING TEST
+                    </Nav.Link>
+                  </LinkContainer>
+                  <LinkContainer to="/student/groups">
+                    <Nav.Link>
+                      <i className="fa fa-users"></i>
+                      &nbsp;Groups
                     </Nav.Link>
                   </LinkContainer>
                 </>
