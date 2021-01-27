@@ -32,6 +32,7 @@ export const resultGeneratePdf = async (testId, studentId) => {
       testId,
       studentId,
     });
+    console.log(data);
   } catch (ex) {
     errorHandler(ex);
   }

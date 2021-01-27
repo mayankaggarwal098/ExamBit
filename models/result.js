@@ -14,13 +14,13 @@ const resultSchema = new mongoose.Schema({
   responseSheet: {
     type: ObjectId,
     ref: "ResponseSheet",
-    required: true,
+    // required: true,
   },
   subResult: [
     {
       type: ObjectId,
       ref: "SubResult",
-      required: true,
+      //  required: true,
     },
   ],
   score: {

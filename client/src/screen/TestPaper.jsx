@@ -169,12 +169,15 @@ const TestPaper = ({ history }) => {
     //clearInterval(intervalId2.current);
     clearInterval(audioIntervalId.current);
     await testEnd({ testId, studentId });
+
     if (paper.category === "MCQ") {
       history.push(
         `/student/test/result?testId=${testId}&studentId=${studentId}`
       );
     } else {
       await resultGeneratePdf(testId, studentId);
+      console.log(paper.category);
+      history.push(`/student/test/submitted`);
     }
   };
 

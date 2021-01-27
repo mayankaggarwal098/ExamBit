@@ -115,12 +115,11 @@ const generateResultPdf = async (req, res) => {
   const { studentId, testId } = req.body;
 
   const result = await Result.findOne({ testId, studentId });
-
   if (result) return res.send(result);
-  const responseSheet = null,
-    subResult = null,
-    score = -1,
-    maxMarks = -1;
+  const responseSheet = null;
+  const subResult = [];
+  const score = -1;
+  const maxMarks = -1;
   const resultdata = new Result({
     testId,
     studentId,
@@ -130,6 +129,7 @@ const generateResultPdf = async (req, res) => {
     maxMarks,
   });
   await resultdata.save();
+  console.log(result);
   //res.send(resultdata);
 };
 

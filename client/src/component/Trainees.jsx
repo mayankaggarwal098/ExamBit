@@ -23,15 +23,18 @@ const Trainees = ({ id }) => {
     (state) => state.registeredStudentList
   );
   let { paper } = useSelector((state) => state.singleTestPaper);
-  const scores = useRef([]);
+  //const scores = useRef([]);
+  const [scores, setScores] = useState([]);
   useEffect(() => {
     dispatch(getAllRegisteredStudent(id));
     dispatch(getSinglePaper(id));
-    const getAllScore = async () => {
-      scores.current = await getScore(id);
-    };
+
     getAllScore();
   }, []);
+  const getAllScore = async () => {
+    const score = await getScore(id);
+    setScores(score);
+  };
   // console.log(scores.current.length);
   const resultWindowHandler = (studentId) => {
     window.open(`/student/test/result?testId=${id}&studentId=${studentId}`);
@@ -49,7 +52,9 @@ const Trainees = ({ id }) => {
   };
   const editScore = async (studentId) => {
     console.log(studentId);
-    //await editResultScore(id, studentId, marks);
+    await editResultScore(id, studentId, marks);
+    getAllScore();
+    setShow(false);
   };
   const set = (index) => {
     setShow(true);
@@ -85,7 +90,7 @@ const Trainees = ({ id }) => {
                 <th>Response Sheet</th>
               </>
             )}
-            <th>PERFORMANCE</th>
+            {paper && paper.category === "MCQ" && <th>PERFORMANCE</th>}
             <th>SNAPSHOT</th>
             <th>Audio Recording</th>
           </tr>
@@ -101,8 +106,8 @@ const Trainees = ({ id }) => {
                 {paper && paper.category === "PDF" && (
                   <>
                     <td>
-                      {scores.current.length === 0 && `Not Checked`}
-                      {scores.current.map((result) => {
+                      {scores.length === 0 && `Not Checked`}
+                      {scores.map((result) => {
                         if (toString(result.studenId) === toString(stud._id)) {
                           if (result.score === -1) {
                             return `Not Checked`;
@@ -130,14 +135,16 @@ const Trainees = ({ id }) => {
                     </td>
                   </>
                 )}
-                <td>
-                  <Button
-                    variant="outline-danger"
-                    onClick={() => resultWindowHandler(stud._id)}
-                  >
-                    Result
-                  </Button>
-                </td>
+                {paper && paper.category === "MCQ" && (
+                  <td>
+                    <Button
+                      variant="outline-danger"
+                      onClick={() => resultWindowHandler(stud._id)}
+                    >
+                      Result
+                    </Button>
+                  </td>
+                )}
                 <td>
                   <Button
                     variant="outline-danger"

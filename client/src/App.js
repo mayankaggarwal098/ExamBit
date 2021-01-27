@@ -19,11 +19,12 @@ import Snapshots from "./screen/Snapshots";
 import HomeScreen from "./screen/HomeScreen";
 import TestConductedList from "./screen/TestConductedList";
 import TestNotConductedList from "./screen/TestNotConductedList";
-import GivenTest from './screen/GivenTest'
+import GivenTest from "./screen/GivenTest";
 import Audio from "./screen/Audio";
 import Profile from "./screen/Profile";
 import SupervisorGroup from "./screen/SupervisorGroup";
-import StudentGroup from './screen/StudentGroup';
+import StudentGroup from "./screen/StudentGroup";
+import TestSubmitted from "./screen/TestSubmitted";
 
 const App = () => {
   return (
@@ -33,14 +34,13 @@ const App = () => {
       <Switch>
         <Route path="/register" component={Register} />
         <Route path="/login" component={Login} />
-        <Route path="/profile" component={Profile}  />
+        <Route path="/profile" component={Profile} />
         <Route path="/" component={HomeScreen} exact />
         <Route path="/questions" component={QuestionList} exact />
-        <Route path="/pastTest" component={GivenTest}  />
-        <Route path="/supervisor/groups" component={SupervisorGroup}  />
-        <Route path="/student/groups" component={StudentGroup}  />
-        
-        
+        <Route path="/pastTest" component={GivenTest} />
+        <Route path="/supervisor/groups" component={SupervisorGroup} />
+        <Route path="/student/groups" component={StudentGroup} />
+
         <Route path="/questions/create" component={QuestionCreate} />
         <Route path="/tests/create" component={TestCreate} />
         <Route path="/tests/edit/:testId" component={TestCreate} />
@@ -61,6 +61,7 @@ const App = () => {
         <Route path="/student/test/result" component={StudentResult} />
         <Route path="/student/test/start" component={TestPaper} />
         <Route path="/student/test/snapshots" component={Snapshots} />
+        <Route path="/student/test/submitted" component={TestSubmitted} />
         <Route path="/student/test/audio" component={Audio} />
         <Route path="/student/test" component={Instruction} exact />
         <Route path="/supervisor/request" component={SupervisorReqList} />
