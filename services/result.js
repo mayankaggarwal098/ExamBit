@@ -27,7 +27,7 @@ const generateResult = async (req, res) => {
       },
     });
 
-  if (!responseSheet) return res.send("Student has not attempt this test");
+  if (!responseSheet) return res.send("Not Attempt");
   const ansMap = ["A", "B", "C", "D", "E"];
   const { questions, responses } = responseSheet;
   let maxMarks = 0;

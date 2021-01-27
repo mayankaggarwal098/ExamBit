@@ -4,7 +4,11 @@ import { useHistory } from 'react-router-dom';
 import { Table, Button, Container, Modal, Tab, Tabs } from 'react-bootstrap';
 import QuestionPaper from '../component/QuestionPaper';
 import QuestionDetails from '../component/QuestionDetails';
-import { testBegin, testEndByTeacher, testPaperDelete } from '../actions/testAction';
+import {
+  testBegin,
+  testEndByTeacher,
+  testPaperDelete,
+} from '../actions/testAction';
 import { openRegistrationforTest } from '../actions/studentRegistrationAction';
 import { paginate } from '../utils/paginate';
 import Paginations from '../utils/Pagination';
@@ -61,7 +65,13 @@ const TestTable = ({ testPapers, isShow }) => {
   return (
     <>
       <Container>
-        <Table hover bordered striped responsive style={{ textAlign: 'center' }}>
+        <Table
+          hover
+          bordered
+          striped
+          responsive
+          style={{ textAlign: 'center' }}
+        >
           <thead>
             <tr>
               <th>SUBJECT</th>
@@ -101,7 +111,9 @@ const TestTable = ({ testPapers, isShow }) => {
                           variant="outline-primary"
                           className="btn btn-block"
                           disabled={test.isTestBegins}
-                          onClick={() => handleClick(test._id, test.isRegistrationAvailable)}
+                          onClick={() =>
+                            handleClick(test._id, test.isRegistrationAvailable)
+                          }
                         >
                           {test.isRegistrationAvailable ? 'Close' : 'Open'}
                         </Button>
@@ -113,7 +125,11 @@ const TestTable = ({ testPapers, isShow }) => {
                           disabled={test.isTestBegins}
                           onClick={() =>
                             dispatch(
-                              testBegin(test._id, pageSize * (currentPage - 1) + index, testPapers)
+                              testBegin(
+                                test._id,
+                                pageSize * (currentPage - 1) + index,
+                                testPapers
+                              )
                             )
                           }
                         >
@@ -146,7 +162,11 @@ const TestTable = ({ testPapers, isShow }) => {
                   )}
 
                   <td>
-                    <Button variant="outline-primary" className="btn-sm" onClick={() => set(index)}>
+                    <Button
+                      variant="outline-primary"
+                      className="btn-sm"
+                      onClick={() => set(index)}
+                    >
                       <i className="fas fa-info-circle"></i>
                     </Button>
                     &nbsp;&nbsp;
@@ -183,10 +203,16 @@ const TestTable = ({ testPapers, isShow }) => {
           </Modal.Header> */}
           <Modal.Body>
             <Tabs defaultActiveKey="details">
-              <Tab eventKey="details" title={<i className="fas fa-info-circle"> Details</i>}>
+              <Tab
+                eventKey="details"
+                title={<i className="fas fa-info-circle"> Details</i>}
+              >
                 <QuestionDetails testPaperSheet={testPaperSheet} pos={pos} />
               </Tab>
-              <Tab eventKey="questions" title={<i className="fas fa-question-circle"> Question</i>}>
+              <Tab
+                eventKey="questions"
+                title={<i className="fas fa-question-circle"> Question</i>}
+              >
                 <QuestionPaper testPaperSheet={testPaperSheet} pos={pos} />
               </Tab>
               <Tab
@@ -208,7 +234,7 @@ const TestTable = ({ testPapers, isShow }) => {
                 disabled={!testPaperSheet[pos].isTestConducted}
                 title={<i className="fas fa-comments"> FeedBack</i>}
               >
-                rawat
+                this feature will be uploaded soon
               </Tab>
             </Tabs>
           </Modal.Body>
