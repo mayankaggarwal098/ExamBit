@@ -25,6 +25,9 @@ const responseSheetSchema = new mongoose.Schema({
       required: true,
     },
   ],
+  pdf: {
+    type: String,
+  },
   // startTime: {
   //   type: Date,
   //   required: true,

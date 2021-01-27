@@ -35,7 +35,7 @@ const registerStudent = async (req, res) => {
 
 const getTestQuestions = async (req, res) => {
   const paper = await TestPaper.findById(req.body.id)
-    .select("questions duration isSnapshots startTime isAudioRec")
+    .select("pdf questions duration isSnapshots startTime isAudioRec category")
     .populate("questions")
     .populate({
       path: "questions",
@@ -71,24 +71,28 @@ const responseSheet = async (req, res) => {
   let responseSheet = await ResponseSheet.findOne({ studentId, testId });
 
   if (responseSheet) return res.send(responseSheet);
+  let responses = null;
+  let questions = null,
+    pdf = null;
+  if (paper.category === "MCQ") {
+    questions = paper.questions;
 
-  const questions = paper.questions;
-
-  let responses = questions.map((id) => {
-    return {
-      questionId: id,
-      chosenOption: [],
-      studentId,
-    };
-  });
-  responses = await Response.insertMany(responses);
-
+    responses = questions.map((id) => {
+      return {
+        questionId: id,
+        chosenOption: [],
+        studentId,
+      };
+    });
+    responses = await Response.insertMany(responses);
+  }
   //const startTime = new Date();
   responseSheet = new ResponseSheet({
     testId,
     studentId,
     questions,
     responses,
+    pdf,
     // startTime,
   });
   await responseSheet.save();
@@ -149,20 +153,49 @@ const getTestCategory = async (req, res) => {
   const paper = await TestPaper.findById(testId).select("category");
   if (!paper) return res.status(404).send("Testpaper not found");
 
-  res.send(paper);
+  res.send(paper.category);
 };
 
-const getPdf = async (req, res) => {
-  const paper = await TestPaper.findById(req.body.id).select(
-    "pdf duration isSnapshots startTime isAudioRec"
-  );
+// const getPdf = async (req, res) => {
+//   const paper = await TestPaper.findById(req.body.id).select(
+//     "pdf duration isSnapshots startTime isAudioRec"
+//   );
 
-  if (!paper) return res.status(404).send("Testpaper not found");
-  res.send(paper);
+//   if (!paper) return res.status(404).send("Testpaper not found");
+//   res.send(paper);
+// };
+
+const uploadPdfResponse = async (req, res) => {
+  const { studentId, testId, pdf } = req.body;
+  const student = await Student.findOne({ _id: studentId, testId });
+  const paper = await TestPaper.findOne({
+    _id: testId,
+    isTestBegins: true,
+    isTestConducted: false,
+  });
+
+  if (!student || !paper) return res.status(404).send("Invalid Request");
+
+  const responseSheet = await ResponseSheet.findOneAndUpdate(
+    { testId, studentId },
+    { pdf }
+  );
+  if (!responseSheet) return res.status(404).send("ResponseSheet not exist");
+  res.send("Response Updated");
+};
+
+const getResponsePdf = async (req, res) => {
+  const { studentId, testId } = req.body;
+  const responseSheet = await ResponseSheet.findOne({ studentId, testId });
+  if (!responseSheet) return res.send("Student has not attempt this test");
+  // console.log(responseSheet);
+  res.send(responseSheet.pdf);
 };
 
 module.exports = {
-  getPdf,
+  getResponsePdf,
+  uploadPdfResponse,
+  //getPdf,
   getTestCategory,
   getTestStartTime,
   updateResponse,

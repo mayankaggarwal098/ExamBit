@@ -251,17 +251,18 @@ export const startTestTime = async (testId) => {
 export const getTestCategory = async (testId) => {
   try {
     const { data } = await http.post("/api/student/test/category", { testId });
+    // console.log(data);
     return data;
   } catch (ex) {
     errorHandler(ex);
   }
 };
 
-export const getTestPdf = async (testId) => {
-  try {
-    const { data } = await http.post("/api/student/test/pdf", { testId });
-    return data;
-  } catch (ex) {
-    errorHandler(ex);
-  }
-};
+// export const getTestPdf = async (testId) => {
+//   try {
+//     const { data } = await http.post("/api/student/test/pdf", { testId });
+//     return data;
+//   } catch (ex) {
+//     errorHandler(ex);
+//   }
+// };

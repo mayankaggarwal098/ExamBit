@@ -27,7 +27,7 @@ const generateResult = async (req, res) => {
       },
     });
 
-  if (!responseSheet) return res.send("Student not attempt this test");
+  if (!responseSheet) return res.send("Student has not attempt this test");
   const ansMap = ["A", "B", "C", "D", "E"];
   const { questions, responses } = responseSheet;
   let maxMarks = 0;
@@ -111,6 +111,44 @@ const generateResult = async (req, res) => {
 //   res.send(result);
 // };
 
+const generateResultPdf = async (req, res) => {
+  const { studentId, testId } = req.body;
+
+  const result = await Result.findOne({ testId, studentId });
+
+  if (result) return res.send(result);
+  const responseSheet = null,
+    subResult = null,
+    score = -1,
+    maxMarks = -1;
+  const resultdata = new Result({
+    testId,
+    studentId,
+    responseSheet,
+    subResult,
+    score,
+    maxMarks,
+  });
+  await resultdata.save();
+  //res.send(resultdata);
+};
+
+const getScore = async (req, res) => {
+  const { testId } = req.body;
+  const result = await Result.find({ testId }).select("score studentId");
+  //if (!result) return res.status(404).send("Result Not found");
+  res.send(result);
+};
+const editScore = async (req, res) => {
+  const { testId, studentId, score } = req.body;
+  const result = await Result.findOneAndUpdate(
+    { testId, studentId },
+    { score }
+  );
+  if (!result) return res.status(404).send("Result Not found");
+  res.send("Successfully updated");
+};
+
 const download = async (req, res) => {
   const { testId } = req.body;
 
@@ -131,4 +169,10 @@ const download = async (req, res) => {
   res.end();
 };
 
-module.exports = { download, generateResult };
+module.exports = {
+  download,
+  generateResult,
+  generateResultPdf,
+  getScore,
+  editScore,
+};

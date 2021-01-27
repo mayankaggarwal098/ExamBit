@@ -16,8 +16,10 @@ import {
 import Clock from "../component/Clock";
 import { uploadImage } from "./../actions/snapshots";
 import { uploadAudio } from "./../actions/audio";
-import { getTestPdf } from "./../actions/testAction";
-import { download } from "downloadjs";
+//import { getTestPdf } from "./../actions/testAction";
+import download from "downloadjs";
+import { uploadPdf } from "./../actions/responseSheetAction";
+import { resultGeneratePdf } from "./../actions/generateResultAction";
 
 const TestPaper = ({ history }) => {
   const query = new URLSearchParams(useLocation().search);
@@ -34,26 +36,29 @@ const TestPaper = ({ history }) => {
   const [record, setRecord] = useState(false);
   let { paper } = useSelector((state) => state.singleTestPaper);
   const [flag, setFlag] = useState(true);
-  const [testCategory, setTestCategory] = useState("");
+  const [selectedFile, setSelectedFile] = useState("upload pdf");
+  const [responsePdf, setResponsePdf] = useState(null);
+  // const [testCategory, setTestCategory] = useState("");
   const pdf = useRef(null);
+  const testCategory = useRef("");
   const dispatch = useDispatch();
 
   useEffect(() => {
     window.dispatchEvent(new CustomEvent("navigationhandler"));
     if (!paper) {
-      const category = getTestCategory(testId);
-      setTestCategory(category);
-      if (category === "PDF") {
-        pdf.current = getTestPdf(testId);
-      } else {
-        dispatch(getSinglePaper(testId));
+      // let category;
+      // async function getCategory() {
+      //   testCategory.current = await getTestCategory(testId);
+      //   //  console.log(category);
+      //   // setTestCategory(category);
+      // }
+      // getCategory();
 
-        async function responseSheet() {
-          await responseSheetOfStudent({ testId, studentId });
-        }
-
-        responseSheet();
+      dispatch(getSinglePaper(testId));
+      async function responseSheet() {
+        await responseSheetOfStudent({ testId, studentId });
       }
+      responseSheet();
     }
   }, []);
   useEffect(() => {
@@ -91,10 +96,6 @@ const TestPaper = ({ history }) => {
     }
   }, [paper]);
 
-  const totalCount = paper && paper.questions.length;
-  const arr = [];
-  for (var i = 0; i < totalCount; i++) arr.push(i + 1);
-
   const submitOptionHandler = (e) => {
     let arr = [...answer];
 
@@ -112,7 +113,9 @@ const TestPaper = ({ history }) => {
       setSaveAnswer(temp);
     }
   };
-
+  const totalCount = paper && paper.questions.length;
+  const arr = [];
+  for (var i = 0; i < totalCount; i++) arr.push(i + 1);
   const checkMicPerm = () => {
     navigator.mediaDevices
       .getUserMedia({ audio: true })
@@ -166,13 +169,18 @@ const TestPaper = ({ history }) => {
     //clearInterval(intervalId2.current);
     clearInterval(audioIntervalId.current);
     await testEnd({ testId, studentId });
-    history.push(
-      `/student/test/result?testId=${testId}&studentId=${studentId}`
-    );
+    if (paper.category === "MCQ") {
+      history.push(
+        `/student/test/result?testId=${testId}&studentId=${studentId}`
+      );
+    } else {
+      await resultGeneratePdf(testId, studentId);
+    }
   };
 
   const downloadPdf = () => {
-    download(pdf, "paper.pdf", "application/pdf");
+    console.log(paper.pdf);
+    download(paper.pdf, "Testpaper.pdf", "application/pdf");
   };
 
   function onStop(recordedBlob) {
@@ -185,6 +193,20 @@ const TestPaper = ({ history }) => {
       await uploadAudio(testId, studentId, base64String);
     };
   }
+  const fileInputHandler = (event) => {
+    setSelectedFile(event.target.files[0].name);
+    const file = event.target.files[0];
+    let reader = new FileReader();
+    reader.onload = function () {
+      setResponsePdf(reader.result);
+    };
+    reader.readAsDataURL(file);
+  };
+
+  const uploadPdfHandler = async () => {
+    await uploadPdf(testId, studentId, responsePdf);
+  };
+
   return (
     <div style={{ marginLeft: "100px", marginTop: "80px", padding: "20px" }}>
       {paper && paper.isAudioRec && (
@@ -214,84 +236,105 @@ const TestPaper = ({ history }) => {
         <Col md={8}>
           {flag &&
             paper &&
-            testCategory ===
-              "MCQ"(
-                <Container>
-                  <ListGroup variant="flush">
-                    <ListGroup.Item>
-                      <h4>QUESTION: {questionNumber}</h4>
-                      <p style={{ fontSize: "20px" }}>
-                        {paper.questions[questionNumber - 1].questionBody}
-                      </p>
-                    </ListGroup.Item>
-                    <ListGroup.Item>
-                      <h4 style={{ textAlign: "left" }}>
-                        <strong>Options:</strong>
-                      </h4>
+            // testCategory.current.length > 1 &&
+            paper.category === "MCQ" && (
+              <Container>
+                <ListGroup variant="flush">
+                  <ListGroup.Item>
+                    <h4>QUESTION: {questionNumber}</h4>
+                    <p style={{ fontSize: "20px" }}>
+                      {paper.questions[questionNumber - 1].questionBody}
+                    </p>
+                  </ListGroup.Item>
+                  <ListGroup.Item>
+                    <h4 style={{ textAlign: "left" }}>
+                      <strong>Options:</strong>
+                    </h4>
 
-                      {paper.questions[questionNumber - 1].options.map(
-                        (opt) => (
-                          <p style={{ fontSize: "20px" }} key={opt._id}>
-                            <Form.Check
-                              type="checkbox"
-                              value={opt._id}
-                              label={opt.optionBody}
-                              checked={
-                                saveAnswer.filter((ans) => ans === opt._id)
-                                  .length
-                                  ? true
-                                  : answer.filter((a) => a === opt._id).length
-                                  ? true
-                                  : false
-                              }
-                              onChange={(e) => submitOptionHandler(e)}
-                            />
-                          </p>
-                        )
-                      )}
-                    </ListGroup.Item>
-                    <br />
-                    <br />
-                  </ListGroup>
-                  <Button
-                    variant="outline-primary"
-                    onClick={() => setQuestionNumber(questionNumber - 1)}
-                    disabled={questionNumber === 1}
-                  >
-                    Prev
-                  </Button>{" "}
-                  <Button
-                    variant="outline-primary"
-                    onClick={() => resetAnswerHandler()}
-                    disabled={questionNumber === totalCount}
-                  >
-                    Next
-                  </Button>{" "}
-                  <Button
-                    variant="outline-primary"
-                    onClick={() => submitHandler()}
-                    disabled={
-                      questionNumber - 1 === totalCount || answer.length === 0
-                    }
-                  >
-                    Save & Next
-                  </Button>
-                </Container>
-              )}
-          {flag &&
-            paper &&
-            testCategory ===
-              "PDF"(
-                <Container>
-                  Test Paper:{" "}
-                  <Button
-                    variant="outline-primary"
-                    onClick={() => downloadPdf()}
-                  >
-                    Download
-                  </Button>
-                </Container>
-              )}
+                    {paper.questions[questionNumber - 1].options.map((opt) => (
+                      <p style={{ fontSize: "20px" }} key={opt._id}>
+                        <Form.Check
+                          type="checkbox"
+                          value={opt._id}
+                          label={opt.optionBody}
+                          checked={
+                            saveAnswer.filter((ans) => ans === opt._id).length
+                              ? true
+                              : answer.filter((a) => a === opt._id).length
+                              ? true
+                              : false
+                          }
+                          onChange={(e) => submitOptionHandler(e)}
+                        />
+                      </p>
+                    ))}
+                  </ListGroup.Item>
+                  <br />
+                  <br />
+                </ListGroup>
+                <Button
+                  variant="outline-primary"
+                  onClick={() => setQuestionNumber(questionNumber - 1)}
+                  disabled={questionNumber === 1}
+                >
+                  Prev
+                </Button>{" "}
+                <Button
+                  variant="outline-primary"
+                  onClick={() => resetAnswerHandler()}
+                  disabled={questionNumber === totalCount}
+                >
+                  Next
+                </Button>{" "}
+                <Button
+                  variant="outline-primary"
+                  onClick={() => submitHandler()}
+                  disabled={
+                    questionNumber - 1 === totalCount || answer.length === 0
+                  }
+                >
+                  Save & Next
+                </Button>
+              </Container>
+            )}
+          {flag && paper && paper.category === "PDF" && (
+            <Container>
+              <ListGroup.Item style={{ margin: "20px" }}>
+                <h3 style={{ color: "black" }}> Test Paper:</h3>
+                <Button
+                  variant="outline-primary"
+                  className="btn-block"
+                  onClick={() => downloadPdf()}
+                >
+                  Download
+                </Button>
+              </ListGroup.Item>
+
+              <ListGroup.Item>
+                <Form>
+                  <Form.File
+                    id="custom-file"
+                    label={selectedFile}
+                    onChange={(e) => fileInputHandler(e)}
+                    custom
+                  />
+                </Form>
+                <br />
+
+                <Button
+                  variant="outline-primary"
+                  type="submit"
+                  className="btn-block"
+                  onClick={uploadPdfHandler}
+                  // disabled={
+                  //   selectedQuestions.length || category === "PDF" ? false : true
+                  // }
+                >
+                  Submit
+                </Button>
+              </ListGroup.Item>
+            </Container>
+          )}
         </Col>
 
         <Col md={3.5}>
