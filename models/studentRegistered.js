@@ -12,12 +12,18 @@ const studentSchema = new mongoose.Schema(
     },
     phoneNum: {
       type: Number,
-      required: true
+      required: true,
     },
-    group:[{
+    group: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Group",
+      },
+    ],
+    testId: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Group"
-    }],
+      ref: "TestPaper",
+    },
   },
   {
     timestamps: { createdAt: true, updatedAt: false },

@@ -65,7 +65,7 @@ const responseSheet = async (req, res) => {
     isTestBegins: true,
     isTestConducted: false,
   });
-
+  console.log(student);
   if (!student || !paper) return res.status(404).send("Invalid Request");
 
   let responseSheet = await ResponseSheet.findOne({ studentId, testId });
