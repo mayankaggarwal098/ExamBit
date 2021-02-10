@@ -1,25 +1,22 @@
 import React, { useEffect, useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import { Button, Col, Container, Form, Modal, Row } from 'react-bootstrap';
 import { joinGroup, getAllGroup } from '../actions/groupAction';
 import Group from '../component/Group';
 import Loader from '../utils/Loader';
+import { GROUP_LIST_SUCCESS } from '../constants/groupConstant';
 
 const StudentGroup = () => {
   const [show, setShow] = useState(false);
-  const [groups, setGroups] = useState([]);
   const [loader, setLoader] = useState(false);
   const [groupCode, setGroupCode] = useState('');
 
-  useEffect(() => {
-    getTeam();
-  }, []);
+  const { loading, groups } = useSelector(state => state.groupList);
+  const dispatch = useDispatch();
 
-  const getTeam = async () => {
-    setLoader(true);
-    const { group } = await getAllGroup();
-    setGroups(group);
-    setLoader(false);
-  };
+  useEffect(() => {
+    if (!groups) dispatch(getAllGroup());
+  }, []);
 
   const joinGroupHandler = async () => {
     try {
@@ -29,7 +26,7 @@ const StudentGroup = () => {
 
       const arr = [...groups, group];
       setLoader(false);
-      setGroups(arr);
+      dispatch({ type: GROUP_LIST_SUCCESS, payload: arr });
     } catch (ex) {}
 
     setShow(false);
@@ -37,6 +34,7 @@ const StudentGroup = () => {
 
   return (
     <Container className="my-3">
+      {loading && <Loader />}
       {loader && <Loader />}
       <Row>
         <Col>

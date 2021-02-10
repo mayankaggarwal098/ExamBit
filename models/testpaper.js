@@ -1,3 +1,4 @@
+const { string } = require("joi");
 const mongoose = require("mongoose");
 
 const testSchema = new mongoose.Schema(
@@ -57,6 +58,11 @@ const testSchema = new mongoose.Schema(
     isSnapshots: {
       type: Boolean,
       default: false,
+    },
+    //New Properties added which determine the paper type( interview or group test)
+    paperType: {
+      type: String,
+      required: true
     },
     isAudioRec: {
       type: Boolean,

@@ -1,13 +1,14 @@
-import * as res_sheet from "../constants/responseSheetConstant";
-import http from "../utils/httpService";
-import errorHandler from "../errorHandler";
-import { toast } from "react-toastify";
+import * as res_sheet from '../constants/responseSheetConstant';
+import http from '../utils/httpService';
+import errorHandler from '../errorHandler';
+import { toast } from 'react-toastify';
+import Token from '../utils/Token';
 
 export const responseSheetOfStudent = async ({ studentId, testId }) => {
   try {
     // dispatch({ type: res_sheet.STUDENT_RESPONSE_SHEET_REQUEST });
 
-    const { data } = await http.post("/api/student/responseSheet", {
+    const { data } = await http.post('/api/student/responseSheet', {
       studentId,
       testId,
     });
@@ -28,7 +29,7 @@ export const responseSheetOfStudent = async ({ studentId, testId }) => {
 
 export const getResponsePdf = async (studentId, testId) => {
   try {
-    const { data } = await http.post("/api/student/responseSheet/pdf", {
+    const { data } = await http.post('/api/student/responseSheet/pdf', {
       studentId,
       testId,
     });
@@ -39,11 +40,11 @@ export const getResponsePdf = async (studentId, testId) => {
   }
 };
 
-export const addAnswerForGivenQuestion = async (body) => {
+export const addAnswerForGivenQuestion = async body => {
   try {
     // dispatch({ type: res_sheet.STUDENT_ANSWER_REQUEST });
 
-    const { data } = await http.post("/api/student/updateResponse", body);
+    const { data } = await http.post('/api/student/updateResponse', body);
 
     // dispatch({ type: res_sheet.STUDENT_ANSWER_SUCCESS });
     toast.success(data);
@@ -61,13 +62,26 @@ export const addAnswerForGivenQuestion = async (body) => {
 
 export const uploadPdf = async (testId, studentId, pdf) => {
   try {
-    const { data } = await http.post("/api/student/pdf/upload", {
+    const { data } = await http.post('/api/student/pdf/upload', {
       testId,
       studentId,
       pdf,
     });
-    console.log(data);
     toast.success(`ResponseSheet uploaded successfully`);
+    return data;
+  } catch (ex) {
+    errorHandler(ex);
+  }
+};
+
+export const checkGivenTestForStudent = async (testId, studentId) => {
+  try {
+    const { data } = await http.post(
+      '/api/student/test/complete',
+      { testId, studentId },
+      Token()
+    );
+    console.log(data);
     return data;
   } catch (ex) {
     errorHandler(ex);

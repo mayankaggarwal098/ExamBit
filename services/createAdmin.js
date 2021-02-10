@@ -1,4 +1,4 @@
-var User = require("../models/user");
+var {User} = require("../models/user");
 const bcrypt = require("bcrypt");
 
 //create admin

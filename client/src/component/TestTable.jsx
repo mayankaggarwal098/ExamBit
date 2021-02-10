@@ -11,16 +11,17 @@ import {
 } from '../actions/testAction';
 import { openRegistrationforTest } from '../actions/studentRegistrationAction';
 import { paginate } from '../utils/paginate';
+import { pageLength } from '../constants/pageConstant';
 import Paginations from '../utils/Pagination';
 import Statistics from '../component/Statistics';
 import Trainees from '../component/Trainees';
 import Timer from '../utils/Timer';
 
-const TestTable = ({ testPapers, isShow }) => {
+const TestTable = ({ testPapers, isShow, deleteEdit }) => {
   const [show, setShow] = useState(false);
   const [pos, setIndex] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
-  const [pageSize, setPageSize] = useState(2);
+  const [pageSize, setPageSize] = useState(pageLength);
   const count = testPapers && testPapers.length;
 
   const dispatch = useDispatch();
@@ -65,13 +66,7 @@ const TestTable = ({ testPapers, isShow }) => {
   return (
     <>
       <Container>
-        <Table
-          hover
-          bordered
-          striped
-          responsive
-          style={{ textAlign: 'center' }}
-        >
+        <Table hover bordered striped responsive className="table-centered">
           <thead>
             <tr>
               <th>SUBJECT</th>
@@ -83,7 +78,7 @@ const TestTable = ({ testPapers, isShow }) => {
                   <th>REGISTRATION</th>
                   <th>START TEST</th>
                   <th>TIME LEFT</th>
-                  <th>Edit Test</th>
+                  {deleteEdit && <th>Edit Test</th>}
                 </>
               )}
               <th>&nbsp;&nbsp;ACTION&nbsp;&nbsp;</th>
@@ -107,16 +102,25 @@ const TestTable = ({ testPapers, isShow }) => {
                   {!test.isTestConducted && (
                     <>
                       <td>
-                        <Button
-                          variant="outline-primary"
-                          className="btn btn-block"
-                          disabled={test.isTestBegins}
-                          onClick={() =>
-                            handleClick(test._id, test.isRegistrationAvailable)
-                          }
-                        >
-                          {test.isRegistrationAvailable ? 'Close' : 'Open'}
-                        </Button>
+                        {test.paperType === 'GROUP' ? (
+                          'Not Required'
+                        ) : (
+                          <Button
+                            variant="outline-primary"
+                            className="btn btn-block"
+                            disabled={
+                              test.isTestBegins || test.paperType === 'GROUP'
+                            }
+                            onClick={() =>
+                              handleClick(
+                                test._id,
+                                test.isRegistrationAvailable
+                              )
+                            }
+                          >
+                            {test.isRegistrationAvailable ? 'Close' : 'Open'}
+                          </Button>
+                        )}
                       </td>
                       <td>
                         <Button
@@ -148,16 +152,18 @@ const TestTable = ({ testPapers, isShow }) => {
                             )
                           : 'Not Started'}
                       </td>
-                      <td>
-                        <Button
-                          variant="outline-primary"
-                          className="btn-sm"
-                          disabled={test.isTestBegins}
-                          onClick={() => editTestPaper(index)}
-                        >
-                          <i className="fas fa-edit"></i>
-                        </Button>
-                      </td>
+                      {deleteEdit && (
+                        <td>
+                          <Button
+                            variant="outline-primary"
+                            className="btn-sm"
+                            disabled={test.isTestBegins}
+                            onClick={() => editTestPaper(index)}
+                          >
+                            <i className="fas fa-edit"></i>
+                          </Button>
+                        </td>
+                      )}
                     </>
                   )}
 
@@ -170,13 +176,15 @@ const TestTable = ({ testPapers, isShow }) => {
                       <i className="fas fa-info-circle"></i>
                     </Button>
                     &nbsp;&nbsp;
-                    <Button
-                      variant="outline-primary"
-                      className="btn-sm"
-                      onClick={() => deleteHandler(test._id)}
-                    >
-                      <i className="fas fa-trash"></i>
-                    </Button>
+                    {deleteEdit && (
+                      <Button
+                        variant="outline-primary"
+                        className="btn-sm"
+                        onClick={() => deleteHandler(test._id)}
+                      >
+                        <i className="fas fa-trash"></i>
+                      </Button>
+                    )}
                   </td>
                 </tr>
               ))}

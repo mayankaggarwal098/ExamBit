@@ -5,16 +5,22 @@
 
 body {
   margin: 0;
-  font-family: 'Quicksand', sans-serif, -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto',
-    'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+  font-family: 'Quicksand', sans-serif, -apple-system, BlinkMacSystemFont,
+    'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans',
+    'Droid Sans', 'Helvetica Neue', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background-color: #eceff1;
   color: #010b40;
 }
 
+.table-centered {
+  text-align: center;
+}
+
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
 }
 
 .my-modal {
@@ -107,7 +113,12 @@ p {
 }
 
 .reasendmail-container-register {
-  background: linear-gradient(to right, rgb(80, 190, 189), rgb(0, 153, 153), rgb(0, 153, 203));
+  background: linear-gradient(
+    to right,
+    rgb(80, 190, 189),
+    rgb(0, 153, 153),
+    rgb(0, 153, 203)
+  );
   border-radius: 5px;
   width: 50%;
   margin-left: 25%;

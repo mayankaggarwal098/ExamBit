@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from 'react';
 import {
   Form,
   Container,
@@ -7,32 +7,39 @@ import {
   Col,
   Modal,
   ListGroup,
-} from "react-bootstrap";
-import { useParams } from "react-router-dom";
-import DatePicker from "react-datepicker";
-import { useSelector, useDispatch } from "react-redux";
-import { getAllQuestions } from "../actions/questionAction";
-import { createTest, getTestDetails } from "../actions/testAction";
+} from 'react-bootstrap';
+import { useParams } from 'react-router-dom';
+import DatePicker from 'react-datepicker';
+import { useSelector, useDispatch } from 'react-redux';
+import { getAllQuestions } from '../actions/questionAction';
+import { createTest, getTestDetails } from '../actions/testAction';
 
-import "react-datepicker/dist/react-datepicker.css";
-import SearchBox from "../utils/SearchBox";
+import 'react-datepicker/dist/react-datepicker.css';
+import SearchBox from '../utils/SearchBox';
+import { getAllGroup } from '../actions/groupAction';
 
 const TestCreate = ({ history }) => {
   const [show, setShow] = useState(false);
   const [_id, setID] = useState(null);
-  const [title, setTitle] = useState("");
-  const [subject, setSubject] = useState("");
-  const [duration, setDuration] = useState("");
+  const [title, setTitle] = useState('');
+  const [subject, setSubject] = useState('');
+  const [duration, setDuration] = useState('');
   const [selectedQuestions, setSelectedQuestions] = useState([]);
   const [isSnapshots, setSnapshots] = useState(false);
   const [isAudioRec, setAudioRec] = useState(false);
   const [startTime, setStartTime] = useState(new Date());
-  const [query, setQuery] = useState("");
-  const [category, setCategory] = useState("");
-  const [selectedFile, setSelectedFile] = useState("upload pdf");
-  const { questions } = useSelector((state) => state.questionList);
+  const [query, setQuery] = useState('');
+  const [category, setCategory] = useState('');
+  const [paperType, setPaperType] = useState(''); //New field Added
+  const [groupId, setGroupId] = useState(''); //New field Added
+  const [selectedFile, setSelectedFile] = useState('upload pdf');
+  const { questions } = useSelector(state => state.questionList);
   const [pdf, setPdf] = useState(null);
-  const { testPapers } = useSelector((state) => state.getTestPaper);
+
+  const { testPapers } = useSelector(state => state.getTestPaper);
+
+  const { loading, groups } = useSelector(state => state.groupList);
+
   const dispatch = useDispatch();
 
   const { testId } = useParams();
@@ -40,6 +47,8 @@ const TestCreate = ({ history }) => {
     if (!questions) {
       dispatch(getAllQuestions());
     }
+
+    if (!groups) dispatch(getAllGroup());
 
     async function getPaper() {
       const paper = await getTestDetails(testId);
@@ -58,13 +67,13 @@ const TestCreate = ({ history }) => {
     if (testId) getPaper();
   }, []);
 
-  const submitQuestionHandler = (e) => {
+  const submitQuestionHandler = e => {
     let arr = [...selectedQuestions];
 
     if (e.target.checked) {
       arr.push(e.target.value);
     } else {
-      arr = arr.filter((a) => a !== e.target.value);
+      arr = arr.filter(a => a !== e.target.value);
     }
 
     setSelectedQuestions(arr);
@@ -72,10 +81,10 @@ const TestCreate = ({ history }) => {
 
   const modalOpenHandler = () => {
     setShow(true);
-    setQuery("");
+    setQuery('');
   };
 
-  const changeHandler = (e) => {
+  const changeHandler = e => {
     e.preventDefault();
     setQuery(e.target.value);
     // let filtered = questions.filter(m => m.subject.toLowerCase().startsWith(query.toLowerCase()));
@@ -83,10 +92,10 @@ const TestCreate = ({ history }) => {
 
   const ques = !query
     ? questions
-    : questions.filter((q) =>
+    : questions.filter(q =>
         q.subject.toLowerCase().includes(query.toLocaleLowerCase())
       );
-  const fileInputHandler = (event) => {
+  const fileInputHandler = event => {
     setSelectedFile(event.target.files[0].name);
     const file = event.target.files[0];
     let reader = new FileReader();
@@ -95,7 +104,8 @@ const TestCreate = ({ history }) => {
     };
     reader.readAsDataURL(file);
   };
-  const submitHandler = (e) => {
+
+  const submitHandler = e => {
     e.preventDefault();
     startTime.setMilliseconds(0);
     startTime.setSeconds(0);
@@ -111,9 +121,11 @@ const TestCreate = ({ history }) => {
         isSnapshots,
         isAudioRec,
         startTime,
+        groupId,
+        paperType,
       })
     );
-    history.push("/tests/notConducted");
+    history.push('/tests/notConducted');
   };
   // console.log(category);
   return (
@@ -125,13 +137,41 @@ const TestCreate = ({ history }) => {
             <Form.Control
               as="select"
               value={category}
-              onChange={(e) => setCategory(e.target.value)}
+              onChange={e => setCategory(e.target.value)}
             >
               <option value="">Select Category</option>
               <option value="MCQ">MCQ</option>
               <option value="PDF">Subjective(pdf)</option>
             </Form.Control>
           </Form.Group>
+
+          <Form.Group controlId="PaperType">
+            <Form.Label>PaperType</Form.Label>
+            <Form.Control
+              as="select"
+              value={paperType}
+              onChange={e => setPaperType(e.target.value)}
+            >
+              <option value="">Select Paper-Type</option>
+              <option value="ORGANISATION">Organisation</option>
+              <option value="GROUP">Group Test</option>
+            </Form.Control>
+          </Form.Group>
+
+          <Form.Group controlId="group">
+            <Form.Label>Group</Form.Label>
+            <Form.Control
+              as="select"
+              disabled={paperType === '' || paperType === 'ORGANISATION'}
+              value={groupId}
+              onChange={e => setGroupId(e.target.value)}
+            >
+              <option value="">Select Group</option>
+              {groups &&
+                groups.map(g => <option value={g._id}>{g.groupName}</option>)}
+            </Form.Control>
+          </Form.Group>
+
           <Form.Group controlId="title">
             <Form.Label>
               <i className="fas fa-pen"></i> Title
@@ -141,7 +181,7 @@ const TestCreate = ({ history }) => {
               placeholder="Title..."
               type="text"
               value={title}
-              onChange={(e) => setTitle(e.target.value)}
+              onChange={e => setTitle(e.target.value)}
             />
           </Form.Group>
 
@@ -155,7 +195,7 @@ const TestCreate = ({ history }) => {
                 type="text"
                 placeholder="Subject"
                 value={subject}
-                onChange={(e) => setSubject(e.target.value)}
+                onChange={e => setSubject(e.target.value)}
               />
             </Form.Group>
             <Form.Group as={Col} md={2} controlId="duration">
@@ -169,7 +209,7 @@ const TestCreate = ({ history }) => {
                 placeholder="Select.."
                 value={duration}
                 aria-describedby="durationInMinute"
-                onChange={(e) => setDuration(e.target.value)}
+                onChange={e => setDuration(e.target.value)}
               />
               <Form.Text id="durationInMinute" muted>
                 Duration must be filled in term of minutes
@@ -183,13 +223,14 @@ const TestCreate = ({ history }) => {
               <br />
               <DatePicker
                 selected={startTime}
-                onChange={(date) => setStartTime(date)}
+                onChange={date => setStartTime(date)}
                 timeInputLabel="Time:"
                 dateFormat="MM/dd/yyyy h:mm aa"
                 showTimeInput
               />
             </Form.Group>
           </Form.Row>
+
           <Form.Check
             type="switch"
             id="custom-switch"
@@ -197,6 +238,7 @@ const TestCreate = ({ history }) => {
             checked={isSnapshots}
             onChange={() => setSnapshots(!isSnapshots)}
           />
+
           <Form.Check
             type="switch"
             id="audio-switch"
@@ -204,8 +246,10 @@ const TestCreate = ({ history }) => {
             checked={isAudioRec}
             onChange={() => setAudioRec(!isAudioRec)}
           />
+
           <br />
-          {category === "MCQ" ? (
+
+          {category === 'MCQ' ? (
             <Button
               variant="outline-primary"
               className="btn btn-block"
@@ -217,8 +261,8 @@ const TestCreate = ({ history }) => {
             <Form.File
               id="custom-file"
               label={selectedFile}
-              onChange={(e) => fileInputHandler(e)}
-              style={{ width: "50%" }}
+              onChange={e => fileInputHandler(e)}
+              style={{ width: '50%' }}
               custom
             />
           )}
@@ -228,7 +272,7 @@ const TestCreate = ({ history }) => {
             variant="outline-primary"
             type="submit"
             disabled={
-              selectedQuestions.length || category === "PDF" ? false : true
+              selectedQuestions.length || category === 'PDF' ? false : true
             }
           >
             Submit
@@ -291,12 +335,12 @@ const TestCreate = ({ history }) => {
                         value={question._id}
                         checked={
                           selectedQuestions.filter(
-                            (ques) => ques === question._id
+                            ques => ques === question._id
                           ).length
                             ? true
                             : false
                         }
-                        onChange={(e) => submitQuestionHandler(e)}
+                        onChange={e => submitQuestionHandler(e)}
                       />
                     </Col>
                   </Row>

@@ -42,4 +42,6 @@ const User = mongoose.model("User", userSchema);
 // exports.validateSignup = validateUserSignup;
 // exports.validateSignin = validateUserSignin;
 
-module.exports = User;
+module.exports = {
+  User
+}

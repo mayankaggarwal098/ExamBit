@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { Table, Row, Col, Button, Container, Modal, ListGroup } from 'react-bootstrap';
+import { Table, Button, Modal, ListGroup } from 'react-bootstrap';
 import { deleteQuestion } from '../actions/questionAction';
+import { pageLength } from '../constants/pageConstant';
 import { paginate } from '../utils/paginate';
 import Paginations from '../utils/Pagination';
 
@@ -9,7 +10,7 @@ const QuestionsTable = ({ questions }) => {
   const [show, setShow] = useState(false);
   const [pos, setIndex] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
-  const [pageSize, setPageSize] = useState(5);
+  const [pageSize, setPageSize] = useState(pageLength);
 
   const count = questions && questions.length;
   let ques = paginate(questions, currentPage, pageSize);
@@ -38,7 +39,13 @@ const QuestionsTable = ({ questions }) => {
 
   return (
     <>
-      <Table hover bordered striped responsive className="table-lg">
+      <Table
+        hover
+        bordered
+        striped
+        responsive
+        className="table-lg table-centered"
+      >
         <thead>
           <tr>
             <th>SUBJECT</th>
@@ -55,7 +62,11 @@ const QuestionsTable = ({ questions }) => {
                 <td>{question.questionBody}</td>
                 <td>{question.weightage}</td>
                 <td>
-                  <Button variant="primary" className="btn-sm" onClick={() => set(index)}>
+                  <Button
+                    variant="primary"
+                    className="btn-sm"
+                    onClick={() => set(index)}
+                  >
                     <i className="fas fa-info-circle"></i>
                   </Button>
                   &nbsp;
@@ -85,7 +96,9 @@ const QuestionsTable = ({ questions }) => {
           aria-labelledby="example-custom-modal-styling-title"
         >
           <Modal.Header closeButton style={{ textAlign: 'center' }}>
-            <Modal.Title id="example-custom-modal-styling-title">Question</Modal.Title>
+            <Modal.Title id="example-custom-modal-styling-title">
+              Question
+            </Modal.Title>
           </Modal.Header>
           <Modal.Body>
             <ListGroup variant="flush">
@@ -128,7 +141,8 @@ const QuestionsTable = ({ questions }) => {
                   <>
                     {opt.isAnswer && (
                       <>
-                        <strong key={index}>Option{index + 1}</strong>: {opt.optionBody}
+                        <strong key={index}>Option{index + 1}</strong>:{' '}
+                        {opt.optionBody}
                         ,&nbsp;
                       </>
                     )}

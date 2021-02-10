@@ -1,5 +1,5 @@
 const { Group, validateGroup } = require("../models/group");
-const User = require("../models/user");
+const {User} = require("../models/user");
 
 const createGroup = async( req,res )=> {
     const { error } = validateGroup(req.body);
@@ -42,11 +42,42 @@ const getAllGroup = async(req,res) => {
     const group = await User.findById(req.user._id).select('group').populate({
         path:'group'
     });
+
+    if( !group ) res.status(404).send("Group Doesn't exists");
     res.send(group);
+}
+
+const getStudentsInsideGroup = async( req, res) => {
+    const group = await Group.findById(req.body.groupId).select('students').populate({
+        path: 'students', select: {
+            name: 1,
+            email: 1
+        }
+    });
+
+    if( !group ) return res.status(404).send("Group Doesn't exists");
+    res.send(group.students)
+}
+
+const getTestPaperInsideGroup = async( req, res ) => {
+    const group = await Group.findById(req.body.groupId).select('tests').populate({
+        path: 'tests', 
+        populate:{
+            path: 'questions',
+            populate:{
+                path:'options'
+            }
+        }
+    })
+
+    if( !group ) return res.status(404).send("Group Doesn't exists");
+    res.send(group.tests);
 }
 
 module.exports = {
     createGroup,
     joinGroup,
-    getAllGroup
+    getAllGroup,
+    getStudentsInsideGroup,
+    getTestPaperInsideGroup
 }

@@ -1,5 +1,6 @@
 const express = require("express");
 const router = express.Router();
+const auth = require('../middleware/auth')
 const student = require("../services/student");
 
 router.post("/register", student.registerStudent);

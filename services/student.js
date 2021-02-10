@@ -1,4 +1,5 @@
-const { Student } = require("../models/studentRegistered");
+//const { Student } = require("../models/studentRegistered");
+const { User } = require("../models/user")
 const TestPaper = require("../models/testpaper");
 const Question = require("../models/question");
 const Options = require("../models/options");
@@ -6,11 +7,14 @@ const { sendMail } = require("./sendMail");
 const ResponseSheet = require("../models/responseSheet");
 const Response = require("../models/response");
 const { validateStudent } = require("./validation");
+const bcrypt = require('bcrypt')
+
 const registerStudent = async (req, res) => {
   const { error } = validateStudent(req.body);
   if (error) return res.status(400).send(error.details[0].message);
 
-  const { name, email, phoneNum, link, testId } = req.body;
+  // const { name, email, phoneNum, link, testId } = req.body;
+  const { email, password, link, testId } = req.body;
 
   const paper = await TestPaper.findOne({
     _id: testId,
@@ -19,11 +23,24 @@ const registerStudent = async (req, res) => {
   if (!paper)
     return res.status(422).send("Registration for this test has been closed");
 
-  let student = await Student.findOne({ email, testId });
-  if (student) return res.status(422).send("User already registered");
+  // let student = await Student.findOne({ email, testId });
+  // if (student) return res.status(422).send("User already registered");
 
-  student = new Student({ name, email, phoneNum, testId });
+  let student = await User.findOne({ email });
+  if (!student) return res.status(401).send("Invalid email or password");
+
+  const validPassword = await bcrypt.compare(password, student.password);
+  if (!validPassword) return res.status(401).send("Invalid email or password");
+
+  // student = await User.findOne({email, {testId: { $in:[testId]}});
+  const check = await User.find({email, testId:{$in:[testId]}})
+
+  if (check.length !== 0 ) return res.status(422).send("Student has Already Registered");
+  // student = new Student({ name, email, phoneNum, testId });
+  //await student.save();
+  student.testId.push(testId)
   await student.save();
+
   sendMail(
     email,
     "Registered Successfully",
@@ -51,7 +68,7 @@ const getTestQuestions = async (req, res) => {
 };
 
 const getStudent = async (req, res) => {
-  const student = await Student.findById(req.body.id);
+  const student = await User.findById(req.body.id);
   if (!student) return res.status(404).send("Student not exist");
 
   res.send(student);
@@ -59,13 +76,14 @@ const getStudent = async (req, res) => {
 
 const responseSheet = async (req, res) => {
   const { studentId, testId } = req.body;
-  const student = await Student.findOne({ _id: studentId, testId });
+
+  const student = await User.findOne({ _id: studentId });
   const paper = await TestPaper.findOne({
     _id: testId,
     isTestBegins: true,
     isTestConducted: false,
   });
-  console.log(student);
+
   if (!student || !paper) return res.status(404).send("Invalid Request");
 
   let responseSheet = await ResponseSheet.findOne({ studentId, testId });
@@ -167,7 +185,7 @@ const getTestCategory = async (req, res) => {
 
 const uploadPdfResponse = async (req, res) => {
   const { studentId, testId, pdf } = req.body;
-  const student = await Student.findOne({ _id: studentId, testId });
+  const student = await User.findOne({ _id: studentId, testId });
   const paper = await TestPaper.findOne({
     _id: testId,
     isTestBegins: true,
@@ -192,6 +210,14 @@ const getResponsePdf = async (req, res) => {
   res.send(responseSheet.pdf);
 };
 
+// const checkTestComplete = async (req, res) =>{
+//   const {testId, studentId} = req.body;
+//   const responseSheet = await ResponseSheet.findOne({studentId,testId}).select('isCompleted');
+//   if (!responseSheet) return res.send(false);
+
+//   res.send(responseSheet.isCompleted);
+// }
+
 module.exports = {
   getResponsePdf,
   uploadPdfResponse,
@@ -203,5 +229,5 @@ module.exports = {
   responseSheet,
   getStudent,
   registerStudent,
-  getTestQuestions,
+  getTestQuestions
 };

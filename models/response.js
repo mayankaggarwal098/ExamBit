@@ -14,7 +14,7 @@ const responseSchema = new mongoose.Schema({
   ],
   studentId: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "Student",
+    ref: "User",
   },
 });
 

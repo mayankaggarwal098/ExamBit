@@ -11,6 +11,7 @@ import {
   USER_REGISTER_REQUEST,
   USER_REGISTER_SUCCESS,
 } from '../constants/userConstanst';
+import { GROUP_RESET } from '../constants/groupConstant';
 import errorHandler from '../errorHandler';
 
 export const userRegister = async (newUser, history) => {
@@ -69,4 +70,5 @@ export const logout = () => async dispatch => {
   dispatch({ type: QUESTION_LIST_RESET });
   dispatch({ type: TEST_LIST_RESET });
   dispatch({ type: USER_LOGOUT });
+  dispatch({ type: GROUP_RESET });
 };

@@ -15,7 +15,6 @@ const Instruction = ({ history }) => {
   useEffect(() => {
     async function getTestTime() {
       const time = await startTestTime(testId);
-      console.log(time);
       setTestTime(time.startTime);
     }
     getTestTime();

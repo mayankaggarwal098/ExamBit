@@ -22,8 +22,9 @@ function validateSignin(user) {
 function validateStudent(student) {
   const schema = Joi.object({
     email: Joi.string().max(50).required().email(),
-    name: Joi.string().max(50).required(),
-    phoneNum: Joi.string().max(13).required(),
+    password: Joi.string().min(5).required(),
+    // name: Joi.string().max(50).required(),
+    // phoneNum: Joi.string().max(13).required(),
     testId: Joi.objectId().required(),
     link: Joi.any(),
   });
@@ -42,6 +43,8 @@ function validateCreateTest(testPaper) {
     isSnapshots: Joi.boolean().required(),
     isAudioRec: Joi.boolean().required(),
     startTime: Joi.date().required(),
+    paperType: Joi.string().required(),
+    groupId: Joi.any()
   });
   return schema.validate(testPaper);
 }

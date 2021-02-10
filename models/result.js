@@ -8,7 +8,7 @@ const resultSchema = new mongoose.Schema({
   },
   studentId: {
     type: ObjectId,
-    ref: "Student",
+    ref: "User",
     required: true,
   },
   responseSheet: {

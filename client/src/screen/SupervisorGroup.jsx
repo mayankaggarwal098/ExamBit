@@ -1,26 +1,23 @@
 import React, { useEffect, useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import { Button, Col, Container, Form, Modal, Row } from 'react-bootstrap';
 import { createGroup, getAllGroup } from '../actions/groupAction';
+import { GROUP_LIST_SUCCESS } from '../constants/groupConstant';
 import Group from '../component/Group';
 import Loader from '../utils/Loader';
 
 const SupervisorGroup = () => {
   const [show, setShow] = useState(false);
-  const [groups, setGroups] = useState([]);
   const [loader, setLoader] = useState(false);
   const [groupName, setGroupName] = useState('');
   const [groupCode, setGroupCode] = useState('');
 
-  useEffect(() => {
-    getTeam();
-  }, []);
+  const { loading, groups } = useSelector(state => state.groupList);
 
-  const getTeam = async () => {
-    setLoader(true);
-    const { group } = await getAllGroup();
-    setGroups(group);
-    setLoader(false);
-  };
+  const dispatch = useDispatch();
+  useEffect(() => {
+    if (!groups) dispatch(getAllGroup());
+  }, []);
 
   const createHandler = async () => {
     try {
@@ -30,7 +27,7 @@ const SupervisorGroup = () => {
       setGroupCode('');
       setLoader(false);
       const arr = [...groups, group];
-      setGroups(arr);
+      dispatch({ type: GROUP_LIST_SUCCESS, payload: arr });
     } catch (ex) {}
 
     setShow(false);
@@ -39,6 +36,7 @@ const SupervisorGroup = () => {
   return (
     <Container className="my-3">
       {loader && <Loader />}
+      {loading && <Loader />}
       <Row>
         <Col>
           <h3 style={{ color: 'black' }}>GROUPS</h3>

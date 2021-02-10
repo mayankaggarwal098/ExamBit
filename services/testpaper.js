@@ -1,5 +1,6 @@
 const Question = require("../models/question");
 const Result = require("../models/result");
+const { Group, validateGroup } = require("../models/group");
 const { Student } = require("../models/studentRegistered");
 const TestPaper = require("../models/testpaper");
 const { validateEditTest, validateCreateTest } = require("./validation");
@@ -18,6 +19,8 @@ const createEditTest = async (req, res) => {
     isSnapshots,
     isAudioRec,
     startTime,
+    paperType,
+    groupId
   } = req.body;
   const _id = req.body._id || null;
   if (_id != null) {
@@ -53,11 +56,28 @@ const createEditTest = async (req, res) => {
       questions: selectedQuestions,
       duration,
       createdBy: req.user._id,
+      isRegistrationAvailable: paperType==='GROUP' ? true: false,
       isSnapshots,
       startTime,
+      paperType,
       isAudioRec,
     });
+
     paper = await paper.save();
+    if( paperType === 'GROUP' ){
+      const group = await Group.findById(groupId);
+      if( !group ) return res.status(404).send('Group not Found');
+      group.tests.push(paper._id);
+      await group.save();
+    
+    } else{
+      
+      const user = req.user;
+      user.testId.push(paper._id);
+      await user.save();
+
+    }
+
     res.send(paper);
   }
 };

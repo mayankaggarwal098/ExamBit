@@ -96,7 +96,8 @@ const Register = ({ history }) => {
             </Button>
 
             <Row className="py-3 px-3">
-              ALREADY HAVE AN ACCOUNT ? &nbsp;&nbsp; <Link to="/login">SIGN IN</Link>
+              ALREADY HAVE AN ACCOUNT ? &nbsp;&nbsp;{' '}
+              <Link to="/login">SIGN IN</Link>
             </Row>
           </Form>
         </Col>

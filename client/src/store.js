@@ -34,6 +34,7 @@ import {
   updateSupervisorReducer,
 } from "./reducer/supervisorReducer";
 import { generateResultReducer } from "./reducer/generateResultReducer";
+import { groupListReducer } from "./reducer/groupReducer";
 
 const reducer = combineReducers({
   // register: registerReducer,
@@ -59,6 +60,7 @@ const reducer = combineReducers({
   supervisorReqList: getSupervisorReqReducer,
   // removeSupervisor: removeSupervisorReducer,
   updateSupervisor: updateSupervisorReducer,
+  groupList: groupListReducer
   // resultDownload: resultDownloadReducer
 });
 

@@ -1,14 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 import { Row, Col, Button, Container } from 'react-bootstrap';
 import { getNotConductedTestPaper } from '../actions/testAction';
+
 import Loader from '../utils/Loader';
 import TestTable from '../component/TestTable';
 
-const TestNotConductedList = ({ history }) => {
-  const { loading, error, notConductedTestPapers } = useSelector(state => state.getTestPaper);
+const TestNotConductedList = () => {
+  const { loading, error, notConductedTestPapers } = useSelector(
+    state => state.getTestPaper
+  );
+
   const { userInfo } = useSelector(state => state.userLogin);
   const dispatch = useDispatch();
+  const history = useHistory();
 
   useEffect(() => {
     if (!userInfo) {
@@ -39,7 +45,11 @@ const TestNotConductedList = ({ history }) => {
             </Button>
           </Col>
         </Row>
-        <TestTable testPapers={notConductedTestPapers} isShow={true} />
+        <TestTable
+          testPapers={notConductedTestPapers}
+          isShow={true}
+          deleteEdit={true}
+        />
       </Container>
     </>
   );

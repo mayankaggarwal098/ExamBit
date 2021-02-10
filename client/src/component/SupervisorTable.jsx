@@ -1,16 +1,16 @@
-import React, { useState, useEffect } from "react";
-import { Table, Row, Col, Button, Container } from "react-bootstrap";
-import { useSelector, useDispatch } from "react-redux";
+import React, { useState, useEffect } from 'react';
+import { Table, Row, Col, Button, Container } from 'react-bootstrap';
+import { useSelector, useDispatch } from 'react-redux';
 import {
   removeSupervisor,
   supervisorReqList,
-} from "../actions/supervisorAction";
-import { updateSupervisor } from "./../actions/supervisorAction";
+} from '../actions/supervisorAction';
+import { updateSupervisor } from './../actions/supervisorAction';
 
 const SupervisorTable = ({ supervisors, permission }) => {
   const dispatch = useDispatch();
-  const deleteHandler = (id) => {
-    if (window.confirm("Are you sure")) {
+  const deleteHandler = id => {
+    if (window.confirm('Are you sure')) {
       dispatch(removeSupervisor(supervisors, id, permission));
     }
   };
@@ -20,7 +20,7 @@ const SupervisorTable = ({ supervisors, permission }) => {
       <Container>
         <Row className="align-items-center">
           <Col>
-            <h3 style={{ color: "black" }}>Supervisor List</h3>
+            <h3 style={{ color: 'black' }}>Supervisor List</h3>
           </Col>
           {!permission && (
             <Col className="text-right">
@@ -33,7 +33,7 @@ const SupervisorTable = ({ supervisors, permission }) => {
             </Col>
           )}
         </Row>
-        <Table hover bordered striped responsive>
+        <Table hover bordered striped responsive className="table-centered">
           <thead>
             <tr>
               <th>NAME</th>
@@ -45,7 +45,7 @@ const SupervisorTable = ({ supervisors, permission }) => {
           <tbody>
             {supervisors &&
               supervisors.map((supervisor, index) => (
-                <tr key={supervisor._id} style={{ textAlign: "center" }}>
+                <tr key={supervisor._id} style={{ textAlign: 'center' }}>
                   <td>{supervisor.name}</td>
                   <td>{supervisor.email}</td>
                   <td>
