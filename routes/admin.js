@@ -9,5 +9,5 @@ router.get("/request/details/all", auth, adminAuth, admin.getAllReqSupervisor);
 //router.get("/details/:id", auth, adminAuth, admin.getSupervisor);
 router.delete("/remove/:id", auth, adminAuth, admin.removeSupervisor);
 router.post("/change/permission", auth, adminAuth, admin.updateSupervisorPerm);
-
+router.delete("/delete/media", auth, adminAuth, admin.deleteMedia);
 module.exports = router;

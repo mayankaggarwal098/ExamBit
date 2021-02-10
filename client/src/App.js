@@ -26,6 +26,7 @@ import SupervisorGroup from "./screen/SupervisorGroup";
 import StudentGroup from "./screen/StudentGroup";
 import TestSubmitted from "./screen/TestSubmitted";
 import GroupDetails from "./screen/GroupDetails";
+import DeleteMedia from "./screen/DeleteMedia";
 const App = () => {
   return (
     <BrowserRouter>
@@ -38,9 +39,9 @@ const App = () => {
         <Route path="/" component={HomeScreen} exact />
         <Route path="/questions" component={QuestionList} exact />
         <Route path="/pastTest" component={GivenTest} />
-        <Route path="/supervisor/groups/:id" component={GroupDetails} exact/>
+        <Route path="/supervisor/groups/:id" component={GroupDetails} exact />
         <Route path="/supervisor/groups" component={SupervisorGroup} />
-        <Route path="/student/groups/:id" component={GroupDetails} exact/>
+        <Route path="/student/groups/:id" component={GroupDetails} exact />
         <Route path="/student/groups" component={StudentGroup} />
 
         <Route path="/questions/create" component={QuestionCreate} />
@@ -67,6 +68,7 @@ const App = () => {
         <Route path="/student/test/audio" component={Audio} />
         <Route path="/student/test" component={Instruction} exact />
         <Route path="/supervisor/request" component={SupervisorReqList} />
+        <Route path="/supervisor/delete" component={DeleteMedia} />
         <Route path="/supervisor" component={SupervisorList} />
       </Switch>
     </BrowserRouter>

@@ -3,7 +3,7 @@ const Result = require("../models/result");
 const SubResult = require("../models/subResult");
 const TestPaper = require("../models/testpaper");
 const { generateExcel } = require("./generateExcel");
-
+//var Blob = require("blob");
 const generateResult = async (req, res) => {
   const { studentId, testId } = req.body;
 
@@ -156,17 +156,32 @@ const download = async (req, res) => {
   if (!paper) return res.status(404).send("Testpaper not found");
 
   const workbook = await generateExcel(testId);
-  const fileName = `result_${testId}.xlsx`;
+  // const fileName = `result_${testId}.xlsx`;
 
-  res.setHeader(
-    "Content-Type",
-    "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-  );
-  res.setHeader("Content-Disposition", "attachment; filename=" + fileName);
+  // res.setHeader(
+  //   "Content-Type",
+  //   "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+  // );
+  // res.setHeader("Content-Disposition", "attachment; filename=" + fileName);
 
-  await workbook.xlsx.writeFile(fileName);
-  //console.log(workbook);
-  res.end();
+  // await workbook.xlsx.writeFile(fileName);
+  // //console.log(workbook.xlsx.readFile);
+  // res.end();
+
+  // var buff = workbook.xlsx.writeBuffer().then(function (data) {
+  //   var blob = new Blob([data], {
+  //     type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+  //   });
+  //   saveAs(blob, "publications.xlsx");
+  // });
+  var buff = await workbook.xlsx.writeBuffer();
+  const str = buff.toString("base64");
+  //encode(buff);
+  //console.log(str);
+  //res.send(buff);
+  //res.write(buff, "binary");
+  //res.end(null, "binary");
+  res.send(str);
 };
 
 module.exports = {

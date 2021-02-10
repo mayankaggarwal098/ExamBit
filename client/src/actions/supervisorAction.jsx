@@ -1,10 +1,10 @@
-import * as s from '../constants/supervisorConstant';
-import http from '../utils/httpService';
-import { toast } from 'react-toastify';
-import errorHandler from '../errorHandler';
-import Token from '../utils/Token';
+import * as s from "../constants/supervisorConstant";
+import http from "../utils/httpService";
+import { toast } from "react-toastify";
+import errorHandler from "../errorHandler";
+import Token from "../utils/Token";
 
-export const supervisorList = () => async dispatch => {
+export const supervisorList = () => async (dispatch) => {
   try {
     dispatch({ type: s.SUPERVISOR_LIST_REQUEST });
     // const {
@@ -15,7 +15,10 @@ export const supervisorList = () => async dispatch => {
     //     'x-auth-token': `${userInfo.token}`,
     //   },
     // };
-    const { data } = await http.get('/api/supervisor/auth/details/all', Token());
+    const { data } = await http.get(
+      "/api/supervisor/auth/details/all",
+      Token()
+    );
 
     dispatch({
       type: s.SUPERVISOR_LIST_SUCCESS,
@@ -43,7 +46,10 @@ export const supervisorReqList = () => async (dispatch, getState) => {
     //     'x-auth-token': `${userInfo.token}`,
     //   },
     // };
-    const { data } = await http.get('/api/supervisor/request/details/all', Token());
+    const { data } = await http.get(
+      "/api/supervisor/request/details/all",
+      Token()
+    );
 
     dispatch({
       type: s.SUPERVISOR_REQ_LIST_SUCCESS,
@@ -61,7 +67,10 @@ export const supervisorReqList = () => async (dispatch, getState) => {
   }
 };
 
-export const removeSupervisor = (supervisors, id, permission) => async (dispatch, getState) => {
+export const removeSupervisor = (supervisors, id, permission) => async (
+  dispatch,
+  getState
+) => {
   try {
     // dispatch({ type: s.SUPERVISOR_REMOVE_REQUEST });
     // const {
@@ -78,7 +87,7 @@ export const removeSupervisor = (supervisors, id, permission) => async (dispatch
     //   type: s.SUPERVISOR_REMOVE_SUCCESS,
     // });
 
-    const arr = supervisors.filter(s => s._id !== id);
+    const arr = supervisors.filter((s) => s._id !== id);
     if (permission === true) {
       dispatch({ type: s.SUPERVISOR_LIST_SUCCESS, payload: arr });
     } else {
@@ -98,7 +107,10 @@ export const removeSupervisor = (supervisors, id, permission) => async (dispatch
   }
 };
 
-export const updateSupervisor = (supervisor, status) => async (dispatch, getState) => {
+export const updateSupervisor = (supervisor, status) => async (
+  dispatch,
+  getState
+) => {
   console.log(supervisor);
   const id = supervisor._id;
   try {
@@ -112,21 +124,25 @@ export const updateSupervisor = (supervisor, status) => async (dispatch, getStat
     //     'x-auth-token': `${userInfo.token}`,
     //   },
     // };
-    const { data } = await http.post(`/api/supervisor/change/permission`, { id, status }, Token());
+    const { data } = await http.post(
+      `/api/supervisor/change/permission`,
+      { id, status },
+      Token()
+    );
 
     dispatch({
       type: s.SUPERVISOR_UPDATEPERM_SUCCESS,
     });
 
     if (status === true) {
-      const arr = requests.filter(s => s._id !== id);
+      const arr = requests.filter((s) => s._id !== id);
       dispatch({ type: s.SUPERVISOR_REQ_LIST_SUCCESS, payload: arr });
       dispatch({
         type: s.SUPERVISOR_LIST_SUCCESS,
         payload: [...supervisors, supervisor],
       });
     } else {
-      const arr = supervisors.filter(s => s._id !== id);
+      const arr = supervisors.filter((s) => s._id !== id);
       dispatch({ type: s.SUPERVISOR_LIST_SUCCESS, payload: arr });
       dispatch({
         type: s.SUPERVISOR_REQ_LIST_SUCCESS,
@@ -144,4 +160,9 @@ export const updateSupervisor = (supervisor, status) => async (dispatch, getStat
     //       : ex.message,
     // });
   }
+};
+
+export const deleteMedia = async () => {
+  const { data } = await http.delete(`/api/supervisor/delete/media`, Token());
+  console.log(data);
 };

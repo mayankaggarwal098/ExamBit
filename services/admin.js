@@ -1,4 +1,6 @@
-const User = require("../models/user");
+const { User } = require("../models/user");
+const Snapshots = require("../models/snapshots");
+const AudioRec = require("../models/audio");
 
 const getAllAuthSupervisor = async (req, res) => {
   const supervisor = await User.find({
@@ -48,10 +50,21 @@ const updateSupervisorPerm = async (req, res) => {
   res.send("Supervisor Permission Updated");
 };
 
+const deleteMedia = async (req, res) => {
+  const date = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000);
+  console.log(date);
+  const snapshots = await Snapshots.deleteMany({ createdAt: { $lt: date } });
+  //console.log(snapshots);
+  const audioRec = await AudioRec.deleteMany({ createdAt: { $lt: date } });
+
+  res.send("Snapshots and Audio Recordings Deleted Successfully");
+};
+
 module.exports = {
   removeSupervisor,
   //getSupervisor,
   getAllAuthSupervisor,
   getAllReqSupervisor,
   updateSupervisorPerm,
+  deleteMedia,
 };

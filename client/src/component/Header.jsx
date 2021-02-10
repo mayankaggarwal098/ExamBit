@@ -71,6 +71,12 @@ const Header = () => {
                         &nbsp;REQUEST
                       </Nav.Link>
                     </LinkContainer>
+                    <LinkContainer to="/supervisor/delete">
+                      <Nav.Link>
+                        <i className="fas fa-list" />
+                        &nbsp;Delete Media
+                      </Nav.Link>
+                    </LinkContainer>
                   </>
                 )}
                 {userInfo && userInfo.category === "STUDENT" && (
