@@ -21,6 +21,7 @@ import {
   // registrationOpenReducer,
   // resultDownloadReducer,
   studentDetailReducer,
+  studentTestListReducer
   // studentRegistrationReducer,
 } from "./reducer/studentRegistrationReducer";
 import {
@@ -60,7 +61,8 @@ const reducer = combineReducers({
   supervisorReqList: getSupervisorReqReducer,
   // removeSupervisor: removeSupervisorReducer,
   updateSupervisor: updateSupervisorReducer,
-  groupList: groupListReducer
+  groupList: groupListReducer,
+  studentTestList: studentTestListReducer
   // resultDownload: resultDownloadReducer
 });
 

@@ -3,7 +3,7 @@ import { Table, Button } from 'react-bootstrap';
 import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 
-const StudentGroupTestTable = ({ testPapers, isShow }) => {
+const StudentTestTable = ({ testPapers, isShow, all }) => {
   const { userInfo } = useSelector(state => state.userLogin);
 
   const studentId = userInfo && userInfo._id;
@@ -27,12 +27,14 @@ const StudentGroupTestTable = ({ testPapers, isShow }) => {
   const enterhandler = testId => {
     history.push(`/student/test?testid=${testId}&studentid=${studentId}`);
   };
+
   return (
     <Table responsive hover bordered striped className="table-centered">
       <thead>
         <tr>
           <th>SUBJECT</th>
           <th>TITLE</th>
+          {all && <th>PAPERTYPE</th>}
           <th>DURATION(IN MIN)</th>
           <th>CATEGORY</th>
           {isShow ? (
@@ -51,6 +53,7 @@ const StudentGroupTestTable = ({ testPapers, isShow }) => {
             <tr key={test._id}>
               <td>{test.subject}</td>
               <td>{test.title}</td>
+              {all && <td>{test.paperType} TEST</td>}
               <td>{test.duration}</td>
               <td>{test.category}</td>
               {isShow ? (
@@ -84,4 +87,4 @@ const StudentGroupTestTable = ({ testPapers, isShow }) => {
   );
 };
 
-export default StudentGroupTestTable;
+export default StudentTestTable;

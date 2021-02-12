@@ -84,7 +84,6 @@ const Trainees = ({ id }) => {
             <th>SNo.</th>
             <th>STUDENT NAME</th>
             <th>EMAIL ID</th>
-            <th>MOBILE NO.</th>
             {paper && paper.category === 'PDF' && (
               <>
                 <th>Obtained Marks</th>
@@ -104,7 +103,6 @@ const Trainees = ({ id }) => {
                 <td>{index + 1}</td>
                 <td>{stud.name}</td>
                 <td>{stud.email}</td>
-                <td>{stud.phoneNum}</td>
                 {paper && paper.category === 'PDF' && (
                   <>
                     <td>

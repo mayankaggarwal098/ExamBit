@@ -73,3 +73,20 @@ export const registeredStudentListReducer = (state = {}, action) => {
       return state;
   }
 };
+
+export const studentTestListReducer = (state = {}, action) => {
+  switch (action.type) {
+    case student_reg.STUDENT_TEST_LIST_REQUEST:
+      return { loading: true };
+    case student_reg.STUDENT_TEST_LIST_SUCCESS:
+      return {
+        loading: false,
+        notGivenPaper: action.payload1,
+        givenPaper: action.payload2,
+      };
+    case student_reg.STUDENT_TEST_LIST_FAIL:
+      return { loading: false };
+    default:
+      return state;
+  }
+};

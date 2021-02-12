@@ -19,7 +19,8 @@ import Snapshots from "./screen/Snapshots";
 import HomeScreen from "./screen/HomeScreen";
 import TestConductedList from "./screen/TestConductedList";
 import TestNotConductedList from "./screen/TestNotConductedList";
-import GivenTest from "./screen/GivenTest";
+import StudentPrevTest from "./screen/StudentPrevTest";
+import StudentUpcomingTest from "./screen/StudentUpcomingTest";
 import Audio from "./screen/Audio";
 import Profile from "./screen/Profile";
 import SupervisorGroup from "./screen/SupervisorGroup";
@@ -38,7 +39,9 @@ const App = () => {
         <Route path="/profile" component={Profile} />
         <Route path="/" component={HomeScreen} exact />
         <Route path="/questions" component={QuestionList} exact />
-        <Route path="/pastTest" component={GivenTest} />
+        <Route path="/pastTest" component={StudentPrevTest} />
+        <Route path="/upcomingTest" component={StudentUpcomingTest} />
+
         <Route path="/supervisor/groups/:id" component={GroupDetails} exact />
         <Route path="/supervisor/groups" component={SupervisorGroup} />
         <Route path="/student/groups/:id" component={GroupDetails} exact />

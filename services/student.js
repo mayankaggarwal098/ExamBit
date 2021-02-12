@@ -218,6 +218,35 @@ const getResponsePdf = async (req, res) => {
 //   res.send(responseSheet.isCompleted);
 // }
 
+const getStudentAllTest = async(req, res) => {
+
+  const testPaper = await User.findById(req.user._id).select('testId group').populate('testId')
+                          .populate({
+                            path: 'group',
+                            select:{
+                              tests:1
+                            },
+                            populate:{
+                              path: 'tests',
+                              select:{
+                                isTestConducted: 1,
+                                title: 1,
+                                duration: 1,
+                                category: 1,
+                                paperType: 1,
+                                startTime: 1,
+                                subject: 1
+                              }
+                            }
+                          })
+  if( !testPaper ) return res.status(404).send('Tests Not Found');
+   
+  let grouptest = testPaper.group.map( t => t.tests)[1]
+  let organisationtest = testPaper.testId.map(t => t);
+
+  res.send([...grouptest, ...organisationtest]);
+}
+
 module.exports = {
   getResponsePdf,
   uploadPdfResponse,
@@ -229,5 +258,6 @@ module.exports = {
   responseSheet,
   getStudent,
   registerStudent,
-  getTestQuestions
+  getTestQuestions,
+  getStudentAllTest
 };

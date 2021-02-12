@@ -1,14 +1,14 @@
-import React from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { Nav, Navbar, Container, NavDropdown } from "react-bootstrap";
-import { LinkContainer } from "react-router-bootstrap";
-import { logout } from "../actions/userAction";
-import { useEffect } from "react";
+import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { Nav, Navbar, Container, NavDropdown } from 'react-bootstrap';
+import { LinkContainer } from 'react-router-bootstrap';
+import { logout } from '../actions/userAction';
+import { useEffect } from 'react';
 
 const Header = () => {
   const dispatch = useDispatch();
 
-  const { userInfo } = useSelector((state) => state.userLogin);
+  const { userInfo } = useSelector(state => state.userLogin);
 
   const logOutHandler = () => {
     dispatch(logout());
@@ -25,7 +25,7 @@ const Header = () => {
             <Navbar.Toggle aria-controls="responsive-navbar-nav" />
             <Navbar.Collapse id="responsive-navbar-nav">
               <Nav className="mr-auto">
-                {userInfo && userInfo.category === "SUPERVISOR" && (
+                {userInfo && userInfo.category === 'SUPERVISOR' && (
                   <>
                     <LinkContainer to="/questions">
                       <Nav.Link>
@@ -57,7 +57,7 @@ const Header = () => {
                     </LinkContainer>
                   </>
                 )}
-                {userInfo && userInfo.category === "ADMIN" && (
+                {userInfo && userInfo.category === 'ADMIN' && (
                   <>
                     <LinkContainer to="/supervisor">
                       <Nav.Link>
@@ -79,7 +79,7 @@ const Header = () => {
                     </LinkContainer>
                   </>
                 )}
-                {userInfo && userInfo.category === "STUDENT" && (
+                {userInfo && userInfo.category === 'STUDENT' && (
                   <>
                     <LinkContainer to="/practicePaper">
                       <Nav.Link>
@@ -93,7 +93,7 @@ const Header = () => {
                         &nbsp;PAST TEST
                       </Nav.Link>
                     </LinkContainer>
-                    <LinkContainer to="/Upcomingtest">
+                    <LinkContainer to="/upcomingTest">
                       <Nav.Link>
                         <i className="fas fa-list" />
                         &nbsp;UPCOMING TEST
@@ -149,7 +149,7 @@ const Header = () => {
             </Navbar.Collapse>
           </Container>
         </Navbar>
-      )}{" "}
+      )}{' '}
     </header>
   );
 };

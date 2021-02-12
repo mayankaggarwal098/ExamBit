@@ -1,26 +1,23 @@
 import React, { useEffect, useState } from 'react';
 import { Col, Container, Row, Table, Button } from 'react-bootstrap';
-import { studentsPrevPaper } from '../actions/studentRegistrationAction';
+import { useDispatch, useSelector } from 'react-redux';
+import { studentTestPaperList } from '../actions/studentRegistrationAction';
+import StudentTestTable from '../component/StudentGroupTestTable';
 import Loader from '../utils/Loader';
 
-const GivenTest = () => {
-  const [prevPaper, setPrevPaper] = useState([]);
-  const [loader, setLoader] = useState(true);
+const StudentPrevTest = () => {
+  const { loading, notGivenPaper } = useSelector(
+    state => state.studentTestList
+  );
 
+  const dispatch = useDispatch();
   useEffect(() => {
-    getPrevPaper();
+    if (!notGivenPaper) dispatch(studentTestPaperList());
   }, []);
-
-  const getPrevPaper = async () => {
-    setLoader(true);
-    const paper = await studentsPrevPaper();
-    setPrevPaper(paper);
-    setLoader(false);
-  };
 
   return (
     <Container>
-      {loader && <Loader />}
+      {loading && <Loader />}
       <Row className="align-items-center">
         <Col>
           <h3 style={{ color: 'black' }}>Previous Test</h3>
@@ -29,13 +26,14 @@ const GivenTest = () => {
           <Button
             variant="outline-primary"
             className="my-3"
-            onClick={() => getPrevPaper()}
+            onClick={() => dispatch(studentTestPaperList())}
           >
             <i className="fas fa-sync"></i>&nbsp;&nbsp;Reload
           </Button>
         </Col>
       </Row>
-      <Table hover bordered striped responsive style={{ textAlign: 'center' }}>
+      <StudentTestTable isShow={false} all={true} testPapers={notGivenPaper} />
+      {/* <Table hover bordered striped responsive style={{ textAlign: 'center' }}>
         <thead>
           <th>SNo.</th>
           <th>Title</th>
@@ -63,9 +61,9 @@ const GivenTest = () => {
               </tr>
             ))}
         </tbody>
-      </Table>
+      </Table> */}
     </Container>
   );
 };
 
-export default GivenTest;
+export default StudentPrevTest;

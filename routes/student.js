@@ -13,5 +13,6 @@ router.post("/test/start-time", student.getTestStartTime);
 router.post("/test/category", student.getTestCategory);
 router.post("/pdf/upload", student.uploadPdfResponse);
 router.post("/responseSheet/pdf", student.getResponsePdf);
+router.get("/alltest", auth, student.getStudentAllTest);
 //router.post("/test/pdf", student.getPdf);
 module.exports = router;

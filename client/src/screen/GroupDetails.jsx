@@ -5,7 +5,7 @@ import TestTable from '../component/TestTable';
 import { getGroupTestPaper } from '../actions/groupAction';
 import { useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import StudentGroupTestTable from '../component/StudentGroupTestTable';
+import StudentTestTable from '../component/StudentGroupTestTable';
 import Loader from '../utils/Loader';
 
 const GroupDetails = () => {
@@ -66,9 +66,10 @@ const GroupDetails = () => {
                     <i className="fas fa-sync"></i>&nbsp;&nbsp;Refresh
                   </Button>
                   {loader && <Loader />}
-                  <StudentGroupTestTable
+                  <StudentTestTable
                     testPapers={notConductedTestPaper}
                     isShow={true}
+                    all={false}
                   />
                 </div>
               ))}
@@ -95,9 +96,10 @@ const GroupDetails = () => {
                     <i className="fas fa-sync"></i>&nbsp;&nbsp;Refresh
                   </Button>
                   {loader && <Loader />}
-                  <StudentGroupTestTable
+                  <StudentTestTable
                     testPapers={conductedTestPaper}
                     isShow={false}
+                    all={false}
                   />
                 </div>
               ))}
