@@ -60,13 +60,17 @@ const StudentTestTable = ({ testPapers, isShow, all }) => {
                 <>
                   <td>Date - {test.startTime.substr(0, 10)}</td>
                   <td>
-                    <Button
-                      variant="outline-primary"
-                      className="btn-block"
-                      onClick={() => enterhandler(test._id)}
-                    >
-                      Enter
-                    </Button>
+                    {test.paperType === 'ORGANISATION' ? (
+                      'Check mail'
+                    ) : (
+                      <Button
+                        variant="outline-primary"
+                        className="btn-block"
+                        onClick={() => enterhandler(test._id)}
+                      >
+                        Enter
+                      </Button>
+                    )}
                   </td>
                 </>
               ) : (

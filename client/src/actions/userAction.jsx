@@ -2,6 +2,7 @@ import http from '../utils/httpService';
 import { toast } from 'react-toastify';
 import { QUESTION_LIST_RESET } from '../constants/questionConstant';
 import { TEST_LIST_RESET } from '../constants/testConstant';
+import { STUDENT_TEST_LIST_RESET } from '../constants/studentRegistrationConstant';
 import {
   USER_LOGIN_FAIL,
   USER_LOGIN_REQUEST,
@@ -71,4 +72,5 @@ export const logout = () => async dispatch => {
   dispatch({ type: TEST_LIST_RESET });
   dispatch({ type: USER_LOGOUT });
   dispatch({ type: GROUP_RESET });
+  dispatch({ type: STUDENT_TEST_LIST_RESET });
 };

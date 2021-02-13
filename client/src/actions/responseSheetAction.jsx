@@ -15,6 +15,7 @@ export const responseSheetOfStudent = async ({ studentId, testId }) => {
 
     // dispatch({ type: res_sheet.STUDENT_RESPONSE_SHEET_SUCCESS });
     toast.success(data);
+    return data;
   } catch (ex) {
     errorHandler(ex);
     // dispatch({

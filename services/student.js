@@ -86,7 +86,12 @@ const responseSheet = async (req, res) => {
 
   if (!student || !paper) return res.status(404).send("Invalid Request");
 
-  let responseSheet = await ResponseSheet.findOne({ studentId, testId });
+  let responseSheet = await ResponseSheet.findOne({ studentId, testId }).select('responses').populate({
+    path: 'responses',
+    select: {
+      chosenOption: 1
+    }
+  });
 
   if (responseSheet) return res.send(responseSheet);
   let responses = null;
@@ -240,11 +245,15 @@ const getStudentAllTest = async(req, res) => {
                             }
                           })
   if( !testPaper ) return res.status(404).send('Tests Not Found');
-   
-  let grouptest = testPaper.group.map( t => t.tests)[1]
+  
   let organisationtest = testPaper.testId.map(t => t);
 
-  res.send([...grouptest, ...organisationtest]);
+  if( testPaper.group.length ){
+    let grouptest = testPaper.group.map( t => t.tests)
+    grouptest = [].concat(...grouptest)
+    res.send([...grouptest,...organisationtest]);
+  }
+  else res.send(organisationtest);
 }
 
 module.exports = {

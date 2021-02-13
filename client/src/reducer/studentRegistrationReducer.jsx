@@ -86,6 +86,8 @@ export const studentTestListReducer = (state = {}, action) => {
       };
     case student_reg.STUDENT_TEST_LIST_FAIL:
       return { loading: false };
+    case student_reg.STUDENT_TEST_LIST_RESET:
+      return {};
     default:
       return state;
   }

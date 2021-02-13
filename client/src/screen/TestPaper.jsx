@@ -38,6 +38,7 @@ const TestPaper = ({ history }) => {
   const [flag, setFlag] = useState(true);
   const [selectedFile, setSelectedFile] = useState('upload pdf');
   const [responsePdf, setResponsePdf] = useState(null);
+  const [submitRespose, setSubmitResponse] = useState([]);
   // const [testCategory, setTestCategory] = useState("");
   const pdf = useRef(null);
   const testCategory = useRef('');
@@ -56,7 +57,11 @@ const TestPaper = ({ history }) => {
 
       dispatch(getSinglePaper(testId));
       async function responseSheet() {
-        await responseSheetOfStudent({ testId, studentId });
+        const res = await responseSheetOfStudent({ testId, studentId });
+        // let response = res.responses.map(r => [...r.chosenOption]);
+        // response = [].concat(...response);
+        // console.log(response);
+        // setSubmitResponse(response);
       }
       responseSheet();
     }
@@ -155,6 +160,8 @@ const TestPaper = ({ history }) => {
     const temp = [...answer];
     for (var i = 0; i < answer.length; i++) saveAnswer.push(answer[i]);
     setSaveAnswer(saveAnswer);
+
+    console.log(answer);
     await addAnswerForGivenQuestion({
       testId,
       studentId,
@@ -261,6 +268,8 @@ const TestPaper = ({ history }) => {
                           value={opt._id}
                           label={opt.optionBody}
                           checked={
+                            // submitRespose.filter(s => s === opt._id).length
+                            //   ? true
                             saveAnswer.filter(ans => ans === opt._id).length
                               ? true
                               : answer.filter(a => a === opt._id).length

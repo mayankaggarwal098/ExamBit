@@ -6,13 +6,11 @@ import StudentTestTable from '../component/StudentGroupTestTable';
 import Loader from '../utils/Loader';
 
 const StudentPrevTest = () => {
-  const { loading, notGivenPaper } = useSelector(
-    state => state.studentTestList
-  );
+  const { loading, givenPaper } = useSelector(state => state.studentTestList);
 
   const dispatch = useDispatch();
   useEffect(() => {
-    if (!notGivenPaper) dispatch(studentTestPaperList());
+    if (!givenPaper) dispatch(studentTestPaperList());
   }, []);
 
   return (
@@ -32,7 +30,7 @@ const StudentPrevTest = () => {
           </Button>
         </Col>
       </Row>
-      <StudentTestTable isShow={false} all={true} testPapers={notGivenPaper} />
+      <StudentTestTable isShow={false} all={true} testPapers={givenPaper} />
       {/* <Table hover bordered striped responsive style={{ textAlign: 'center' }}>
         <thead>
           <th>SNo.</th>
