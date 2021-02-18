@@ -22,11 +22,13 @@ const StudentGroup = () => {
     try {
       setLoader(true);
       const group = await joinGroup(groupCode);
-      setGroupCode('');
+      if (group) {
+        setGroupCode('');
 
-      const arr = [...groups, group];
+        const arr = [...groups, group];
+        dispatch({ type: GROUP_LIST_SUCCESS, payload: arr });
+      }
       setLoader(false);
-      dispatch({ type: GROUP_LIST_SUCCESS, payload: arr });
     } catch (ex) {}
 
     setShow(false);

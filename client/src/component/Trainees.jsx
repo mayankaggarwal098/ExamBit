@@ -154,6 +154,12 @@ const Trainees = ({ id }) => {
                 <td>
                   <Button
                     variant="outline-danger"
+                    disabled={
+                      notConductedTestPapers &&
+                      notConductedTestPapers.map(
+                        p => p._id === id && !p.isTestConducted
+                      )
+                    }
                     onClick={() => snapshotHandler(stud._id)}
                   >
                     SnapShot
@@ -162,6 +168,12 @@ const Trainees = ({ id }) => {
                 <td>
                   <Button
                     variant="outline-danger"
+                    disabled={
+                      notConductedTestPapers &&
+                      notConductedTestPapers.map(
+                        p => p._id === id && !p.isTestConducted
+                      )
+                    }
                     onClick={() => audioHandler(stud._id)}
                   >
                     Audio

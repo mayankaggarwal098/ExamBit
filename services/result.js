@@ -90,16 +90,23 @@ const generateResult = async (req, res) => {
   res.send(resultdata);
 };
 
-// const getAllResults = async (req, res) => {
-//   const { testId } = req.body;
-//   const results = await Result.find({ testId })
-//     .select("score studentId")
-//     .populate("studentId");
-//   if (results.length === 0) {
-//     return res.status(400).send("Invalid TestId");
-//   }
-//   return results;
-// };
+const getStudentResults = async (req, res) => {
+  const { studentId } = req.body;
+  const results = await Result.find({ studentId }).select("score maxMarks testId").populate({
+    path: 'testId',
+    select: {
+      title:1,
+      subject:1,
+      paperType:1,
+      startTime: 1,
+    }
+  });
+  // if (results.length === 0) {
+  //   return res.status(400).send("Invalid TestId");
+  // }
+
+  res.send(results);
+};
 
 // const getDetailedResult = async (req, res) => {
 //   const { studentId, testId } = req.body;
@@ -135,10 +142,11 @@ const generateResultPdf = async (req, res) => {
 
 const getScore = async (req, res) => {
   const { testId } = req.body;
-  const result = await Result.find({ testId }).select("score studentId");
+  const result = await Result.find({ testId }).select("score studentId maxMarks");
   //if (!result) return res.status(404).send("Result Not found");
   res.send(result);
 };
+
 const editScore = async (req, res) => {
   const { testId, studentId, score } = req.body;
   const result = await Result.findOneAndUpdate(
@@ -188,6 +196,7 @@ module.exports = {
   download,
   generateResult,
   generateResultPdf,
+  getStudentResults,
   getScore,
   editScore,
 };

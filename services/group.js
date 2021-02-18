@@ -27,7 +27,7 @@ const joinGroup = async(req,res) => {
     if( !user ) return res.status(404).send('User Not found');
     
     let group = await Group.findOne({ groupCode: req.body.groupCode});
-    if( !group ) return res.status(404).send("Group doesn't Exist");
+    if( !group ) return res.send("Group doesn't Exist");
 
     group.students.push(req.user._id);
     group = await group.save();

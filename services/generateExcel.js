@@ -12,7 +12,7 @@ const generateExcel = async (testId) => {
   //   maxMarks += m.weightage;
   // });
   const result = await Result.find({ testId })
-    .select("score studentId testId")
+    .select("score studentId testId maxMarks")
     .populate("studentId testId");
   const worksheet = workbook.addWorksheet("Results", {
     pageSetup: { paperSize: 9, orientation: "landscape" },

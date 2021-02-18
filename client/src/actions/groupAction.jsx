@@ -37,7 +37,9 @@ export const joinGroup = async groupCode => {
       { groupCode },
       Token()
     );
-    return data;
+
+    if (typeof data === 'string') toast.info(data);
+    else return data;
   } catch (ex) {
     errorHandler(ex);
   }

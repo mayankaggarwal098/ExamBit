@@ -69,7 +69,7 @@ const StudentResult = () => {
             </tr> */}
             <tr>
               <td>
-                <strong>MARKS(out of 10) </strong>
+                <strong>MARKS(out of {result ? result.maxMarks : 0}) </strong>
               </td>
               <td>
                 {result === 'Not Attempt' ? 'NIL' : result && result.score}

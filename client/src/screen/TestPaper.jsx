@@ -34,11 +34,13 @@ const TestPaper = ({ history }) => {
   const [saveAnswer, setSaveAnswer] = useState([]);
   const [questionNumber, setQuestionNumber] = useState(1);
   const [record, setRecord] = useState(false);
+
   let { paper } = useSelector(state => state.singleTestPaper);
+
   const [flag, setFlag] = useState(true);
+
   const [selectedFile, setSelectedFile] = useState('upload pdf');
   const [responsePdf, setResponsePdf] = useState(null);
-  const [submitRespose, setSubmitResponse] = useState([]);
   // const [testCategory, setTestCategory] = useState("");
   const pdf = useRef(null);
   const testCategory = useRef('');
@@ -46,7 +48,7 @@ const TestPaper = ({ history }) => {
 
   useEffect(() => {
     window.dispatchEvent(new CustomEvent('navigationhandler'));
-    if (!paper) {
+    if (!paper || paper._id !== testId) {
       // let category;
       // async function getCategory() {
       //   testCategory.current = await getTestCategory(testId);
@@ -58,10 +60,12 @@ const TestPaper = ({ history }) => {
       dispatch(getSinglePaper(testId));
       async function responseSheet() {
         const res = await responseSheetOfStudent({ testId, studentId });
-        // let response = res.responses.map(r => [...r.chosenOption]);
-        // response = [].concat(...response);
-        // console.log(response);
-        // setSubmitResponse(response);
+
+        if (typeof res !== 'string') {
+          let response = res.responses.map(r => [...r.chosenOption]);
+          response = [].concat(...response);
+          setSaveAnswer(response);
+        }
       }
       responseSheet();
     }
@@ -268,8 +272,6 @@ const TestPaper = ({ history }) => {
                           value={opt._id}
                           label={opt.optionBody}
                           checked={
-                            // submitRespose.filter(s => s === opt._id).length
-                            //   ? true
                             saveAnswer.filter(ans => ans === opt._id).length
                               ? true
                               : answer.filter(a => a === opt._id).length
@@ -371,8 +373,9 @@ const TestPaper = ({ history }) => {
           </Row>
           <Row style={{ position: 'center' }}>
             {arr &&
-              arr.map(a => (
+              arr.map((a, index) => (
                 <div
+                  key={index}
                   className="box"
                   style={{
                     backgroundColor: `${
