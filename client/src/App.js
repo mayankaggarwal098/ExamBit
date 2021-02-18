@@ -28,6 +28,10 @@ import StudentGroup from "./screen/StudentGroup";
 import TestSubmitted from "./screen/TestSubmitted";
 import GroupDetails from "./screen/GroupDetails";
 import DeleteMedia from "./screen/DeleteMedia";
+import AssignmentNotConductedList from "./screen/AssignmentNotConducted";
+import AssignmentConductedList from "./screen/AssignmentConducted";
+import StudentPrevAssignment from "./screen/StudentPrevAssignment";
+import StudentUpcomingAssignment from "./screen/StudentUpcomingAssignment";
 const App = () => {
   return (
     <BrowserRouter>
@@ -41,6 +45,11 @@ const App = () => {
         <Route path="/questions" component={QuestionList} exact />
         <Route path="/pastTest" component={StudentPrevTest} />
         <Route path="/upcomingTest" component={StudentUpcomingTest} />
+        <Route path="/past-assignment" component={StudentPrevAssignment} />
+        <Route
+          path="/upcoming-assignment"
+          component={StudentUpcomingAssignment}
+        />
 
         <Route path="/supervisor/groups/:id" component={GroupDetails} exact />
         <Route path="/supervisor/groups" component={SupervisorGroup} />
@@ -55,7 +64,17 @@ const App = () => {
           component={TestNotConductedList}
           exact
         />
+        <Route
+          path="/assignment/notConducted"
+          component={AssignmentNotConductedList}
+          exact
+        />
         <Route path="/tests/conducted" component={TestConductedList} exact />
+        <Route
+          path="/assignment/conducted"
+          component={AssignmentConductedList}
+          exact
+        />
         <Route
           path="/student/registration/test/:id/emailsent"
           component={EmailNotification}

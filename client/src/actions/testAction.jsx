@@ -47,7 +47,7 @@ export const getNotConductedTestPaper = () => async (dispatch) => {
     // };
 
     const { data } = await http.get("/api/test/details/all", Token());
-
+    console.log(data);
     dispatch({
       type: test.TEST_LIST_SUCCESS,
       payload1: data,
@@ -63,15 +63,69 @@ export const getNotConductedTestPaper = () => async (dispatch) => {
     // });
   }
 };
+export const getNotConductedAssignment = () => async (dispatch) => {
+  try {
+    // dispatch({ type: test.TEST_LIST_REQUEST });
+    // const {
+    //   userLogin: { userInfo },
+    // } = getState();
+    // const config = {
+    //   headers: {
+    //     'x-auth-token': `${userInfo.token}`,
+    //   },
+    // };
 
-export const getConductedTestPaper = () => async (dispatch) => {
+    const { data } = await http.get(
+      "/api/test/assignment/details/all",
+      Token()
+    );
+    console.log(data);
+    dispatch({
+      type: test.TEST_LIST_SUCCESS,
+      payload3: data,
+    });
+  } catch (ex) {
+    errorHandler(ex);
+    // dispatch({
+    //   type: test.TEST_LIST_FAIL,
+    //   payload:
+    //     ex.response && ex.response.data.message
+    //       ? ex.response.data.message
+    //       : ex.message,
+    // });
+  }
+};
+
+export const getConductedTestPaper = () => async (dispatch, getState) => {
   try {
     dispatch({ type: test.TEST_LIST_REQUEST });
     const { data } = await http.get("/api/test/conducted/details/all", Token());
-
+    // const {
+    //   getTestPaper: { notConductedTestPapers },
+    // } = getState();
     dispatch({
       type: test.TEST_LIST_SUCCESS,
+      //payload1: notConductedTestPapers,
       payload2: data,
+    });
+  } catch (ex) {
+    errorHandler(ex);
+  }
+};
+export const getConductedAssignment = () => async (dispatch, getState) => {
+  try {
+    dispatch({ type: test.TEST_LIST_REQUEST });
+    const { data } = await http.get(
+      "/api/test/assignment/conducted/details/all",
+      Token()
+    );
+    // const {
+    //   getTestPaper: { notConductedTestPapers },
+    // } = getState();
+    dispatch({
+      type: test.TEST_LIST_SUCCESS,
+      //payload1: notConductedTestPapers,
+      payload4: data,
     });
   } catch (ex) {
     errorHandler(ex);
@@ -266,3 +320,16 @@ export const getTestCategory = async (testId) => {
 //     errorHandler(ex);
 //   }
 // };
+
+export const getScoreOfAllStudents = async (testId) => {
+  try {
+    const { data } = await http.post(
+      "/api/result/all/score",
+      { testId },
+      Token()
+    );
+    return data;
+  } catch (ex) {
+    errorHandler(ex);
+  }
+};

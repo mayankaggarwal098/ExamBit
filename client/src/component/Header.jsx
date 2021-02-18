@@ -1,14 +1,14 @@
-import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { Nav, Navbar, Container, NavDropdown } from 'react-bootstrap';
-import { LinkContainer } from 'react-router-bootstrap';
-import { logout } from '../actions/userAction';
-import { useEffect } from 'react';
+import React from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Nav, Navbar, Container, NavDropdown } from "react-bootstrap";
+import { LinkContainer } from "react-router-bootstrap";
+import { logout } from "../actions/userAction";
+import { useEffect } from "react";
 
 const Header = () => {
   const dispatch = useDispatch();
 
-  const { userInfo } = useSelector(state => state.userLogin);
+  const { userInfo } = useSelector((state) => state.userLogin);
 
   const logOutHandler = () => {
     dispatch(logout());
@@ -25,7 +25,7 @@ const Header = () => {
             <Navbar.Toggle aria-controls="responsive-navbar-nav" />
             <Navbar.Collapse id="responsive-navbar-nav">
               <Nav className="mr-auto">
-                {userInfo && userInfo.category === 'SUPERVISOR' && (
+                {userInfo && userInfo.category === "SUPERVISOR" && (
                   <>
                     <LinkContainer to="/questions">
                       <Nav.Link>
@@ -49,6 +49,21 @@ const Header = () => {
                         </NavDropdown.Item>
                       </LinkContainer>
                     </NavDropdown>
+                    <NavDropdown title="All Assignment" id="assignment">
+                      <LinkContainer to="/assignment/notConducted">
+                        <NavDropdown.Item>
+                          <i className="fas fa-paper-plane"></i>
+                          &nbsp;Assignment Not Conducted
+                        </NavDropdown.Item>
+                      </LinkContainer>
+
+                      <LinkContainer to="/assignment/conducted">
+                        <NavDropdown.Item>
+                          <i className="fas fa-paper-plane"></i>
+                          &nbsp;Assignment Conducted
+                        </NavDropdown.Item>
+                      </LinkContainer>
+                    </NavDropdown>
                     <LinkContainer to="/supervisor/groups">
                       <Nav.Link>
                         <i className="fa fa-users"></i>
@@ -57,7 +72,7 @@ const Header = () => {
                     </LinkContainer>
                   </>
                 )}
-                {userInfo && userInfo.category === 'ADMIN' && (
+                {userInfo && userInfo.category === "ADMIN" && (
                   <>
                     <LinkContainer to="/supervisor">
                       <Nav.Link>
@@ -79,7 +94,7 @@ const Header = () => {
                     </LinkContainer>
                   </>
                 )}
-                {userInfo && userInfo.category === 'STUDENT' && (
+                {userInfo && userInfo.category === "STUDENT" && (
                   <>
                     <LinkContainer to="/practicePaper">
                       <Nav.Link>
@@ -97,6 +112,18 @@ const Header = () => {
                       <Nav.Link>
                         <i className="fas fa-list" />
                         &nbsp;UPCOMING TEST
+                      </Nav.Link>
+                    </LinkContainer>
+                    <LinkContainer to="/past-assignment">
+                      <Nav.Link>
+                        <i className="fas fa-list" />
+                        &nbsp;PAST ASSIGNMENT
+                      </Nav.Link>
+                    </LinkContainer>
+                    <LinkContainer to="/upcoming-assignment">
+                      <Nav.Link>
+                        <i className="fas fa-list" />
+                        &nbsp;ASSIGNED ASSIGNMENT
                       </Nav.Link>
                     </LinkContainer>
                     <LinkContainer to="/student/groups">
@@ -149,7 +176,7 @@ const Header = () => {
             </Navbar.Collapse>
           </Container>
         </Navbar>
-      )}{' '}
+      )}{" "}
     </header>
   );
 };

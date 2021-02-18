@@ -1,4 +1,4 @@
-import * as student_reg from '../constants/studentRegistrationConstant';
+import * as student_reg from "../constants/studentRegistrationConstant";
 
 // export const studentRegistrationReducer = (state = {}, action) => {
 //   switch (action.type) {
@@ -83,6 +83,8 @@ export const studentTestListReducer = (state = {}, action) => {
         loading: false,
         notGivenPaper: action.payload1,
         givenPaper: action.payload2,
+        notGivenAssignment: action.payload3,
+        givenAssignment: action.payload4,
       };
     case student_reg.STUDENT_TEST_LIST_FAIL:
       return { loading: false };

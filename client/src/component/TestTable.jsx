@@ -1,23 +1,28 @@
-import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { useHistory } from 'react-router-dom';
-import { Table, Button, Container, Modal, Tab, Tabs } from 'react-bootstrap';
-import QuestionPaper from '../component/QuestionPaper';
-import QuestionDetails from '../component/QuestionDetails';
+import React, { useState } from "react";
+import { useDispatch } from "react-redux";
+import { useHistory } from "react-router-dom";
+import { Table, Button, Container, Modal, Tab, Tabs } from "react-bootstrap";
+import QuestionPaper from "../component/QuestionPaper";
+import QuestionDetails from "../component/QuestionDetails";
 import {
   testBegin,
   testEndByTeacher,
   testPaperDelete,
-} from '../actions/testAction';
-import { openRegistrationforTest } from '../actions/studentRegistrationAction';
-import { paginate } from '../utils/paginate';
-import { pageLength } from '../constants/pageConstant';
-import Paginations from '../utils/Pagination';
-import Statistics from '../component/Statistics';
-import Trainees from '../component/Trainees';
-import Timer from '../utils/Timer';
+} from "../actions/testAction";
+import { openRegistrationforTest } from "../actions/studentRegistrationAction";
+import { paginate } from "../utils/paginate";
+import { pageLength } from "../constants/pageConstant";
+import Paginations from "../utils/Pagination";
+import Statistics from "../component/Statistics";
+import Trainees from "../component/Trainees";
+import Timer from "../utils/Timer";
 
-const TestTable = ({ testPapers, isShow, deleteEdit }) => {
+const TestTable = ({
+  testPapers,
+  isShow,
+  deleteEdit,
+  isAssignment = false,
+}) => {
   const [show, setShow] = useState(false);
   const [pos, setIndex] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
@@ -26,23 +31,23 @@ const TestTable = ({ testPapers, isShow, deleteEdit }) => {
 
   const dispatch = useDispatch();
 
-  const handlePageChange = page => {
+  const handlePageChange = (page) => {
     setCurrentPage(page);
   };
-
+  console.log(isAssignment);
   let testPaperSheet = paginate(testPapers, currentPage, pageSize);
 
   const [totalCount, setTotalCount] = useState(count);
 
-  const set = index => {
+  const set = (index) => {
     setShow(true);
     setIndex(index);
   };
 
-  const deleteHandler = id => {
-    if (window.confirm('Are you sure')) {
+  const deleteHandler = (id) => {
+    if (window.confirm("Are you sure")) {
       dispatch(testPaperDelete(testPapers, id, isShow));
-      setTotalCount(totalCount => totalCount - 1);
+      setTotalCount((totalCount) => totalCount - 1);
       let currPage = Math.floor((totalCount - 1) / pageSize);
       setCurrentPage(currPage);
       testPaperSheet = paginate(testPapers, currentPage, pageSize);
@@ -54,12 +59,12 @@ const TestTable = ({ testPapers, isShow, deleteEdit }) => {
     dispatch(openRegistrationforTest({ testPapers, id, status }));
   };
 
-  const endTest = id => {
+  const endTest = (id) => {
     dispatch(testEndByTeacher(testPaperSheet, id));
   };
 
   const history = useHistory();
-  const editTestPaper = index => {
+  const editTestPaper = (index) => {
     history.push(`/tests/edit/${testPaperSheet[index]._id}`);
   };
 
@@ -75,7 +80,11 @@ const TestTable = ({ testPapers, isShow, deleteEdit }) => {
               <th>CREATED AT</th>
               {isShow && (
                 <>
-                  <th>REGISTRATION</th>
+                  {!isAssignment && (
+                    <>
+                      <th>REGISTRATION</th>
+                    </>
+                  )}
                   <th>START TEST</th>
                   <th>TIME LEFT</th>
                   {deleteEdit && <th>Edit Test</th>}
@@ -87,7 +96,7 @@ const TestTable = ({ testPapers, isShow, deleteEdit }) => {
           <tbody>
             {testPaperSheet &&
               testPaperSheet.map((test, index) => (
-                <tr key={test._id} style={{ textAlign: 'center' }}>
+                <tr key={test._id} style={{ textAlign: "center" }}>
                   <td>{test.subject}</td>
                   <td>{test.title}</td>
                   <td>{test.duration}</td>
@@ -101,27 +110,35 @@ const TestTable = ({ testPapers, isShow, deleteEdit }) => {
                   </td>
                   {!test.isTestConducted && (
                     <>
-                      <td>
-                        {test.paperType === 'GROUP' ? (
-                          'Not Required'
-                        ) : (
-                          <Button
-                            variant="outline-primary"
-                            className="btn btn-block"
-                            disabled={
-                              test.isTestBegins || test.paperType === 'GROUP'
-                            }
-                            onClick={() =>
-                              handleClick(
-                                test._id,
-                                test.isRegistrationAvailable
-                              )
-                            }
-                          >
-                            {test.isRegistrationAvailable ? 'Close' : 'Open'}
-                          </Button>
-                        )}
-                      </td>
+                      {!isAssignment && (
+                        <>
+                          <td>
+                            {test.paperType === "GROUP" ||
+                            test.paperType === "ASSIGNMENT" ? (
+                              "Not Required"
+                            ) : (
+                              <Button
+                                variant="outline-primary"
+                                className="btn btn-block"
+                                disabled={
+                                  test.isTestBegins ||
+                                  test.paperType === "GROUP"
+                                }
+                                onClick={() =>
+                                  handleClick(
+                                    test._id,
+                                    test.isRegistrationAvailable
+                                  )
+                                }
+                              >
+                                {test.isRegistrationAvailable
+                                  ? "Close"
+                                  : "Open"}
+                              </Button>
+                            )}
+                          </td>
+                        </>
+                      )}
                       <td>
                         <Button
                           variant="outline-primary"
@@ -140,6 +157,7 @@ const TestTable = ({ testPapers, isShow, deleteEdit }) => {
                           Start Test
                         </Button>
                       </td>
+
                       <td>
                         {test.isTestBegins
                           ? !test.isTestConducted && (
@@ -150,7 +168,7 @@ const TestTable = ({ testPapers, isShow, deleteEdit }) => {
                                 testId={test._id}
                               />
                             )
-                          : 'Not Started'}
+                          : "Not Started"}
                       </td>
                       {deleteEdit && (
                         <td>

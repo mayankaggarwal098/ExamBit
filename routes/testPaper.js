@@ -8,10 +8,22 @@ const test = require("../services/testpaper");
 router.post("/create", auth, supervisorAuth, test.createEditTest);
 router.get("/details/all", auth, supervisorAuth, test.getAllTests);
 router.get(
+  "/assignment/details/all",
+  auth,
+  supervisorAuth,
+  test.getAllAssignments
+);
+router.get(
   "/conducted/details/all",
   auth,
   supervisorAuth,
   test.getAllTestsConducted
+);
+router.get(
+  "/assignment/conducted/details/all",
+  auth,
+  supervisorAuth,
+  test.getAllAssignmentsConducted
 );
 router.get("/details/:id", auth, supervisorAuth, test.getDetailedTest);
 router.get("/get/:id", auth, supervisorAuth, test.getTest);

@@ -1,5 +1,5 @@
 //const { Student } = require("../models/studentRegistered");
-const { User } = require("../models/user")
+const { User } = require("../models/user");
 const TestPaper = require("../models/testpaper");
 const Question = require("../models/question");
 const Options = require("../models/options");
@@ -7,7 +7,7 @@ const { sendMail } = require("./sendMail");
 const ResponseSheet = require("../models/responseSheet");
 const Response = require("../models/response");
 const { validateStudent } = require("./validation");
-const bcrypt = require('bcrypt')
+const bcrypt = require("bcrypt");
 
 const registerStudent = async (req, res) => {
   const { error } = validateStudent(req.body);
@@ -33,12 +33,13 @@ const registerStudent = async (req, res) => {
   if (!validPassword) return res.status(401).send("Invalid email or password");
 
   // student = await User.findOne({email, {testId: { $in:[testId]}});
-  const check = await User.find({email, testId:{$in:[testId]}})
+  const check = await User.find({ email, testId: { $in: [testId] } });
 
-  if (check.length !== 0 ) return res.status(422).send("Student has Already Registered");
+  if (check.length !== 0)
+    return res.status(422).send("Student has Already Registered");
   // student = new Student({ name, email, phoneNum, testId });
   //await student.save();
-  student.testId.push(testId)
+  student.testId.push(testId);
   await student.save();
 
   sendMail(
@@ -86,12 +87,14 @@ const responseSheet = async (req, res) => {
 
   if (!student || !paper) return res.status(404).send("Invalid Request");
 
-  let responseSheet = await ResponseSheet.findOne({ studentId, testId }).select('responses').populate({
-    path: 'responses',
-    select: {
-      chosenOption: 1
-    }
-  });
+  let responseSheet = await ResponseSheet.findOne({ studentId, testId })
+    .select("responses")
+    .populate({
+      path: "responses",
+      select: {
+        chosenOption: 1,
+      },
+    });
 
   if (responseSheet) return res.send(responseSheet);
   let responses = null;
@@ -223,38 +226,49 @@ const getResponsePdf = async (req, res) => {
 //   res.send(responseSheet.isCompleted);
 // }
 
-const getStudentAllTest = async(req, res) => {
+const getStudentAllTest = async (req, res) => {
+  const testPaper = await User.findById(req.user._id)
+    .select("testId group")
+    .populate({
+      path: "testId",
+      select: {
+        isTestConducted: 1,
+        title: 1,
+        duration: 1,
+        category: 1,
+        paperType: 1,
+        startTime: 1,
+        subject: 1,
+      },
+    })
+    .populate({
+      path: "group",
+      select: {
+        tests: 1,
+      },
+      populate: {
+        path: "tests",
+        select: {
+          isTestConducted: 1,
+          title: 1,
+          duration: 1,
+          category: 1,
+          paperType: 1,
+          startTime: 1,
+          subject: 1,
+        },
+      },
+    });
+  if (!testPaper) return res.status(404).send("Tests Not Found");
 
-  const testPaper = await User.findById(req.user._id).select('testId group').populate('testId')
-                          .populate({
-                            path: 'group',
-                            select:{
-                              tests:1
-                            },
-                            populate:{
-                              path: 'tests',
-                              select:{
-                                isTestConducted: 1,
-                                title: 1,
-                                duration: 1,
-                                category: 1,
-                                paperType: 1,
-                                startTime: 1,
-                                subject: 1
-                              }
-                            }
-                          })
-  if( !testPaper ) return res.status(404).send('Tests Not Found');
-  
-  let organisationtest = testPaper.testId.map(t => t);
+  let organisationtest = testPaper.testId.map((t) => t);
 
-  if( testPaper.group.length ){
-    let grouptest = testPaper.group.map( t => t.tests)
-    grouptest = [].concat(...grouptest)
-    res.send([...grouptest,...organisationtest]);
-  }
-  else res.send(organisationtest);
-}
+  if (testPaper.group.length) {
+    let grouptest = testPaper.group.map((t) => t.tests);
+    grouptest = [].concat(...grouptest);
+    res.send([...grouptest, ...organisationtest]);
+  } else res.send(organisationtest);
+};
 
 module.exports = {
   getResponsePdf,
@@ -268,5 +282,5 @@ module.exports = {
   getStudent,
   registerStudent,
   getTestQuestions,
-  getStudentAllTest
+  getStudentAllTest,
 };

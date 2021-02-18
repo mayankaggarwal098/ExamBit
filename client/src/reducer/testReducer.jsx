@@ -1,4 +1,4 @@
-import * as test from '../constants/testConstant';
+import * as test from "../constants/testConstant";
 
 // export const testCreateReducer = (state = {}, action) => {
 //   switch (action.type) {
@@ -17,12 +17,23 @@ export const getTestPaperReducer = (state = {}, action) => {
   switch (action.type) {
     case test.TEST_LIST_REQUEST:
       return { loading: true };
-    case test.TEST_LIST_SUCCESS:
+    case test.TEST_LIST_SUCCESS: {
+      let notConductedTestPapers,
+        conductedTestPapers,
+        notConductedAssignment,
+        conductedAssignment;
+      if (action.payload1) notConductedTestPapers = action.payload1;
+      if (action.payload2) conductedTestPapers = action.payload2;
+      if (action.payload3) notConductedAssignment = action.payload3;
+      if (action.payload4) conductedAssignment = action.payload4;
       return {
         loading: false,
-        notConductedTestPapers: action.payload1,
-        conductedTestPapers: action.payload2,
+        notConductedTestPapers,
+        conductedTestPapers,
+        notConductedAssignment,
+        conductedAssignment,
       };
+    }
     case test.TEST_LIST_FAIL:
       return { loading: false, error: action.payload };
     case test.TEST_LIST_RESET:
