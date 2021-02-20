@@ -192,6 +192,19 @@ const download = async (req, res) => {
   res.send(str);
 };
 
+const getRankList = async(req,res)=>{
+  const{testId} = req.body;
+  const rankList = await Result.find({testId}).select('studentId score').sort('-score').populate({
+    path: 'studentId',
+    select:{
+      name: 1,
+      email: 1
+    }
+  })
+
+  res.send(rankList)
+}
+
 module.exports = {
   download,
   generateResult,
@@ -199,4 +212,5 @@ module.exports = {
   getStudentResults,
   getScore,
   editScore,
+  getRankList
 };

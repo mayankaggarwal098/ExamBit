@@ -28,9 +28,10 @@ const StudentResult = () => {
   useEffect(() => {
     window.dispatchEvent(new CustomEvent('navigationhandler'));
 
-    if (!paper) dispatch(getSinglePaper(testId));
+    if (!paper || paper._id != testId) dispatch(getSinglePaper(testId));
     if (!student) dispatch(getStudentDetail(studentId));
-    if (!result) dispatch(resultGenerate({ testId, studentId }));
+    if (!result || testId != result.testId)
+      dispatch(resultGenerate({ testId, studentId }));
   }, []);
 
   const set = index => {
@@ -69,10 +70,13 @@ const StudentResult = () => {
             </tr> */}
             <tr>
               <td>
-                <strong>MARKS(out of {result ? result.maxMarks : 0}) </strong>
+                <strong>
+                  MARKS(out of{' '}
+                  {result !== 'Not Attempt' ? result && result.maxMarks : 0}){' '}
+                </strong>
               </td>
               <td>
-                {result === 'Not Attempt' ? 'NIL' : result && result.score}
+                {result === 'Not Attempt' ? 'N/A' : result && result.score}
               </td>
             </tr>
           </tbody>

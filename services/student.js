@@ -108,6 +108,7 @@ const responseSheet = async (req, res) => {
         questionId: id,
         chosenOption: [],
         studentId,
+        testId,
       };
     });
     responses = await Response.insertMany(responses);
@@ -140,9 +141,10 @@ const updateResponse = async (req, res) => {
   //   paper.duration * 60000 - (currentDate - responseSheet.startTime);
   //if (pendingTime > 0) {
   const response = await Response.findOneAndUpdate(
-    { questionId, studentId },
+    { questionId, studentId, testId },
     { chosenOption }
   );
+  console.log(response)
   if (!response) return res.status(404).send("Question not exist");
 
   res.send("Response Updated");

@@ -1,4 +1,4 @@
-import * as test from "../constants/testConstant";
+import * as test from '../constants/testConstant';
 
 // export const testCreateReducer = (state = {}, action) => {
 //   switch (action.type) {
@@ -16,23 +16,47 @@ import * as test from "../constants/testConstant";
 export const getTestPaperReducer = (state = {}, action) => {
   switch (action.type) {
     case test.TEST_LIST_REQUEST:
-      return { loading: true };
+      return { loading: true, ...state };
     case test.TEST_LIST_SUCCESS: {
-      let notConductedTestPapers,
-        conductedTestPapers,
-        notConductedAssignment,
-        conductedAssignment;
-      if (action.payload1) notConductedTestPapers = action.payload1;
-      if (action.payload2) conductedTestPapers = action.payload2;
-      if (action.payload3) notConductedAssignment = action.payload3;
-      if (action.payload4) conductedAssignment = action.payload4;
-      return {
-        loading: false,
-        notConductedTestPapers,
-        conductedTestPapers,
-        notConductedAssignment,
-        conductedAssignment,
-      };
+      // let notConductedTestPapers,
+      //   conductedTestPapers,
+      //   notConductedAssignment,
+      //   conductedAssignment;
+      // if (action.payload1) notConductedTestPapers = action.payload1;
+      // if (action.payload2) conductedTestPapers = action.payload2;
+      // if (action.payload3) notConductedAssignment = action.payload3;
+      // if (action.payload4) conductedAssignment = action.payload4;
+      // return {
+      //   loading: false,
+      //   notConductedTestPapers,
+      //   conductedTestPapers,
+      //   notConductedAssignment,
+      //   conductedAssignment,
+      // };
+      if (action.payload1)
+        return {
+          ...state,
+          loading: false,
+          notConductedTestPapers: action.payload1,
+        };
+      if (action.payload2)
+        return {
+          ...state,
+          loading: false,
+          conductedTestPapers: action.payload2,
+        };
+      if (action.payload3)
+        return {
+          ...state,
+          loading: false,
+          notConductedAssignment: action.payload3,
+        };
+      if (action.payload4)
+        return {
+          ...state,
+          loading: false,
+          conductedAssignment: action.payload4,
+        };
     }
     case test.TEST_LIST_FAIL:
       return { loading: false, error: action.payload };

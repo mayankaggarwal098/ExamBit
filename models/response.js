@@ -16,6 +16,10 @@ const responseSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
   },
+  testId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'TestPaper'
+  }
 });
 
 const Response = mongoose.model("Response", responseSchema);

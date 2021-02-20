@@ -1,29 +1,29 @@
-import React, { useState, useEffect, useRef } from "react";
-import { ListGroup, Row, Col, Button } from "react-bootstrap";
-import download from "downloadjs";
-import { useDispatch, useSelector } from "react-redux";
+import React, { useState, useEffect, useRef } from 'react';
+import { ListGroup, Row, Col, Button } from 'react-bootstrap';
+import download from 'downloadjs';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   getSinglePaper,
   getTestCategory,
   testEnd,
-} from "../actions/testAction";
+} from '../actions/testAction';
 const QuestionPaper = ({ testPaperSheet, pos }) => {
-  let { paper } = useSelector((state) => state.singleTestPaper);
+  let { paper } = useSelector(state => state.singleTestPaper);
   const dispatch = useDispatch();
   useEffect(() => {
     // dispatch(getSinglePaper(testPaperSheet[pos]._id));
   }, []);
   const downloadPdf = () => {
     //console.log(paper.pdf);
-    download(paper.pdf, "Testpaper.pdf", "application/pdf");
+    download(paper.pdf, 'Testpaper.pdf', 'application/pdf');
   };
   return (
     <ListGroup variant="flush">
       <ListGroup.Item>
         <Row
           style={{
-            width: "200px",
-            margin: "auto",
+            width: '200px',
+            margin: 'auto',
           }}
         >
           <h3>Test Paper</h3>
@@ -32,25 +32,25 @@ const QuestionPaper = ({ testPaperSheet, pos }) => {
           <Col md={10}>
             <strong>
               <b>SUBJECT</b>
-            </strong>{" "}
+            </strong>{' '}
             : {testPaperSheet[pos].subject}
             <br />
             <br />
             <strong>
               <b>TITLE</b>
-            </strong>{" "}
+            </strong>{' '}
             : {testPaperSheet[pos].title}
           </Col>
           <Col>
             <strong>
               <b>DURATION</b>
-            </strong>{" "}
+            </strong>{' '}
             : {testPaperSheet[pos].duration}
           </Col>
         </Row>
       </ListGroup.Item>
       <ListGroup.Item>
-        {testPaperSheet[pos].category === "MCQ" &&
+        {testPaperSheet[pos].category === 'MCQ' &&
           testPaperSheet[pos].questions.map((question, index) => (
             <ListGroup.Item key={index}>
               <Row>
@@ -84,9 +84,9 @@ const QuestionPaper = ({ testPaperSheet, pos }) => {
               </Row>
             </ListGroup.Item>
           ))}
-        {testPaperSheet[pos].category === "PDF" && (
+        {testPaperSheet[pos].category === 'PDF' && (
           <>
-            <h3 style={{ color: "black" }}> Test Paper:</h3>
+            <h3 style={{ color: 'black' }}> Test Paper:</h3>
             <Button
               variant="outline-primary"
               className="btn-block"

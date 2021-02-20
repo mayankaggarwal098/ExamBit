@@ -149,6 +149,12 @@ const getAllTests = async (req, res) => {
         select: {
           pdf: 0,
         },
+        populate:{
+          path:'questions',
+          populate:{
+            path:'options'
+          }
+        }
       },
     });
   if (!testPaper) return res.status(404).send("Tests Not Found");
@@ -190,6 +196,12 @@ const getAllAssignments = async (req, res) => {
         select: {
           pdf: 0,
         },
+        populate:{
+          path:'questions',
+          populate:{
+            path:'options'
+          }
+        }
       },
     });
   if (!testPaper) return res.status(404).send("Tests Not Found");
@@ -246,6 +258,12 @@ const getAllTestsConducted = async (req, res) => {
         select: {
           pdf: 0,
         },
+        populate:{
+          path: 'questions',
+          populate:{
+            path:"options"
+          }
+        }
       },
     });
   if (!testPaper) return res.status(404).send("Tests Not Found");
@@ -301,6 +319,12 @@ const getAllAssignmentsConducted = async (req, res) => {
         select: {
           pdf: 0,
         },
+        populate:{
+          path:'questions',
+          populate: {
+            path: "options"
+          }
+        }
       },
     });
   if (!testPaper) return res.status(404).send("Tests Not Found");

@@ -9,6 +9,7 @@ router.post("/generateresult/pdf", result.generateResultPdf);
 router.post("/all/score", auth, result.getScore);
 router.post("/edit/score", result.editScore);
 router.post("/student/all",auth, result.getStudentResults);
+router.post("/students/rank", auth, result.getRankList)
 //router.post("/details", result.getDetailedResult);
 router.post("/download", auth, supervisorAuth, result.download);
 module.exports = router;

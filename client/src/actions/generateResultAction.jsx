@@ -68,3 +68,16 @@ export const editResultScore = async (testId, studentId, score) => {
     errorHandler(ex);
   }
 };
+
+export const getRanksOfStudent = async testId => {
+  try {
+    const { data } = await http.post(
+      '/api/result/students/rank',
+      { testId },
+      Token()
+    );
+    return data;
+  } catch (ex) {
+    errorHandler(ex);
+  }
+};

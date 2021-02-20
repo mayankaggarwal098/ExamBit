@@ -1,21 +1,22 @@
-import React, { useState } from "react";
-import { useDispatch } from "react-redux";
-import { useHistory } from "react-router-dom";
-import { Table, Button, Container, Modal, Tab, Tabs } from "react-bootstrap";
-import QuestionPaper from "../component/QuestionPaper";
-import QuestionDetails from "../component/QuestionDetails";
+import React, { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { useHistory } from 'react-router-dom';
+import { Table, Button, Container, Modal, Tab, Tabs } from 'react-bootstrap';
+import QuestionPaper from '../component/QuestionPaper';
+import QuestionDetails from '../component/QuestionDetails';
 import {
   testBegin,
   testEndByTeacher,
   testPaperDelete,
-} from "../actions/testAction";
-import { openRegistrationforTest } from "../actions/studentRegistrationAction";
-import { paginate } from "../utils/paginate";
-import { pageLength } from "../constants/pageConstant";
-import Paginations from "../utils/Pagination";
-import Statistics from "../component/Statistics";
-import Trainees from "../component/Trainees";
-import Timer from "../utils/Timer";
+} from '../actions/testAction';
+import { openRegistrationforTest } from '../actions/studentRegistrationAction';
+import { paginate } from '../utils/paginate';
+import { pageLength } from '../constants/pageConstant';
+import Paginations from '../utils/Pagination';
+import Statistics from '../component/Statistics';
+import Trainees from '../component/Trainees';
+import Timer from '../utils/Timer';
+import RankList from './RankList';
 
 const TestTable = ({
   testPapers,
@@ -31,7 +32,7 @@ const TestTable = ({
 
   const dispatch = useDispatch();
 
-  const handlePageChange = (page) => {
+  const handlePageChange = page => {
     setCurrentPage(page);
   };
   console.log(isAssignment);
@@ -39,15 +40,15 @@ const TestTable = ({
 
   const [totalCount, setTotalCount] = useState(count);
 
-  const set = (index) => {
+  const set = index => {
     setShow(true);
     setIndex(index);
   };
 
-  const deleteHandler = (id) => {
-    if (window.confirm("Are you sure")) {
+  const deleteHandler = id => {
+    if (window.confirm('Are you sure')) {
       dispatch(testPaperDelete(testPapers, id, isShow));
-      setTotalCount((totalCount) => totalCount - 1);
+      setTotalCount(totalCount => totalCount - 1);
       let currPage = Math.floor((totalCount - 1) / pageSize);
       setCurrentPage(currPage);
       testPaperSheet = paginate(testPapers, currentPage, pageSize);
@@ -59,12 +60,12 @@ const TestTable = ({
     dispatch(openRegistrationforTest({ testPapers, id, status }));
   };
 
-  const endTest = (id) => {
+  const endTest = id => {
     dispatch(testEndByTeacher(testPaperSheet, id));
   };
 
   const history = useHistory();
-  const editTestPaper = (index) => {
+  const editTestPaper = index => {
     history.push(`/tests/edit/${testPaperSheet[index]._id}`);
   };
 
@@ -96,7 +97,7 @@ const TestTable = ({
           <tbody>
             {testPaperSheet &&
               testPaperSheet.map((test, index) => (
-                <tr key={test._id} style={{ textAlign: "center" }}>
+                <tr key={test._id} style={{ textAlign: 'center' }}>
                   <td>{test.subject}</td>
                   <td>{test.title}</td>
                   <td>{test.duration}</td>
@@ -113,16 +114,16 @@ const TestTable = ({
                       {!isAssignment && (
                         <>
                           <td>
-                            {test.paperType === "GROUP" ||
-                            test.paperType === "ASSIGNMENT" ? (
-                              "Not Required"
+                            {test.paperType === 'GROUP' ||
+                            test.paperType === 'ASSIGNMENT' ? (
+                              'Not Required'
                             ) : (
                               <Button
                                 variant="outline-primary"
                                 className="btn btn-block"
                                 disabled={
                                   test.isTestBegins ||
-                                  test.paperType === "GROUP"
+                                  test.paperType === 'GROUP'
                                 }
                                 onClick={() =>
                                   handleClick(
@@ -132,8 +133,8 @@ const TestTable = ({
                                 }
                               >
                                 {test.isRegistrationAvailable
-                                  ? "Close"
-                                  : "Open"}
+                                  ? 'Close'
+                                  : 'Open'}
                               </Button>
                             )}
                           </td>
@@ -168,7 +169,7 @@ const TestTable = ({
                                 testId={test._id}
                               />
                             )
-                          : "Not Started"}
+                          : 'Not Started'}
                       </td>
                       {deleteEdit && (
                         <td>
@@ -256,11 +257,11 @@ const TestTable = ({
                 <Statistics id={testPaperSheet[pos]._id} />
               </Tab>
               <Tab
-                eventKey="feedback"
+                eventKey="rankList"
                 disabled={!testPaperSheet[pos].isTestConducted}
-                title={<i className="fas fa-comments"> FeedBack</i>}
+                title={<i className="fa fa-trophy"> RankList</i>}
               >
-                this feature will be uploaded soon
+                <RankList testId={testPaperSheet[pos]._id} />
               </Tab>
             </Tabs>
           </Modal.Body>

@@ -54,27 +54,29 @@ const Profile = () => {
             </ListGroup>
           </Col>
         </Row>
-        <ListGroup>
-          <ListGroup.Item>
-            <p>Groups Rating</p>
-            <LineChart
-              LineData={{
-                labels: groupLabel,
-                datasets: [
-                  {
-                    label: 'Percentage',
-                    data: groupData,
-                    fill: false,
-                  },
-                ],
-              }}
-            />
-          </ListGroup.Item>
-          <ListGroup.Item>
-            <p>Organisation Rating</p>
-            <LineChart />
-          </ListGroup.Item>
-        </ListGroup>
+        {userInfo.category === 'STUDENT' && (
+          <ListGroup>
+            <ListGroup.Item>
+              <p>Groups Rating</p>
+              <LineChart
+                LineData={{
+                  labels: groupLabel,
+                  datasets: [
+                    {
+                      label: 'Percentage',
+                      data: groupData,
+                      fill: false,
+                    },
+                  ],
+                }}
+              />
+            </ListGroup.Item>
+            <ListGroup.Item>
+              <p>Organisation Rating</p>
+              <LineChart />
+            </ListGroup.Item>
+          </ListGroup>
+        )}
       </div>
     </Container>
   );
