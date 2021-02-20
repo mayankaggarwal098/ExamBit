@@ -4,11 +4,15 @@ import Token from "../utils/Token";
 
 export const uploadAudio = async (testId, studentId, audioRecording) => {
   try {
-    const { data } = await http.post("/api/audio/upload", {
-      testId,
-      studentId,
-      audioRecording,
-    });
+    const { data } = await http.post(
+      "/api/audio/upload",
+      {
+        testId,
+        studentId,
+        audioRecording,
+      },
+      Token()
+    );
     console.log(data);
   } catch (ex) {
     errorHandler(ex);

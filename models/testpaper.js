@@ -35,11 +35,11 @@ const testSchema = new mongoose.Schema(
       // required: true,
       default: false,
     },
-    createdBy: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
-      required: true,
-    },
+    // createdBy: {
+    //   type: mongoose.Schema.Types.ObjectId,
+    //   ref: "User",
+    //   required: true,
+    // },
     isRegistrationAvailable: {
       type: Boolean,
       //  required: true,
@@ -62,7 +62,7 @@ const testSchema = new mongoose.Schema(
     //New Properties added which determine the paper type( interview or group test)
     paperType: {
       type: String,
-      required: true
+      required: true,
     },
     isAudioRec: {
       type: Boolean,

@@ -56,7 +56,7 @@ const createEditTest = async (req, res) => {
       subject,
       questions: selectedQuestions,
       duration,
-      createdBy: req.user._id,
+      // createdBy: req.user._id,
       isRegistrationAvailable:
         paperType === "GROUP" || paperType === "ASSIGNMENT" ? true : false,
       isSnapshots,
@@ -83,7 +83,7 @@ const createEditTest = async (req, res) => {
 
 const getDetailedTest = async (req, res) => {
   const paper = await TestPaper.findById(req.params.id)
-    .populate("createdBy", "name")
+    // .populate("createdBy", "name")
     .populate("questions", "questionBody")
     .populate({
       path: "questions",
@@ -149,12 +149,12 @@ const getAllTests = async (req, res) => {
         select: {
           pdf: 0,
         },
-        populate:{
-          path:'questions',
-          populate:{
-            path:'options'
-          }
-        }
+        populate: {
+          path: "questions",
+          populate: {
+            path: "options",
+          },
+        },
       },
     });
   if (!testPaper) return res.status(404).send("Tests Not Found");
@@ -196,12 +196,12 @@ const getAllAssignments = async (req, res) => {
         select: {
           pdf: 0,
         },
-        populate:{
-          path:'questions',
-          populate:{
-            path:'options'
-          }
-        }
+        populate: {
+          path: "questions",
+          populate: {
+            path: "options",
+          },
+        },
       },
     });
   if (!testPaper) return res.status(404).send("Tests Not Found");
@@ -258,12 +258,12 @@ const getAllTestsConducted = async (req, res) => {
         select: {
           pdf: 0,
         },
-        populate:{
-          path: 'questions',
-          populate:{
-            path:"options"
-          }
-        }
+        populate: {
+          path: "questions",
+          populate: {
+            path: "options",
+          },
+        },
       },
     });
   if (!testPaper) return res.status(404).send("Tests Not Found");
@@ -319,12 +319,12 @@ const getAllAssignmentsConducted = async (req, res) => {
         select: {
           pdf: 0,
         },
-        populate:{
-          path:'questions',
+        populate: {
+          path: "questions",
           populate: {
-            path: "options"
-          }
-        }
+            path: "options",
+          },
+        },
       },
     });
   if (!testPaper) return res.status(404).send("Tests Not Found");

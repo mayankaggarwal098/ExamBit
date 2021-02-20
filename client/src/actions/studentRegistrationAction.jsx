@@ -10,7 +10,11 @@ export const studentRegistrationForTest = async (students, history) => {
     // dispatch({ type: student_reg.STUDENT_REGISTRATION_REQUEST });
 
     const testId = students.testId;
-    const { data } = await http.post("/api/student/register", students);
+    const { data } = await http.post(
+      "/api/student/register",
+      students,
+      Token()
+    );
 
     // dispatch({ type: student_reg.STUDENT_REGISTRATION_SUCCESS });
     toast.success(data);
@@ -76,7 +80,7 @@ export const getStudentDetail = (id) => async (dispatch) => {
   try {
     dispatch({ type: student_reg.STUDENT_DETAIL_REQUEST });
 
-    const { data } = await http.post("/api/student/details", { id });
+    const { data } = await http.post("/api/student/details", { id }, Token());
 
     dispatch({
       type: student_reg.STUDENT_DETAIL_SUCCESS,

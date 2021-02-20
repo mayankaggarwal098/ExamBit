@@ -22,7 +22,7 @@ const generateExcel = async (testId) => {
     { header: "Test Title", key: "TestTitle", width: 30 },
     { header: "Name", key: "Name", width: 30 },
     { header: "Email", key: "Email", width: 50 },
-    { header: "Phone No.", key: "PhoneNum", width: 20 },
+    // { header: "Phone No.", key: "PhoneNum", width: 20 },
     { header: "Obtained Marks", key: "Marks", width: 17 },
     { header: "Max Marks", key: "MaxMarks", width: 15 },
   ];
@@ -32,7 +32,7 @@ const generateExcel = async (testId) => {
       TestTitle: r.testId.title,
       Name: r.studentId.name,
       Email: r.studentId.email,
-      PhoneNum: r.studentId.phoneNum,
+      //PhoneNum: r.studentId.phoneNum,
       Marks: r.score,
       MaxMarks: r.maxMarks,
     });

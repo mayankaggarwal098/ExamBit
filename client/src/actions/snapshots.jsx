@@ -1,14 +1,18 @@
-import http from '../utils/httpService';
-import errorHandler from '../errorHandler';
-import Token from '../utils/Token';
+import http from "../utils/httpService";
+import errorHandler from "../errorHandler";
+import Token from "../utils/Token";
 
 export const uploadImage = async (testId, studentId, image) => {
   try {
-    const { data } = await http.post('/api/snapshot/upload', {
-      testId,
-      studentId,
-      image,
-    });
+    const { data } = await http.post(
+      "/api/snapshot/upload",
+      {
+        testId,
+        studentId,
+        image,
+      },
+      Token()
+    );
   } catch (ex) {
     errorHandler(ex);
   }
@@ -17,7 +21,7 @@ export const uploadImage = async (testId, studentId, image) => {
 export const getAllImages = async (testId, studentId) => {
   try {
     const { data } = await http.post(
-      '/api/snapshot/get/all',
+      "/api/snapshot/get/all",
       {
         testId,
         studentId,
