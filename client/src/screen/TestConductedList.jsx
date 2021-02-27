@@ -6,7 +6,9 @@ import TestTable from '../component/TestTable';
 import Loader from '../utils/Loader';
 
 const TestConductedList = () => {
-  const { loading, error, conductedTestPapers } = useSelector(state => state.getTestPaper);
+  const { loading, error, conductedTestPapers } = useSelector(
+    state => state.getTestPaper
+  );
 
   const dispatch = useDispatch();
   useEffect(() => {

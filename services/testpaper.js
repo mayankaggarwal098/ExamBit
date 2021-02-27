@@ -133,6 +133,12 @@ const getAllTests = async (req, res) => {
       select: {
         pdf: 0,
       },
+      populate:{
+        path:'questions',
+        populate:{
+          path:'options'
+        }
+      }
     })
     // .select("-pdf")
     .populate({
@@ -180,6 +186,12 @@ const getAllAssignments = async (req, res) => {
       select: {
         pdf: 0,
       },
+      populate:{
+        path:'questions',
+        populate:{
+          path:'options'
+        }
+      }
     })
     // .select("-pdf")
     .populate({
@@ -242,6 +254,12 @@ const getAllTestsConducted = async (req, res) => {
       select: {
         pdf: 0,
       },
+      populate:{
+        path:'questions',
+        populate:{
+          path:'options'
+        }
+      }
     })
     // .select("-pdf")
     .populate({
@@ -303,6 +321,12 @@ const getAllAssignmentsConducted = async (req, res) => {
       select: {
         pdf: 0,
       },
+      populate:{
+        path:'questions',
+        populate:{
+          path:'options'
+        }
+      }
     })
     // .select("-pdf")
     .populate({
@@ -431,8 +455,8 @@ const changeRegistrationStatus = async (req, res) => {
 // };
 
 const getRegisteredStudents = async (req, res) => {
+  
   const { testId } = req.body;
-
   const testPaper = await TestPaper.findById(testId).select("paperType");
   if (!testPaper) return res.status(404).send("Paper Not Found");
 
@@ -447,15 +471,18 @@ const getRegisteredStudents = async (req, res) => {
           email: 1,
         },
       });
+
+      res.send(data.students);
   } else {
-    data = await User.find({ testId: { $in: [testId] } }).select("name email");
+    data = await User.find({ category: "STUDENT", testId: { $in: [testId] } }).select("name email");
+    res.send(data);
   }
 
   // if (students.length === 0) {
   //   return res.status(400).send("Invalid Test Id");
   // }
 
-  res.send(data.students);
+  
 };
 
 module.exports = {

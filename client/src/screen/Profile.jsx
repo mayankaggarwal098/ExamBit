@@ -7,6 +7,8 @@ import LineChart from '../utils/LineChart';
 const Profile = () => {
   const [groupData, setGroupData] = useState([]);
   const [groupLabel, setGroupLabel] = useState([]);
+  const [organisationData, setOrganisationData] = useState([]);
+  const [organisationLabel, setOrganisationLabel] = useState([]);
 
   const { userInfo } = useSelector(state => state.userLogin);
   const studentId = userInfo && userInfo._id;
@@ -34,6 +36,18 @@ const Profile = () => {
 
     setGroupData(data1);
     setGroupLabel(label1);
+
+    let data2 = [];
+    let label2 = [];
+
+    organisationRecord.map(o => {
+      let percentage = (o.score / o.maxMarks) * 100;
+      data2.push(percentage);
+      label2.push(o.testId.startTime.substr(0, 10));
+    });
+
+    setOrganisationData(data2);
+    setOrganisationLabel(label2);
   };
   return (
     <Container className="my-3">
@@ -57,7 +71,7 @@ const Profile = () => {
         {userInfo.category === 'STUDENT' && (
           <ListGroup>
             <ListGroup.Item>
-              <p>Groups Rating</p>
+              <p>Groups</p>
               <LineChart
                 LineData={{
                   labels: groupLabel,
@@ -72,8 +86,19 @@ const Profile = () => {
               />
             </ListGroup.Item>
             <ListGroup.Item>
-              <p>Organisation Rating</p>
-              <LineChart />
+              <p>Organisation</p>
+              <LineChart
+                LineData={{
+                  labels: organisationLabel,
+                  datasets: [
+                    {
+                      label: 'Percentage',
+                      data: organisationData,
+                      fill: false,
+                    },
+                  ],
+                }}
+              />
             </ListGroup.Item>
           </ListGroup>
         )}

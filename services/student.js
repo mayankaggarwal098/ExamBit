@@ -20,6 +20,8 @@ const registerStudent = async (req, res) => {
     _id: testId,
     isRegistrationAvailable: true,
   });
+
+  console.log(paper)
   if (!paper)
     return res.status(422).send("Registration for this test has been closed");
 
@@ -144,7 +146,7 @@ const updateResponse = async (req, res) => {
     { questionId, studentId, testId },
     { chosenOption }
   );
-  console.log(response)
+  
   if (!response) return res.status(404).send("Question not exist");
 
   res.send("Response Updated");
@@ -169,10 +171,12 @@ const endTest = async (req, res) => {
 };
 
 const getTestStartTime = async (req, res) => {
+  console.log(req.body.testId)
   const { testId } = req.body;
   const paper = await TestPaper.findById(testId).select("startTime");
   if (!paper) return res.status(404).send("Testpaper not found");
 
+  console.log(paper)
   res.send(paper);
 };
 

@@ -99,7 +99,7 @@ const StudentRegistered = ({ history }) => {
               />
             </Form.Group> */}
 
-            <Button type="submit" variant="primary">
+            <Button type="submit" variant="outline-primary">
               Register
             </Button>
 

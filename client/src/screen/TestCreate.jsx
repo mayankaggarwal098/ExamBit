@@ -192,7 +192,11 @@ const TestCreate = ({ history }) => {
             >
               <option value="">Select Group</option>
               {groups &&
-                groups.map(g => <option value={g._id}>{g.groupName}</option>)}
+                groups.map(g => (
+                  <option key={g._id} value={g._id}>
+                    {g.groupName}
+                  </option>
+                ))}
             </Form.Control>
           </Form.Group>
 

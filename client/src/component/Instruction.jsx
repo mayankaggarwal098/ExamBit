@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Button, Modal, Row, Col } from 'react-bootstrap';
+import { useSelector } from 'react-redux';
 import { useLocation } from 'react-router-dom';
 import { checkTestStart, startTestTime } from '../actions/testAction';
 import Timer from '../utils/Timer';
@@ -9,19 +10,28 @@ const Instruction = ({ history }) => {
   const testId = query.get('testid');
   const studentId = query.get('studentid');
 
+  const { userInfo } = useSelector(state => state.userLogin);
+
   const [show, setShow] = useState();
   const [testTime, setTestTime] = useState(null);
 
   useEffect(() => {
+    if (!userInfo) {
+      history.push(
+        `/login?redirect=student/test?testid=${testId}&studentid=${studentId}`
+      );
+    } else getTestTime();
+
     async function getTestTime() {
       const time = await startTestTime(testId);
-      setTestTime(time.startTime);
+      if (time) setTestTime(time.startTime);
+      else getTestTime();
     }
-    getTestTime();
-  });
+  }, []);
 
   const submitHandler = async id => {
     const start = await checkTestStart(testId);
+    console.log(start);
     if (start) {
       history.push(
         `/student/test/start?testId=${testId}&studentId=${studentId}`

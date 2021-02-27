@@ -8,7 +8,7 @@ const RankList = ({ testId }) => {
     async function getRanks() {
       let list = await getRanksOfStudent(testId);
 
-      if (list) {
+      if (list.length !== 0) {
         let rankList = [];
         let j = 1;
         let prev = list[0].score;

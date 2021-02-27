@@ -20,24 +20,27 @@ const QuestionDetails = ({ testPaperSheet, pos }) => {
           <Col>{testPaperSheet[pos]._id}</Col>
         </Row>
       </ListGroup.Item>
-      <ListGroup.Item>
-        <Row>
-          <Col md={5}>
-            <strong>
-              TEST Link &nbsp;{' '}
-              <CopyToClipboard
-                text={`${mainlink}student/registration/test/${testPaperSheet[pos]._id}`}
-                onCopy={() => toast.info('Link Copied to clipboard')}
-              >
-                <i className="fas fa-copy"></i>
-              </CopyToClipboard>
-            </strong>
-          </Col>
-          <Col md={5}>
-            <a>{`${mainlink}student/registration/test/${testPaperSheet[pos]._id}`}</a>
-          </Col>
-        </Row>
-      </ListGroup.Item>
+      {testPaperSheet[pos].paperType === 'ORGANISATION' && (
+        <ListGroup.Item>
+          <Row>
+            <Col md={5}>
+              <strong>
+                TEST Link &nbsp;{' '}
+                <CopyToClipboard
+                  text={`${mainlink}student/registration/test/${testPaperSheet[pos]._id}`}
+                  onCopy={() => toast.info('Link Copied to clipboard')}
+                >
+                  <i className="fas fa-copy"></i>
+                </CopyToClipboard>
+              </strong>
+            </Col>
+
+            <Col md={5}>
+              <a>{`${mainlink}student/registration/test/${testPaperSheet[pos]._id}`}</a>
+            </Col>
+          </Row>
+        </ListGroup.Item>
+      )}
       <ListGroup.Item>
         <Row>
           <Col>

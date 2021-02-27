@@ -28,9 +28,9 @@ const StudentResult = () => {
   useEffect(() => {
     window.dispatchEvent(new CustomEvent('navigationhandler'));
 
-    if (!paper || paper._id != testId) dispatch(getSinglePaper(testId));
+    if (!paper) dispatch(getSinglePaper(testId));
     if (!student) dispatch(getStudentDetail(studentId));
-    if (!result || testId != result.testId)
+    if (!result || studentId != result.studentId)
       dispatch(resultGenerate({ testId, studentId }));
   }, []);
 

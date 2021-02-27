@@ -28,14 +28,15 @@ const TestTable = ({
   const [pos, setIndex] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(pageLength);
-  const count = testPapers && testPapers.length;
+
+  const count = testPapers ? testPapers.length : 0;
 
   const dispatch = useDispatch();
 
   const handlePageChange = page => {
     setCurrentPage(page);
   };
-  console.log(isAssignment);
+
   let testPaperSheet = paginate(testPapers, currentPage, pageSize);
 
   const [totalCount, setTotalCount] = useState(count);

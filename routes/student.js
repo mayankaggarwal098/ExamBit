@@ -3,7 +3,7 @@ const router = express.Router();
 const auth = require("../middleware/auth");
 const student = require("../services/student");
 
-router.post("/register", auth, student.registerStudent);
+router.post("/register", student.registerStudent);
 router.post("/questions", auth, student.getTestQuestions);
 router.post("/responseSheet", auth, student.responseSheet);
 router.post("/updateResponse", auth, student.updateResponse);

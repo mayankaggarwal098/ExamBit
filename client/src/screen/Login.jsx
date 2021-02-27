@@ -1,24 +1,25 @@
-import React, { useState, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
-import { Container, Button, Form, Row, Col } from "react-bootstrap";
-import { login } from "../actions/userAction";
+import React, { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { Link, useLocation } from 'react-router-dom';
+import { Container, Button, Form, Row, Col } from 'react-bootstrap';
+import { login } from '../actions/userAction';
 
 const Login = ({ history }) => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
-  const { loading, userInfo, error } = useSelector((state) => state.userLogin);
-
+  const { loading, userInfo, error } = useSelector(state => state.userLogin);
+  const location = useLocation();
+  const redirect = location.search ? location.search.slice(10, 89) : '/';
   const dispatch = useDispatch();
 
   useEffect(() => {
     if (userInfo) {
-      history.push("/");
+      history.push(redirect);
     }
   }, [userInfo, history]);
 
-  const submitHandler = (e) => {
+  const submitHandler = e => {
     e.preventDefault();
     dispatch(login(email, password));
   };
@@ -35,7 +36,7 @@ const Login = ({ history }) => {
                 type="email"
                 placeholder="Enter Email Address"
                 value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                onChange={e => setEmail(e.target.value)}
               ></Form.Control>
             </Form.Group>
 
@@ -45,7 +46,7 @@ const Login = ({ history }) => {
                 type="password"
                 placeholder="Enter Password"
                 value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                onChange={e => setPassword(e.target.value)}
               ></Form.Control>
             </Form.Group>
 

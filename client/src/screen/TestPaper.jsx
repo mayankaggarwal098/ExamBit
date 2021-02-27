@@ -48,7 +48,7 @@ const TestPaper = ({ history }) => {
 
   useEffect(() => {
     window.dispatchEvent(new CustomEvent('navigationhandler'));
-    if (!paper || paper._id !== testId) {
+    if (!paper) {
       // let category;
       // async function getCategory() {
       //   testCategory.current = await getTestCategory(testId);
@@ -58,17 +58,19 @@ const TestPaper = ({ history }) => {
       // getCategory();
 
       dispatch(getSinglePaper(testId));
-      async function responseSheet() {
-        const res = await responseSheetOfStudent({ testId, studentId });
-
-        if (typeof res !== 'string') {
-          let response = res.responses.map(r => [...r.chosenOption]);
-          response = [].concat(...response);
-          setSaveAnswer(response);
-        }
-      }
-      responseSheet();
     }
+
+    async function responseSheet() {
+      const res = await responseSheetOfStudent({ testId, studentId });
+
+      if (typeof res !== 'string') {
+        let response = res.responses.map(r => [...r.chosenOption]);
+        response = [].concat(...response);
+        setSaveAnswer(response);
+      }
+    }
+
+    responseSheet();
   }, []);
   useEffect(() => {
     if (paper && paper.isSnapshots === true) {
