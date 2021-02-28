@@ -7,10 +7,7 @@ const { generateExcel } = require("./generateExcel");
 const generateResult = async (req, res) => {
   const { studentId, testId } = req.body;
 
-  const result = await Result.findOne({ testId, studentId }).populate(
-    "subResult"
-  );
-
+  const result = await Result.findOne({ testId, studentId }).populate("subResult")
   if (result) return res.send(result);
 
   const responseSheet = await ResponseSheet.findOne({
@@ -30,10 +27,10 @@ const generateResult = async (req, res) => {
   if (!responseSheet) return res.send("Not Attempt");
   const ansMap = ["A", "B", "C", "D", "E"];
   const { questions, responses } = responseSheet;
-  let maxMarks = 0;
-  questions.map((m) => {
-    maxMarks += m.weightage;
-  });
+  // let maxMarks = result && result.testId.maxMarks;
+  // questions.map((m) => {
+  //   maxMarks += m.weightage;
+  // });
   let score = 0;
   const subResults = questions.map((q, i) => {
     const res = responses[i].chosenOption;
@@ -84,7 +81,7 @@ const generateResult = async (req, res) => {
     responseSheet,
     subResult,
     score,
-    maxMarks,
+    // maxMarks,
   });
   await resultdata.save();
   res.send(resultdata);
@@ -92,13 +89,15 @@ const generateResult = async (req, res) => {
 
 const getStudentResults = async (req, res) => {
   const { studentId } = req.body;
-  const results = await Result.find({ studentId }).select("score maxMarks testId").populate({
+                                                          //maxMarks
+  const results = await Result.find({ studentId }).select("score testId").populate({
     path: 'testId',
     select: {
       title:1,
       subject:1,
       paperType:1,
       startTime: 1,
+      maxMarks: 1
     }
   });
   // if (results.length === 0) {
@@ -133,10 +132,10 @@ const generateResultPdf = async (req, res) => {
     responseSheet,
     subResult,
     score,
-    maxMarks,
+    // maxMarks,
   });
   await resultdata.save();
-  console.log(result);
+  // console.log(result);
   //res.send(resultdata);
 };
 

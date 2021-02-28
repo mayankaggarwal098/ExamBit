@@ -72,6 +72,10 @@ const testSchema = new mongoose.Schema(
       type: Date,
       required: true,
     },
+    maxMarks: {
+      type: Number,
+      required: true
+    }
   },
   {
     timestamps: { createdAt: true, updatedAt: false },

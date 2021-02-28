@@ -27,10 +27,10 @@ const resultSchema = new mongoose.Schema({
     type: Number,
     required: true,
   },
-  maxMarks: {
-    type: Number,
-    required: true,
-  },
+  // maxMarks: {
+  //   type: Number,
+  //   required: true,
+  // },
 });
 
 const Result = mongoose.model("Result", resultSchema);

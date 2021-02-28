@@ -22,6 +22,7 @@ const createEditTest = async (req, res) => {
     startTime,
     paperType,
     groupId,
+    maxMarks,
   } = req.body;
   const _id = req.body._id || null;
   if (_id != null) {
@@ -40,6 +41,7 @@ const createEditTest = async (req, res) => {
         isSnapshots,
         startTime,
         isAudioRec,
+        maxMarks
       }
     );
     if (!paper) return res.status(404).send("Testpaper does not exists");
@@ -63,6 +65,7 @@ const createEditTest = async (req, res) => {
       startTime,
       paperType,
       isAudioRec,
+      maxMarks
     });
 
     paper = await paper.save();

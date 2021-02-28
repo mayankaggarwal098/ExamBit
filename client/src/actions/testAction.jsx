@@ -1,10 +1,10 @@
-import * as test from "../constants/testConstant";
-import http from "../utils/httpService";
-import { toast } from "react-toastify";
-import Token from "../utils/Token";
-import errorHandler from "../errorHandler";
+import * as test from '../constants/testConstant';
+import http from '../utils/httpService';
+import { toast } from 'react-toastify';
+import Token from '../utils/Token';
+import errorHandler from '../errorHandler';
 
-export const createTest = (testPaper) => async (dispatch) => {
+export const createTest = testPaper => async dispatch => {
   try {
     // dispatch({ type: test.TEST_CREATE_REQUEST });
     // const {
@@ -16,10 +16,10 @@ export const createTest = (testPaper) => async (dispatch) => {
     //   },
     // };
 
-    const { data } = await http.post("/api/test/create", testPaper, Token());
+    const { data } = await http.post('/api/test/create', testPaper, Token());
 
     // dispatch({ type: test.TEST_CREATE_SUCCESS });
-    if (testPaper.paperType !== "ASSIGNMENT")
+    if (testPaper.paperType !== 'ASSIGNMENT')
       dispatch(getNotConductedTestPaper());
     else dispatch(getNotConductedAssignment());
     toast.success(data);
@@ -35,7 +35,7 @@ export const createTest = (testPaper) => async (dispatch) => {
   }
 };
 
-export const getNotConductedTestPaper = () => async (dispatch) => {
+export const getNotConductedTestPaper = () => async dispatch => {
   try {
     dispatch({ type: test.TEST_LIST_REQUEST });
     // const {
@@ -47,7 +47,7 @@ export const getNotConductedTestPaper = () => async (dispatch) => {
     //   },
     // };
 
-    const { data } = await http.get("/api/test/details/all", Token());
+    const { data } = await http.get('/api/test/details/all', Token());
     dispatch({
       type: test.TEST_LIST_SUCCESS,
       payload1: data,
@@ -63,7 +63,7 @@ export const getNotConductedTestPaper = () => async (dispatch) => {
     // });
   }
 };
-export const getNotConductedAssignment = () => async (dispatch) => {
+export const getNotConductedAssignment = () => async dispatch => {
   try {
     dispatch({ type: test.TEST_LIST_REQUEST });
     // const {
@@ -76,7 +76,7 @@ export const getNotConductedAssignment = () => async (dispatch) => {
     // };
 
     const { data } = await http.get(
-      "/api/test/assignment/details/all",
+      '/api/test/assignment/details/all',
       Token()
     );
     dispatch({
@@ -95,21 +95,24 @@ export const getNotConductedAssignment = () => async (dispatch) => {
   }
 };
 // function compare(a, b) {
-//   if (a.createdAt <= b.createdAt) {
+//   if (a.createdAt < b.createdAt) {
 //     return 1;
 //   }
 
 //   return 0;
 // }
+
 export const getConductedTestPaper = () => async (dispatch, getState) => {
   try {
     dispatch({ type: test.TEST_LIST_REQUEST });
-    const { data } = await http.get("/api/test/conducted/details/all", Token());
+    let { data } = await http.get('/api/test/conducted/details/all', Token());
     // const {
     //   getTestPaper: { notConductedTestPapers },
     // } = getState();
-    //data.sort(compare);
-    console.log(data);
+    // data.sort(compare);
+
+    data = [].concat(data).sort((a, b) => (a.createdAt < b.createdAt ? 1 : -1));
+
     dispatch({
       type: test.TEST_LIST_SUCCESS,
       //payload1: notConductedTestPapers,
@@ -123,13 +126,15 @@ export const getConductedTestPaper = () => async (dispatch, getState) => {
 export const getConductedAssignment = () => async (dispatch, getState) => {
   try {
     dispatch({ type: test.TEST_LIST_REQUEST });
-    const { data } = await http.get(
-      "/api/test/assignment/conducted/details/all",
+    let { data } = await http.get(
+      '/api/test/assignment/conducted/details/all',
       Token()
     );
     // const {
     //   getTestPaper: { notConductedTestPapers },
     // } = getState();
+
+    data = [].concat(data).sort((a, b) => (a.createdAt < b.createdAt ? 1 : -1));
     dispatch({
       type: test.TEST_LIST_SUCCESS,
       //payload1: notConductedTestPapers,
@@ -140,7 +145,7 @@ export const getConductedAssignment = () => async (dispatch, getState) => {
   }
 };
 
-export const testPaperDelete = (testPapers, id, show) => async (dispatch) => {
+export const testPaperDelete = (testPapers, id, show) => async dispatch => {
   try {
     // dispatch({ type: test.TEST_DELETE_REQUEST });
     // const {
@@ -152,11 +157,11 @@ export const testPaperDelete = (testPapers, id, show) => async (dispatch) => {
     //   },
     // };
 
-    const { data } = await http.post("/api/test/delete", { id }, Token());
+    const { data } = await http.post('/api/test/delete', { id }, Token());
 
     // dispatch({ type: test.TEST_DELETE_SUCCESS });
 
-    const arr = testPapers.filter((t) => t._id !== id);
+    const arr = testPapers.filter(t => t._id !== id);
 
     if (show) {
       dispatch({ type: test.TEST_LIST_SUCCESS, payload1: arr });
@@ -194,7 +199,7 @@ export const testBegin = (id, index, testPapers) => async (
     //   },
     // };
 
-    await http.post("/api/test/begin", { id }, Token());
+    await http.post('/api/test/begin', { id }, Token());
 
     const arr = [...testPapers];
     arr[index].isTestBegins = true;
@@ -202,7 +207,7 @@ export const testBegin = (id, index, testPapers) => async (
 
     // dispatch({ type: test.TEST_BEGIN_SUCCESS });
 
-    if (arr[index].paperType !== "ASSIGNMENT") {
+    if (arr[index].paperType !== 'ASSIGNMENT') {
       dispatch({
         type: test.TEST_LIST_SUCCESS,
         payload1: arr,
@@ -214,7 +219,7 @@ export const testBegin = (id, index, testPapers) => async (
       });
     }
 
-    toast.success("test has been started");
+    toast.success('test has been started');
   } catch (ex) {
     errorHandler(ex);
 
@@ -233,7 +238,7 @@ export const testEnd = async ({ testId, studentId }) => {
     // dispatch({ type: test.TEST_END_REQUEST });
 
     const { data } = await http.post(
-      "/api/student/endTest",
+      '/api/student/endTest',
       {
         testId,
         studentId,
@@ -262,16 +267,16 @@ export const testEndByTeacher = (testPapers, id) => async (
   getState
 ) => {
   try {
-    const { data } = await http.post("/api/test/end", { id }, Token());
+    const { data } = await http.post('/api/test/end', { id }, Token());
 
-    const arr1 = testPapers.filter((t) => t._id !== id);
-    const arr2 = testPapers.filter((t) => t._id === id);
+    const arr1 = testPapers.filter(t => t._id !== id);
+    const arr2 = testPapers.filter(t => t._id === id);
     // const {
     //   getTestPaper: { conductedTestPapers },
     // } = getState();
 
     // dispatch({ type: test.TEST_LIST_REQUEST });
-    if (arr2[0].paperType !== "ASSIGNMENT") {
+    if (arr2[0].paperType !== 'ASSIGNMENT') {
       dispatch({
         type: test.TEST_LIST_SUCCESS,
         payload1: arr1,
@@ -297,11 +302,11 @@ export const testEndByTeacher = (testPapers, id) => async (
   }
 };
 
-export const getSinglePaper = (id) => async (dispatch) => {
+export const getSinglePaper = id => async dispatch => {
   try {
     dispatch({ type: test.SINGLE_TESTPAPER_REQUEST });
 
-    const { data } = await http.post("/api/student/questions", { id }, Token());
+    const { data } = await http.post('/api/student/questions', { id }, Token());
 
     dispatch({
       type: test.SINGLE_TESTPAPER_SUCCESS,
@@ -320,10 +325,10 @@ export const getSinglePaper = (id) => async (dispatch) => {
   }
 };
 
-export const checkTestStart = async (id) => {
+export const checkTestStart = async id => {
   try {
     const { data } = await http.post(
-      "/api/test/check-test-start",
+      '/api/test/check-test-start',
       { id },
       Token()
     );
@@ -333,7 +338,7 @@ export const checkTestStart = async (id) => {
   }
 };
 
-export const getTestDetails = async (id) => {
+export const getTestDetails = async id => {
   try {
     const { data } = await http.get(`/api/test/get/${id}`, Token());
     return data;
@@ -341,10 +346,10 @@ export const getTestDetails = async (id) => {
     errorHandler(ex);
   }
 };
-export const startTestTime = async (testId) => {
+export const startTestTime = async testId => {
   try {
     const { data } = await http.post(
-      "/api/student/test/start-time",
+      '/api/student/test/start-time',
       {
         testId,
       },
@@ -356,10 +361,10 @@ export const startTestTime = async (testId) => {
   }
 };
 
-export const getTestCategory = async (testId) => {
+export const getTestCategory = async testId => {
   try {
     const { data } = await http.post(
-      "/api/student/test/category",
+      '/api/student/test/category',
       { testId },
       Token()
     );
@@ -379,10 +384,10 @@ export const getTestCategory = async (testId) => {
 //   }
 // };
 
-export const getScoreOfAllStudents = async (testId) => {
+export const getScoreOfAllStudents = async testId => {
   try {
     const { data } = await http.post(
-      "/api/result/all/score",
+      '/api/result/all/score',
       { testId },
       Token()
     );

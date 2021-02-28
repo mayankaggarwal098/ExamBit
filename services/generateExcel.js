@@ -12,8 +12,10 @@ const generateExcel = async (testId) => {
   //   maxMarks += m.weightage;
   // });
   const result = await Result.find({ testId })
-    .select("score studentId testId maxMarks")
+    .select("score studentId testId")
     .populate("studentId testId");
+
+    console.log(result)
   const worksheet = workbook.addWorksheet("Results", {
     pageSetup: { paperSize: 9, orientation: "landscape" },
   });
@@ -34,7 +36,7 @@ const generateExcel = async (testId) => {
       Email: r.studentId.email,
       //PhoneNum: r.studentId.phoneNum,
       Marks: r.score,
-      MaxMarks: r.maxMarks,
+      MaxMarks: r.testId.maxMarks,
     });
   });
   //await workbook.xlsx.writeFile(`${paper.title}_${testId}.xlsx`);

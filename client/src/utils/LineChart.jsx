@@ -12,13 +12,7 @@ const LineChart = ({ LineData }) => {
             {
               ticks: {
                 min: 0,
-                max: 100,
-                // userCallback: function (label, index, labels) {
-                //   // when the floored value is the same as the value we have a whole number
-                //   if (Math.floor(label) === label) {
-                //     return label;
-                //   }
-                // },
+                max: 110,
               },
               scaleLabel: {
                 display: true,

@@ -55,14 +55,16 @@ const registerStudent = async (req, res) => {
 
 const getTestQuestions = async (req, res) => {
   const paper = await TestPaper.findById(req.body.id)
-    .select("pdf questions duration isSnapshots startTime isAudioRec category")
+    .select("pdf maxMarks questions duration isSnapshots startTime isAudioRec category")
     .populate("questions")
     .populate({
       path: "questions",
       populate: {
         path: "options",
         //model: Options,
-        select: { optionBody: 1 },
+        select: { 
+          optionBody: 1,
+        },
       },
     });
 
