@@ -24,6 +24,7 @@ const TestCreate = ({ history }) => {
   const [title, setTitle] = useState("");
   const [subject, setSubject] = useState("");
   const [duration, setDuration] = useState("");
+  const [maxMarks, setMaxMarks] = useState(-1);
   const [selectedQuestions, setSelectedQuestions] = useState([]);
   const [isSnapshots, setSnapshots] = useState(false);
   const [isAudioRec, setAudioRec] = useState(false);
@@ -34,7 +35,9 @@ const TestCreate = ({ history }) => {
   const [paperType, setPaperType] = useState(""); //New field Added
   const [groupId, setGroupId] = useState(""); //New field Added
   const [selectedFile, setSelectedFile] = useState("upload pdf");
+
   const { questions } = useSelector((state) => state.questionList);
+
   const [pdf, setPdf] = useState(null);
 
   const { testPapers } = useSelector((state) => state.getTestPaper);
@@ -76,7 +79,7 @@ const TestCreate = ({ history }) => {
     } else {
       arr = arr.filter((a) => a !== e.target.value);
     }
-
+    console.log(arr);
     setSelectedQuestions(arr);
   };
 
@@ -134,6 +137,7 @@ const TestCreate = ({ history }) => {
           isAudioRec,
           startTime,
           groupId,
+          //maxMarks,
           paperType,
         })
       );
@@ -279,7 +283,21 @@ const TestCreate = ({ history }) => {
               </Form.Group>
             )}
           </Form.Row>
-
+          {category === "PDF" && (
+            <Form.Group controlId="maxmarks">
+              <Form.Label>Max Marks</Form.Label>
+              <Form.Control
+                required
+                //disabled={paperType === "" || paperType === "ASSIGNMENT"}
+                type="number"
+                min="0"
+                placeholder="Select.."
+                value={maxMarks}
+                aria-describedby="durationInMinute"
+                onChange={(e) => setMaxMarks(e.target.value)}
+              />
+            </Form.Group>
+          )}
           <Form.Check
             type="switch"
             id="custom-switch"

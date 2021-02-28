@@ -7,6 +7,8 @@ import { getStudentDetail } from "../actions/studentRegistrationAction";
 import { getSinglePaper } from "../actions/testAction";
 import Loader from "../utils/Loader";
 import SingleQuestion from "../component/SingleQuestion";
+import download from "downloadjs";
+import { getResponsePdf } from "../actions/responseSheetAction";
 
 const StudentResult = () => {
   const query = new URLSearchParams(useLocation().search);
@@ -22,11 +24,11 @@ const StudentResult = () => {
   const { student } = useSelector((state) => state.studentDetail);
 
   const { paper } = useSelector((state) => state.singleTestPaper);
-
+  console.log(result);
   const questions = paper && paper.questions;
 
   const dispatch = useDispatch();
-
+  console.log(student);
   useEffect(() => {
     window.dispatchEvent(new CustomEvent("navigationhandler"));
     if (!paper || testId !== paper._id) dispatch(getSinglePaper(testId));
@@ -40,7 +42,15 @@ const StudentResult = () => {
     setShow(true);
     setIndex(index);
   };
-
+  const downloadQuestionPaper = () => {
+    console.log(paper.pdf);
+    download(paper.pdf, "Testpaper.pdf", "application/pdf");
+  };
+  const downloadResponseSheet = async () => {
+    const pdf = await getResponsePdf(student._id, paper._id);
+    //console.log(paper.pdf);
+    download(pdf, `responsesheet.pdf`, "application/pdf");
+  };
   return (
     <Container>
       {loading && <Loader />}
@@ -84,11 +94,37 @@ const StudentResult = () => {
           </tbody>
         </Table>
       )}
-      {result === "Not Attempt" ? (
+      {result === "Not Attempt" && (
         <div className="reasendmail-container-register">
           Student has not given the test
         </div>
-      ) : (
+      )}
+      {result !== "Not Attempt" && paper && paper.category === "PDF" && (
+        <>
+          <ListGroup.Item style={{ margin: "20px" }}>
+            <h3 style={{ color: "black" }}> Test Paper:</h3>
+            <Button
+              variant="outline-primary"
+              className="btn-block"
+              onClick={() => downloadQuestionPaper()}
+            >
+              Download
+            </Button>
+          </ListGroup.Item>
+          <ListGroup.Item style={{ margin: "20px" }}>
+            <h3 style={{ color: "black" }}> Response Sheet:</h3>
+            <Button
+              variant="outline-primary"
+              className="btn-block"
+              onClick={() => downloadResponseSheet()}
+            >
+              Download
+            </Button>
+          </ListGroup.Item>
+        </>
+      )}
+
+      {result !== "Not Attempt" && paper && paper.category !== "PDF" && (
         <Table
           hover
           bordered
@@ -143,7 +179,7 @@ const StudentResult = () => {
         </Table>
       )}
 
-      {questions && (
+      {questions && questions.length > 0 && (
         <SingleQuestion
           question={questions[pos]}
           show={show}
