@@ -16,7 +16,7 @@ const HomeScreen = ({ history }) => {
   const { userInfo } = useSelector((state) => state.userLogin);
   useEffect(() => {
     if (!userInfo) {
-      history.push("/login");
+      // history.push("/login");
     }
   }, []);
 
@@ -26,7 +26,7 @@ const HomeScreen = ({ history }) => {
       <div
         style={{
           position: "absolute",
-          top: "200px",
+          top: "300px",
           left: "16px",
           color: "white",
           fontSize: "4vw",

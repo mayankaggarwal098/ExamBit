@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import { Container, Table } from 'react-bootstrap';
-import { getRanksOfStudent } from '../actions/generateResultAction';
+import React, { useState, useEffect } from "react";
+import { Container, Table } from "react-bootstrap";
+import { getRanksOfStudent } from "../actions/generateResultAction";
 
 const RankList = ({ testId }) => {
   const [rank, setRank] = useState([]);
@@ -16,7 +16,7 @@ const RankList = ({ testId }) => {
         rankList.push(list[0]);
 
         list = list.slice(1);
-        list.map(l => {
+        list.map((l) => {
           if (prev !== l.score) {
             l.rank = ++j;
             rankList.push(l);
@@ -33,7 +33,7 @@ const RankList = ({ testId }) => {
 
     getRanks();
   }, []);
-
+  //console.log(rank);
   return (
     <Container>
       <Table responsive hover striped bordered className="table-centered my-3">
@@ -48,7 +48,7 @@ const RankList = ({ testId }) => {
         <tbody>
           {rank &&
             rank.map((r, i) => (
-              <tr>
+              <tr key={r.studentId._id}>
                 <td>{r.rank}</td>
                 <td>{r.studentId.name}</td>
                 <td>{r.studentId.email}</td>

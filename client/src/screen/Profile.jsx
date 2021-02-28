@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react';
-import { Container, ListGroup, Row, Col } from 'react-bootstrap';
-import { useSelector } from 'react-redux';
-import { getStudentRecord } from '../actions/studentRegistrationAction';
-import LineChart from '../utils/LineChart';
+import React, { useEffect, useState } from "react";
+import { Container, ListGroup, Row, Col } from "react-bootstrap";
+import { useSelector } from "react-redux";
+import { getStudentRecord } from "../actions/studentRegistrationAction";
+import LineChart from "../utils/LineChart";
 
 const Profile = () => {
   const [groupData, setGroupData] = useState([]);
@@ -10,25 +10,27 @@ const Profile = () => {
   const [organisationData, setOrganisationData] = useState([]);
   const [organisationLabel, setOrganisationLabel] = useState([]);
 
-  const { userInfo } = useSelector(state => state.userLogin);
+  const { userInfo } = useSelector((state) => state.userLogin);
   const studentId = userInfo && userInfo._id;
   useEffect(() => {
     getRecord();
   }, []);
 
   const getRecord = async () => {
-    const studentRecord = await getStudentRecord(studentId);
+    let studentRecord = await getStudentRecord(studentId);
+    studentRecord =
+      studentRecord && studentRecord.filter((st) => st.testId !== null);
     const groupRecord =
       studentRecord &&
-      studentRecord.filter(s => s.testId.paperType === 'GROUP');
+      studentRecord.filter((s) => s.testId.paperType === "GROUP");
     const organisationRecord =
       studentRecord &&
-      studentRecord.filter(s => s.testId.paperType === 'ORGANISATION');
+      studentRecord.filter((s) => s.testId.paperType === "ORGANISATION");
 
     let data1 = [];
     let label1 = [];
 
-    groupRecord.map(g => {
+    groupRecord.map((g) => {
       let percentage = (g.score / g.maxMarks) * 100;
       data1.push(percentage);
       label1.push(g.testId.startTime.substr(0, 10));
@@ -40,7 +42,7 @@ const Profile = () => {
     let data2 = [];
     let label2 = [];
 
-    organisationRecord.map(o => {
+    organisationRecord.map((o) => {
       let percentage = (o.score / o.maxMarks) * 100;
       data2.push(percentage);
       label2.push(o.testId.startTime.substr(0, 10));
@@ -68,7 +70,7 @@ const Profile = () => {
             </ListGroup>
           </Col>
         </Row>
-        {userInfo.category === 'STUDENT' && (
+        {userInfo.category === "STUDENT" && (
           <ListGroup>
             <ListGroup.Item>
               <p>Groups</p>
@@ -77,7 +79,7 @@ const Profile = () => {
                   labels: groupLabel,
                   datasets: [
                     {
-                      label: 'Percentage',
+                      label: "Percentage",
                       data: groupData,
                       fill: false,
                     },
@@ -92,7 +94,7 @@ const Profile = () => {
                   labels: organisationLabel,
                   datasets: [
                     {
-                      label: 'Percentage',
+                      label: "Percentage",
                       data: organisationData,
                       fill: false,
                     },

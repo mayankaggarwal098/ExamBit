@@ -38,10 +38,11 @@ const App = () => {
       <Header />
       <ToastContainer autoClose={2000} />
       <Switch>
+        <Route path="/" component={HomeScreen} exact />
         <Route path="/register" component={Register} />
         <Route path="/login" component={Login} />
         <Route path="/profile" component={Profile} />
-        <Route path="/" component={HomeScreen} exact />
+
         <Route path="/questions" component={QuestionList} exact />
         <Route path="/pastTest" component={StudentPrevTest} />
         <Route path="/upcomingTest" component={StudentUpcomingTest} />

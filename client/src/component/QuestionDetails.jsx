@@ -1,13 +1,13 @@
-import React from 'react';
-import { Col, ListGroup, Row } from 'react-bootstrap';
-import { CopyToClipboard } from 'react-copy-to-clipboard';
-import { toast } from 'react-toastify';
+import React from "react";
+import { Col, ListGroup, Row } from "react-bootstrap";
+import { CopyToClipboard } from "react-copy-to-clipboard";
+import { toast } from "react-toastify";
 
 const QuestionDetails = ({ testPaperSheet, pos }) => {
-  var link = window.location.href.split('/').splice(0, 3);
-  var mainlink = '';
-  link.forEach(d => {
-    mainlink = mainlink + d + '/';
+  var link = window.location.href.split("/").splice(0, 3);
+  var mainlink = "";
+  link.forEach((d) => {
+    mainlink = mainlink + d + "/";
   });
 
   return (
@@ -15,20 +15,20 @@ const QuestionDetails = ({ testPaperSheet, pos }) => {
       <ListGroup.Item>
         <Row>
           <Col>
-            <strong>TEST ID </strong>
+            <strong>TEST CATEGORY </strong>
           </Col>
-          <Col>{testPaperSheet[pos]._id}</Col>
+          <Col>{testPaperSheet[pos].paperType}</Col>
         </Row>
       </ListGroup.Item>
-      {testPaperSheet[pos].paperType === 'ORGANISATION' && (
+      {testPaperSheet[pos].paperType === "ORGANISATION" && (
         <ListGroup.Item>
           <Row>
             <Col md={5}>
               <strong>
-                TEST Link &nbsp;{' '}
+                TEST Link &nbsp;{" "}
                 <CopyToClipboard
                   text={`${mainlink}student/registration/test/${testPaperSheet[pos]._id}`}
-                  onCopy={() => toast.info('Link Copied to clipboard')}
+                  onCopy={() => toast.info("Link Copied to clipboard")}
                 >
                   <i className="fas fa-copy"></i>
                 </CopyToClipboard>

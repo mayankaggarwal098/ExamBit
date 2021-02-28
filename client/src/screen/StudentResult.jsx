@@ -1,40 +1,42 @@
-import React, { useState, useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { useLocation } from 'react-router-dom';
-import { Row, Container, Col, Table, ListGroup, Button } from 'react-bootstrap';
-import { resultGenerate } from '../actions/generateResultAction';
-import { getStudentDetail } from '../actions/studentRegistrationAction';
-import { getSinglePaper } from '../actions/testAction';
-import Loader from '../utils/Loader';
-import SingleQuestion from '../component/SingleQuestion';
+import React, { useState, useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { useLocation } from "react-router-dom";
+import { Row, Container, Col, Table, ListGroup, Button } from "react-bootstrap";
+import { resultGenerate } from "../actions/generateResultAction";
+import { getStudentDetail } from "../actions/studentRegistrationAction";
+import { getSinglePaper } from "../actions/testAction";
+import Loader from "../utils/Loader";
+import SingleQuestion from "../component/SingleQuestion";
 
 const StudentResult = () => {
   const query = new URLSearchParams(useLocation().search);
-  const testId = query.get('testId');
-  const studentId = query.get('studentId');
+  const testId = query.get("testId");
+  const studentId = query.get("studentId");
 
   const [show, setShow] = useState(false);
   const [pos, setIndex] = useState(0);
 
-  const { loading, result, error } = useSelector(state => state.generateResult);
-  const { student } = useSelector(state => state.studentDetail);
+  const { loading, result, error } = useSelector(
+    (state) => state.generateResult
+  );
+  const { student } = useSelector((state) => state.studentDetail);
 
-  const { paper } = useSelector(state => state.singleTestPaper);
+  const { paper } = useSelector((state) => state.singleTestPaper);
 
   const questions = paper && paper.questions;
 
   const dispatch = useDispatch();
 
   useEffect(() => {
-    window.dispatchEvent(new CustomEvent('navigationhandler'));
-
-    if (!paper) dispatch(getSinglePaper(testId));
-    if (!student) dispatch(getStudentDetail(studentId));
-    if (!result || studentId != result.studentId)
+    window.dispatchEvent(new CustomEvent("navigationhandler"));
+    if (!paper || testId !== paper._id) dispatch(getSinglePaper(testId));
+    if (!student || studentId !== student._id)
+      dispatch(getStudentDetail(studentId));
+    if (!result || studentId !== result.studentId || paper._id !== testId)
       dispatch(resultGenerate({ testId, studentId }));
   }, []);
 
-  const set = index => {
+  const set = (index) => {
     setShow(true);
     setIndex(index);
   };
@@ -44,7 +46,7 @@ const StudentResult = () => {
       {loading && <Loader />}
       <Row>
         <Col className="align-items-left">
-          <h3 style={{ color: 'black' }}>STUDENT RESULT</h3>
+          <h3 style={{ color: "black" }}>STUDENT RESULT</h3>
         </Col>
       </Row>
       {student && (
@@ -71,18 +73,18 @@ const StudentResult = () => {
             <tr>
               <td>
                 <strong>
-                  MARKS(out of{' '}
-                  {result !== 'Not Attempt' ? result && result.maxMarks : 0}){' '}
+                  MARKS(out of{" "}
+                  {result !== "Not Attempt" ? result && result.maxMarks : 0}){" "}
                 </strong>
               </td>
               <td>
-                {result === 'Not Attempt' ? 'N/A' : result && result.score}
+                {result === "Not Attempt" ? "N/A" : result && result.score}
               </td>
             </tr>
           </tbody>
         </Table>
       )}
-      {result === 'Not Attempt' ? (
+      {result === "Not Attempt" ? (
         <div className="reasendmail-container-register">
           Student has not given the test
         </div>
@@ -92,7 +94,7 @@ const StudentResult = () => {
           bordered
           striped
           responsive
-          style={{ textAlign: 'center' }}
+          style={{ textAlign: "center" }}
         >
           <thead>
             <tr>
@@ -118,21 +120,21 @@ const StudentResult = () => {
                       Details
                     </Button>
                   </td>
-                  <td>{res.correctAnswer.map(correct => correct)}</td>
+                  <td>{res.correctAnswer.map((correct) => correct)}</td>
                   <td>
                     {res.response.length
-                      ? res.response.map(r => r)
-                      : 'Not Attempt'}
+                      ? res.response.map((r) => r)
+                      : "Not Attempt"}
                   </td>
                   <td>{res.weightage}</td>
                   <td>
                     {res.isCorrect ? (
                       <i
                         className="fas fa-check"
-                        style={{ color: 'green' }}
+                        style={{ color: "green" }}
                       ></i>
                     ) : (
-                      <i className="fa fa-times" style={{ color: 'red' }}></i>
+                      <i className="fa fa-times" style={{ color: "red" }}></i>
                     )}
                   </td>
                 </tr>

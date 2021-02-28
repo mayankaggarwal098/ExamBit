@@ -133,12 +133,12 @@ const getAllTests = async (req, res) => {
       select: {
         pdf: 0,
       },
-      populate:{
-        path:'questions',
-        populate:{
-          path:'options'
-        }
-      }
+      populate: {
+        path: "questions",
+        populate: {
+          path: "options",
+        },
+      },
     })
     // .select("-pdf")
     .populate({
@@ -163,6 +163,7 @@ const getAllTests = async (req, res) => {
         },
       },
     });
+  //.sort("-createdAt");
   if (!testPaper) return res.status(404).send("Tests Not Found");
 
   let organisationtest = testPaper.testId.map((t) => t);
@@ -186,12 +187,12 @@ const getAllAssignments = async (req, res) => {
       select: {
         pdf: 0,
       },
-      populate:{
-        path:'questions',
-        populate:{
-          path:'options'
-        }
-      }
+      populate: {
+        path: "questions",
+        populate: {
+          path: "options",
+        },
+      },
     })
     // .select("-pdf")
     .populate({
@@ -254,12 +255,12 @@ const getAllTestsConducted = async (req, res) => {
       select: {
         pdf: 0,
       },
-      populate:{
-        path:'questions',
-        populate:{
-          path:'options'
-        }
-      }
+      populate: {
+        path: "questions",
+        populate: {
+          path: "options",
+        },
+      },
     })
     // .select("-pdf")
     .populate({
@@ -284,6 +285,7 @@ const getAllTestsConducted = async (req, res) => {
         },
       },
     });
+
   if (!testPaper) return res.status(404).send("Tests Not Found");
 
   let organisationtest = testPaper.testId.map((t) => t);
@@ -291,8 +293,11 @@ const getAllTestsConducted = async (req, res) => {
   if (testPaper.group.length) {
     let grouptest = testPaper.group.map((t) => t.tests);
     grouptest = [].concat(...grouptest);
-    res.send([...grouptest, ...organisationtest]);
-  } else res.send(organisationtest);
+    organisationtest = [...grouptest, ...organisationtest];
+    //res.send([...grouptest, ...organisationtest]);
+  } //else
+  console.log(organisationtest);
+  res.send(organisationtest);
 };
 const getAllAssignmentsConducted = async (req, res) => {
   // const papers = await TestPaper.find({
@@ -321,12 +326,12 @@ const getAllAssignmentsConducted = async (req, res) => {
       select: {
         pdf: 0,
       },
-      populate:{
-        path:'questions',
-        populate:{
-          path:'options'
-        }
-      }
+      populate: {
+        path: "questions",
+        populate: {
+          path: "options",
+        },
+      },
     })
     // .select("-pdf")
     .populate({
@@ -455,7 +460,6 @@ const changeRegistrationStatus = async (req, res) => {
 // };
 
 const getRegisteredStudents = async (req, res) => {
-  
   const { testId } = req.body;
   const testPaper = await TestPaper.findById(testId).select("paperType");
   if (!testPaper) return res.status(404).send("Paper Not Found");
@@ -472,17 +476,18 @@ const getRegisteredStudents = async (req, res) => {
         },
       });
 
-      res.send(data.students);
+    res.send(data.students);
   } else {
-    data = await User.find({ category: "STUDENT", testId: { $in: [testId] } }).select("name email");
+    data = await User.find({
+      category: "STUDENT",
+      testId: { $in: [testId] },
+    }).select("name email");
     res.send(data);
   }
 
   // if (students.length === 0) {
   //   return res.status(400).send("Invalid Test Id");
   // }
-
-  
 };
 
 module.exports = {
