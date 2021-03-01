@@ -56,8 +56,8 @@ const TestPaper = ({ history }) => {
       //   // setTestCategory(category);
       // }
       // getCategory();
-
       dispatch(getSinglePaper(testId));
+      dispatch({ type: 'SET_URL', payload: window.location.pathname });
     }
 
     async function responseSheet() {

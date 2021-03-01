@@ -35,3 +35,14 @@ export const userLoginReducer = (state = {}, action) => {
       return state;
   }
 };
+
+export const urlPathReducer = (state = {}, action) => {
+  switch (action.type) {
+    case 'SET_URL':
+      return { path: action.payload };
+    case 'SET_URL_RESET':
+      return {};
+    default:
+      return state;
+  }
+};

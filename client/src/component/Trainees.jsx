@@ -27,6 +27,7 @@ const Trainees = ({ id }) => {
 
   //const scores = useRef([]);
   const [scores, setScores] = useState([]);
+
   useEffect(() => {
     dispatch(getAllRegisteredStudent(id));
     dispatch(getSinglePaper(id));
@@ -47,11 +48,17 @@ const Trainees = ({ id }) => {
   const audioHandler = studentId => {
     window.open(`/student/test/audio?testId=${id}&studentId=${studentId}`);
   };
+
   const downloadPdf = async (studentId, studentName) => {
     const pdf = await getResponsePdf(studentId, id);
-    //console.log(paper.pdf);
-    download(pdf, `${studentName}_responsesheet.pdf`, 'application/pdf');
+    //console.log(pdf);
+    if (pdf === 'Not Attempt' || pdf.length === 0) {
+      toast.error('Student has not attempt this test');
+    } else {
+      download(pdf, `${studentName}_responsesheet.pdf`, 'application/pdf');
+    }
   };
+
   const editScore = async studentId => {
     console.log(studentId);
     await editResultScore(id, studentId, marks);
@@ -106,19 +113,26 @@ const Trainees = ({ id }) => {
                 {paper && paper.category === 'PDF' && (
                   <>
                     <td>
-                      {scores.length === 0 && `Not Checked`}
-                      {scores.map(result => {
-                        if (toString(result.studenId) === toString(stud._id)) {
-                          if (result.score === -1) {
-                            return `Not Checked`;
-                          } else {
-                            return `${result.score}`;
-                          }
-                        }
-                      })}
+                      {scores.length === 0
+                        ? `Not Checked`
+                        : scores.map(result => {
+                            if (result.studentId === stud._id) {
+                              if (result.score === -1) {
+                                return `Not Checked`;
+                              } else {
+                                return `${result.score}`;
+                              }
+                            }
+                          })}
                     </td>
                     <td>
                       <Button
+                        disabled={
+                          notConductedTestPapers &&
+                          notConductedTestPapers.map(
+                            p => p.id === id && !paper.isTestConducted
+                          )
+                        }
                         variant="outline-danger"
                         onClick={() => set(index)}
                       >

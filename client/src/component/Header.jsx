@@ -1,17 +1,27 @@
-import React from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { Nav, Navbar, Container, NavDropdown } from "react-bootstrap";
-import { LinkContainer } from "react-router-bootstrap";
-import { logout } from "../actions/userAction";
-import { useEffect } from "react";
+import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { Nav, Navbar, Container, NavDropdown } from 'react-bootstrap';
+import { LinkContainer } from 'react-router-bootstrap';
+import { logout } from '../actions/userAction';
+import { useEffect } from 'react';
+import { useState } from 'react';
 
 const Header = () => {
+  // const [url, setUrl] = useState(null);
   const dispatch = useDispatch();
-  const url = window.location.pathname;
   //if (url == "/student/test/start")
-  console.log(url);
+  // let path = window.location.pathname;
+  // console.log(path);
+  // console.log(url);
   //if (url === "/student/test") console.log(1);
-  const { userInfo } = useSelector((state) => state.userLogin);
+  const { path } = useSelector(state => state.urlPath);
+
+  // useEffect(() => {
+  //   if (!url || url !== path) {
+  //     setUrl(path);
+  //   }
+  // }, [url, path]);
+  const { userInfo } = useSelector(state => state.userLogin);
 
   const logOutHandler = () => {
     dispatch(logout());
@@ -19,7 +29,7 @@ const Header = () => {
 
   return (
     <header>
-      {url !== "/student/test/start" && (
+      {path !== '/student/test/start' && (
         <Navbar collapseOnSelect expand="lg" bg="primary" variant="dark">
           <Container>
             <LinkContainer to="/">
@@ -30,7 +40,7 @@ const Header = () => {
                 <Navbar.Toggle aria-controls="responsive-navbar-nav" />
                 <Navbar.Collapse id="responsive-navbar-nav">
                   <Nav className="mr-auto">
-                    {userInfo && userInfo.category === "SUPERVISOR" && (
+                    {userInfo && userInfo.category === 'SUPERVISOR' && (
                       <>
                         <LinkContainer to="/questions">
                           <Nav.Link>
@@ -77,7 +87,7 @@ const Header = () => {
                         </LinkContainer>
                       </>
                     )}
-                    {userInfo && userInfo.category === "ADMIN" && (
+                    {userInfo && userInfo.category === 'ADMIN' && (
                       <>
                         <LinkContainer to="/supervisor">
                           <Nav.Link>
@@ -99,7 +109,7 @@ const Header = () => {
                         </LinkContainer>
                       </>
                     )}
-                    {userInfo && userInfo.category === "STUDENT" && (
+                    {userInfo && userInfo.category === 'STUDENT' && (
                       <>
                         <LinkContainer to="/pastTest">
                           <Nav.Link>

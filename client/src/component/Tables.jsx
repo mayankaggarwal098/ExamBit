@@ -21,7 +21,6 @@ const Tables = () => {
     try {
       setLoader(true);
       const student = await getGroupStudents(groupId);
-      console.log(student);
       setStudents(student);
       setLoader(false);
     } catch (ex) {

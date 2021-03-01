@@ -73,4 +73,5 @@ export const logout = () => async dispatch => {
   dispatch({ type: USER_LOGOUT });
   dispatch({ type: GROUP_RESET });
   dispatch({ type: STUDENT_TEST_LIST_RESET });
+  dispatch({ type: 'SET_URL_RESET' });
 };
