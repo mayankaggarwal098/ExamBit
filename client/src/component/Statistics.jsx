@@ -1,14 +1,14 @@
-import React, { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { ListGroup, Button, Col, Row } from 'react-bootstrap';
-import { downloadResult } from '../actions/studentRegistrationAction';
-import { getScoreOfAllStudents } from '../actions/testAction';
-import BarCharts from '../utils/BarCharts';
-import DoughnutChart from '../utils/DoughnutChart';
-import download from 'downloadjs';
-import { bgcolor, bordercolor } from '../utils/Color';
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { ListGroup, Button, Col, Row } from "react-bootstrap";
+import { downloadResult } from "../actions/studentRegistrationAction";
+import { getScoreOfAllStudents } from "../actions/testAction";
+import BarCharts from "../utils/BarCharts";
+import DoughnutChart from "../utils/DoughnutChart";
+import download from "downloadjs";
+import { bgcolor, bordercolor } from "../utils/Color";
 //import { saveAs } from "file-saver";
-import { base64StringToBlob } from 'blob-util';
+import { base64StringToBlob } from "blob-util";
 
 const Statistics = ({ id }) => {
   const [scorelable, setScorelable] = useState([]);
@@ -20,10 +20,10 @@ const Statistics = ({ id }) => {
   const [totalStudents, setTotalStudents] = useState(0);
 
   const dispatch = useDispatch();
-
+  const { paper } = useSelector((state) => state.singleTestPaper);
   useEffect(() => {
-    getStudentsMarks();
-  }, []);
+    if (paper) getStudentsMarks();
+  }, [paper]);
 
   const getStudentsMarks = async () => {
     const resultData = await getScoreOfAllStudents(id);
@@ -40,7 +40,7 @@ const Statistics = ({ id }) => {
       var pc = 0;
       var maxi = -1;
       resultData.map((d, i) => {
-        pc = (d.score / d.maxMarks) * 100;
+        pc = (d.score / paper.maxMarks) * 100;
         if (pc >= 91) {
           p90_100++;
         } else if (pc >= 81) {
@@ -91,17 +91,17 @@ const Statistics = ({ id }) => {
     }
   };
 
-  const downloadResultHandler = async id => {
+  const downloadResultHandler = async (id) => {
     const str = await downloadResult(id);
     var blob = base64StringToBlob(
       str,
-      'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
     );
     //console.log(blob);
     download(
       blob,
-      'Result.xlsx',
-      'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+      "Result.xlsx",
+      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
     );
     // // console.log(buff);
     // var blob = new Blob([buff], {
@@ -137,7 +137,7 @@ const Statistics = ({ id }) => {
               </Button>
             </Col>
             <Col md={10}>
-              <p style={{ fontSize: '20px' }}>
+              <p style={{ fontSize: "20px" }}>
                 Dowload the test result excel sheet
               </p>
             </Col>
@@ -151,7 +151,7 @@ const Statistics = ({ id }) => {
               labels: scorelable,
               datasets: [
                 {
-                  label: 'Scores',
+                  label: "Scores",
                   data: scoredata,
                   backgroundColor: bgColor,
                   borderColor: borColor,
@@ -162,7 +162,7 @@ const Statistics = ({ id }) => {
           />
         </ListGroup.Item>
         <ListGroup.Item>
-          <Row style={{ position: 'center' }}>
+          <Row style={{ position: "center" }}>
             {/* <Col md={5}>
               <p>Pass/Fail</p>
               <PieChart
@@ -185,16 +185,16 @@ const Statistics = ({ id }) => {
               <DoughnutChart
                 DoughnutData={{
                   labels: [
-                    '91% to 100%',
-                    '81% to 90%',
-                    '71% to 80%',
-                    '61% to 70%',
-                    '50% to 60%',
-                    'Below 50%',
+                    "91% to 100%",
+                    "81% to 90%",
+                    "71% to 80%",
+                    "61% to 70%",
+                    "50% to 60%",
+                    "Below 50%",
                   ],
                   datasets: [
                     {
-                      label: 'Percentage wise category',
+                      label: "Percentage wise category",
                       data: statData,
                       backgroundColor: [
                         bgcolor[0],

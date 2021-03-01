@@ -65,6 +65,14 @@ const QuestionDetails = ({ testPaperSheet, pos }) => {
           <Col>{testPaperSheet[pos].duration}</Col>
         </Row>
       </ListGroup.Item>
+      <ListGroup.Item>
+        <Row>
+          <Col>
+            <strong>MAX MARKS</strong>
+          </Col>
+          <Col>{testPaperSheet[pos].maxMarks}</Col>
+        </Row>
+      </ListGroup.Item>
     </ListGroup.Item>
   );
 };

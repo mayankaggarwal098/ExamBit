@@ -1,25 +1,25 @@
-import React, { useState, useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { useHistory } from 'react-router-dom';
-import { Row, Col, Button, Container } from 'react-bootstrap';
-import { getNotConductedTestPaper } from '../actions/testAction';
+import React, { useState, useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { useHistory } from "react-router-dom";
+import { Row, Col, Button, Container } from "react-bootstrap";
+import { getNotConductedTestPaper } from "../actions/testAction";
 
-import Loader from '../utils/Loader';
-import TestTable from '../component/TestTable';
-import { getNotConductedAssignment } from './../actions/testAction';
+import Loader from "../utils/Loader";
+import TestTable from "../component/TestTable";
+import { getNotConductedAssignment } from "./../actions/testAction";
 
 const AssignmentNotConductedList = () => {
   const { loading, error, notConductedAssignment } = useSelector(
-    state => state.getTestPaper
+    (state) => state.getTestPaper
   );
 
-  const { userInfo } = useSelector(state => state.userLogin);
+  const { userInfo } = useSelector((state) => state.userLogin);
   const dispatch = useDispatch();
   const history = useHistory();
 
   useEffect(() => {
     if (!userInfo) {
-      history.push('/login');
+      history.push("/login");
     }
 
     if (!notConductedAssignment) {
@@ -29,7 +29,7 @@ const AssignmentNotConductedList = () => {
 
   //PAGINATION
   const createHandler = () => {
-    history.push('/tests/create');
+    history.push("/tests/create");
   };
 
   return (
@@ -38,11 +38,11 @@ const AssignmentNotConductedList = () => {
       <Container>
         <Row className="align-items-center">
           <Col>
-            <h3 style={{ color: 'black' }}>All Assignments</h3>
+            <h3 style={{ color: "black" }}>All Assignments</h3>
           </Col>
           <Col className="text-right py-2">
             <Button className="my-3" onClick={createHandler}>
-              <i className="fas fa-plus"></i>&nbsp;&nbsp;Create New Test
+              <i className="fas fa-plus"></i>&nbsp;&nbsp;Create New Assignment
             </Button>
           </Col>
         </Row>

@@ -52,7 +52,7 @@ const RankList = ({ testId }) => {
                 <td>{r.rank}</td>
                 <td>{r.studentId.name}</td>
                 <td>{r.studentId.email}</td>
-                <td>{r.score}</td>
+                <td>{r.score === -1 ? "Not Checked" : r.score}</td>
               </tr>
             ))}
         </tbody>

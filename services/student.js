@@ -21,7 +21,7 @@ const registerStudent = async (req, res) => {
     isRegistrationAvailable: true,
   });
 
-  console.log(paper)
+  console.log(paper);
   if (!paper)
     return res.status(422).send("Registration for this test has been closed");
 
@@ -55,14 +55,16 @@ const registerStudent = async (req, res) => {
 
 const getTestQuestions = async (req, res) => {
   const paper = await TestPaper.findById(req.body.id)
-    .select("pdf maxMarks questions duration isSnapshots startTime isAudioRec category")
+    .select(
+      "pdf maxMarks questions duration isSnapshots startTime isAudioRec category"
+    )
     .populate("questions")
     .populate({
       path: "questions",
       populate: {
         path: "options",
         //model: Options,
-        select: { 
+        select: {
           optionBody: 1,
         },
       },
@@ -148,7 +150,7 @@ const updateResponse = async (req, res) => {
     { questionId, studentId, testId },
     { chosenOption }
   );
-  
+
   if (!response) return res.status(404).send("Question not exist");
 
   res.send("Response Updated");
@@ -173,12 +175,12 @@ const endTest = async (req, res) => {
 };
 
 const getTestStartTime = async (req, res) => {
-  console.log(req.body.testId)
+  console.log(req.body.testId);
   const { testId } = req.body;
   const paper = await TestPaper.findById(testId).select("startTime");
   if (!paper) return res.status(404).send("Testpaper not found");
 
-  console.log(paper)
+  console.log(paper);
   res.send(paper);
 };
 
@@ -200,8 +202,8 @@ const getTestCategory = async (req, res) => {
 // };
 
 const uploadPdfResponse = async (req, res) => {
-  const { studentId, testId, pdf } = req.body;
-  const student = await User.findOne({ _id: studentId, testId });
+  const { studentId, testId, pdf } = req.body; //,testId
+  const student = await User.findOne({ _id: studentId });
   const paper = await TestPaper.findOne({
     _id: testId,
     isTestBegins: true,
@@ -221,7 +223,7 @@ const uploadPdfResponse = async (req, res) => {
 const getResponsePdf = async (req, res) => {
   const { studentId, testId } = req.body;
   const responseSheet = await ResponseSheet.findOne({ studentId, testId });
-  if (!responseSheet) return res.send("Student has not attempt this test");
+  if (!responseSheet) return res.send("Not Attempt");
   // console.log(responseSheet);
   res.send(responseSheet.pdf);
 };

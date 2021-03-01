@@ -47,7 +47,7 @@ const HomeScreen = ({ history }) => {
             <Card className="my-3 p-3 rounded text-center">
               <Card.Header variant="dark" style={{ color: "black" }}>
                 <Card.Title as="div">
-                  <i class="fas fa-microphone fa-3x"></i>
+                  <i className="fas fa-microphone fa-3x"></i>
                   <br />
                   <strong>Audio Proctoring</strong>
                 </Card.Title>
@@ -59,7 +59,7 @@ const HomeScreen = ({ history }) => {
             <Card className="my-3 p-3 rounded text-center">
               <Card.Header variant="dark" style={{ color: "black" }}>
                 <Card.Title as="div">
-                  <i class="fas fa-camera fa-3x"></i>
+                  <i className="fas fa-camera fa-3x"></i>
                   <br />
                   <strong>Snapshots</strong>
                 </Card.Title>
@@ -71,7 +71,7 @@ const HomeScreen = ({ history }) => {
             <Card className="my-3 p-3 rounded text-center">
               <Card.Header variant="dark" style={{ color: "black" }}>
                 <Card.Title as="div">
-                  <i class="fas fa-file-download fa-3x"></i>
+                  <i className="fas fa-file-download fa-3x"></i>
                   <br />
                   <strong>Download Result</strong>
                 </Card.Title>
@@ -83,7 +83,7 @@ const HomeScreen = ({ history }) => {
             <Card className="my-3 p-3 rounded text-center">
               <Card.Header variant="dark" style={{ color: "black" }}>
                 <Card.Title as="div">
-                  <i class="fas fa-chart-bar fa-3x"></i>
+                  <i className="fas fa-chart-bar fa-3x"></i>
                   <br />
                   <strong>Graphical Form</strong>
                 </Card.Title>
@@ -95,7 +95,7 @@ const HomeScreen = ({ history }) => {
             <Card className="my-3 p-3 rounded text-center">
               <Card.Header variant="dark" style={{ color: "black" }}>
                 <Card.Title as="div">
-                  <i class="fas fa-file-pdf fa-3x"></i>
+                  <i className="fas fa-file-pdf fa-3x"></i>
                   <br />
                   <strong>Pdf upload</strong>
                 </Card.Title>
@@ -109,7 +109,7 @@ const HomeScreen = ({ history }) => {
             <Card className="my-3 p-3 rounded text-center">
               <Card.Header variant="dark" style={{ color: "black" }}>
                 <Card.Title as="div">
-                  <i class="fas fa-file fa-3x"></i>
+                  <i className="fas fa-file fa-3x"></i>
                   <br />
                   <strong>Assignment</strong>
                 </Card.Title>
@@ -123,7 +123,7 @@ const HomeScreen = ({ history }) => {
             <Card className="my-3 p-3 rounded text-center">
               <Card.Header variant="dark" style={{ color: "black" }}>
                 <Card.Title as="div">
-                  <i class="fas fa-users fa-3x"></i>
+                  <i className="fas fa-users fa-3x"></i>
                   <br />
                   <strong>Groups</strong>
                 </Card.Title>
@@ -137,7 +137,7 @@ const HomeScreen = ({ history }) => {
             <Card className="my-3 p-3 rounded text-center">
               <Card.Header variant="dark" style={{ color: "black" }}>
                 <Card.Title as="div">
-                  <i class="fas fa-chart-line fa-3x"></i>
+                  <i className="fas fa-chart-line fa-3x"></i>
                   <br />
                   <strong>Track Progress</strong>
                 </Card.Title>
@@ -149,7 +149,7 @@ const HomeScreen = ({ history }) => {
             <Card className="my-3 p-3 rounded text-center">
               <Card.Header variant="dark" style={{ color: "black" }}>
                 <Card.Title as="div">
-                  <i class="fas fa-file-signature fa-3x"></i>
+                  <i className="fas fa-file-signature fa-3x"></i>
                   <br />
                   <strong>Competitive Exam/Interview Test</strong>
                 </Card.Title>
@@ -164,7 +164,7 @@ const HomeScreen = ({ history }) => {
             <Card className="my-3 p-3 rounded text-center">
               <Card.Header variant="dark" style={{ color: "black" }}>
                 <Card.Title as="div">
-                  <i class="fas fa-check-square fa-3x"></i>
+                  <i className="fas fa-check-square fa-3x"></i>
                   <br />
                   <strong>Automatic Result Generate</strong>
                 </Card.Title>
