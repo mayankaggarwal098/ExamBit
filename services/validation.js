@@ -45,7 +45,7 @@ function validateCreateTest(testPaper) {
     startTime: Joi.date().required(),
     paperType: Joi.string().required(),
     groupId: Joi.any(),
-    maxMarks: Joi.number().min(1).required()
+    maxMarks: Joi.number().min(1).required(),
   });
   return schema.validate(testPaper);
 }
@@ -73,7 +73,9 @@ function validateEditTest(testPaper) {
     isSnapshots: Joi.boolean().required(),
     isAudioRec: Joi.boolean().required(),
     startTime: Joi.date().required(),
-    maxMarks: Joi.number().min(1).required()
+    maxMarks: Joi.number().min(1).required(),
+    groupId: Joi.any(),
+    paperType: Joi.string(),
   });
   return schema.validate(testPaper);
 }

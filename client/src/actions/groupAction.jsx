@@ -1,14 +1,14 @@
-import { toast } from 'react-toastify';
-import * as group from '../constants/groupConstant';
-import errorHandler from '../errorHandler';
-import httpService from '../utils/httpService';
-import Token from '../utils/Token';
+import { toast } from "react-toastify";
+import * as group from "../constants/groupConstant";
+import errorHandler from "../errorHandler";
+import httpService from "../utils/httpService";
+import Token from "../utils/Token";
 
-export const getAllGroup = () => async dispatch => {
+export const getAllGroup = () => async (dispatch) => {
   try {
     dispatch({ type: group.GROUP_LIST_REQUEST });
 
-    const { data } = await httpService.get('/api/groups/allGroup', Token());
+    const { data } = await httpService.get("/api/groups/allGroup", Token());
 
     dispatch({ type: group.GROUP_LIST_SUCCESS, payload: data.group });
   } catch (ex) {
@@ -19,36 +19,36 @@ export const getAllGroup = () => async dispatch => {
 export const createGroup = async (groupName, groupCode) => {
   try {
     const { data } = await httpService.post(
-      '/api/groups/create-group',
+      "/api/groups/create-group",
       { groupName, groupCode },
       Token()
     );
-    toast.success('SuccessFully Created');
+    toast.success("SuccessFully Created");
     return data;
   } catch (ex) {
     errorHandler(ex);
   }
 };
 
-export const joinGroup = async groupCode => {
+export const joinGroup = async (groupCode) => {
   try {
     const { data } = await httpService.post(
-      '/api/groups/join-group',
+      "/api/groups/join-group",
       { groupCode },
       Token()
     );
 
-    if (typeof data === 'string') toast.info(data);
+    if (typeof data === "string") toast.info(data);
     else return data;
   } catch (ex) {
     errorHandler(ex);
   }
 };
 
-export const getGroupStudents = async groupId => {
+export const getGroupStudents = async (groupId) => {
   try {
     const { data } = await httpService.post(
-      '/api/groups/students',
+      "/api/groups/students",
       { groupId },
       Token()
     );
@@ -59,13 +59,14 @@ export const getGroupStudents = async groupId => {
   }
 };
 
-export const getGroupTestPaper = async groupId => {
+export const getGroupTestPaper = async (groupId) => {
   try {
-    const { data } = await httpService.post(
-      '/api/groups/tests',
+    let { data } = await httpService.post(
+      "/api/groups/tests",
       { groupId },
       Token()
     );
+    data = [].concat(data).sort((a, b) => (a.createdAt < b.createdAt ? 1 : -1));
     return data;
   } catch (ex) {
     errorHandler();

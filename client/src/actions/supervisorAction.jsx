@@ -163,6 +163,18 @@ export const updateSupervisor = (supervisor, status) => async (
 };
 
 export const deleteMedia = async () => {
-  const { data } = await http.delete(`/api/supervisor/delete/media`, Token());
-  console.log(data);
+  try {
+    const { data } = await http.delete(`/api/supervisor/delete/media`, Token());
+    toast.success(data);
+  } catch (ex) {
+    // const ex =
+    //   error.response && error.response.data.message
+    //     ? error.response.data.message
+    //     : error.message;
+    errorHandler(ex);
+    // dispatch({
+    //   type: s.SUPERVISOR_REMOVE_FAIL,
+    //   payload: ex,
+    // });
+  }
 };
