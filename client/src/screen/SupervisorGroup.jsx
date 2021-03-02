@@ -19,17 +19,19 @@ const SupervisorGroup = () => {
     if (!groups) dispatch(getAllGroup());
   }, []);
 
-  const createHandler = async () => {
+  const createHandler = async e => {
     try {
+      e.preventDefault();
       setLoader(true);
       const group = await createGroup(groupName, groupCode);
-      setGroupName('');
-      setGroupCode('');
-      setLoader(false);
-      const arr = [...groups, group];
-      dispatch({ type: GROUP_LIST_SUCCESS, payload: arr });
+      if (group) {
+        setGroupName('');
+        setGroupCode('');
+        const arr = [...groups, group];
+        dispatch({ type: GROUP_LIST_SUCCESS, payload: arr });
+      }
     } catch (ex) {}
-
+    setLoader(false);
     setShow(false);
   };
 
@@ -69,7 +71,7 @@ const SupervisorGroup = () => {
             </Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <Form>
+            <Form onSubmit={e => createHandler(e)}>
               <Form.Group controlId="groupName">
                 <Form.Label>Group Name</Form.Label>
                 <Form.Control
@@ -85,6 +87,7 @@ const SupervisorGroup = () => {
                 <Form.Control
                   required
                   placeholder="Group Code"
+                  minLength="6"
                   type="text"
                   value={groupCode}
                   aria-describedby="code"
@@ -98,7 +101,7 @@ const SupervisorGroup = () => {
               <Button
                 className="btn-block"
                 variant="outline-primary"
-                onClick={() => createHandler()}
+                type="submit"
               >
                 Create
               </Button>

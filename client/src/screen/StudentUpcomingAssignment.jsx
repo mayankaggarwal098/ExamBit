@@ -1,13 +1,13 @@
-import React, { useEffect, useState } from "react";
-import { Col, Container, Row, Table, Button } from "react-bootstrap";
-import { useDispatch, useSelector } from "react-redux";
-import { studentTestPaperList } from "../actions/studentRegistrationAction";
-import StudentTestTable from "../component/StudentGroupTestTable";
-import Loader from "../utils/Loader";
+import React, { useEffect, useState } from 'react';
+import { Col, Container, Row, Table, Button } from 'react-bootstrap';
+import { useDispatch, useSelector } from 'react-redux';
+import { studentTestPaperList } from '../actions/studentRegistrationAction';
+import StudentTestTable from '../component/StudentGroupTestTable';
+import Loader from '../utils/Loader';
 
 const StudentUpcomingAssignment = () => {
   const { loading, notGivenAssignment } = useSelector(
-    (state) => state.studentTestList
+    state => state.studentTestList
   );
 
   const dispatch = useDispatch();
@@ -20,7 +20,7 @@ const StudentUpcomingAssignment = () => {
       {loading && <Loader />}
       <Row className="align-items-center">
         <Col>
-          <h3 style={{ color: "black" }}>Assigned Assignment</h3>
+          <h3 style={{ color: 'black' }}>Assigned Assignment</h3>
         </Col>
         <Col className="text-right">
           <Button

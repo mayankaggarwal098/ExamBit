@@ -47,7 +47,8 @@ export const getNotConductedTestPaper = () => async dispatch => {
     //   },
     // };
 
-    const { data } = await http.get('/api/test/details/all', Token());
+    let { data } = await http.get('/api/test/details/all', Token());
+    data = [].concat(data).sort((a, b) => (a.createdAt < b.createdAt ? 1 : -1));
     dispatch({
       type: test.TEST_LIST_SUCCESS,
       payload1: data,
@@ -75,10 +76,9 @@ export const getNotConductedAssignment = () => async dispatch => {
     //   },
     // };
 
-    const { data } = await http.get(
-      '/api/test/assignment/details/all',
-      Token()
-    );
+    let { data } = await http.get('/api/test/assignment/details/all', Token());
+
+    data = [].concat(data).sort((a, b) => (a.createdAt < b.createdAt ? 1 : -1));
     dispatch({
       type: test.TEST_LIST_SUCCESS,
       payload3: data,

@@ -6,8 +6,8 @@ const createGroup = async( req,res )=> {
     if (error) return res.status(400).send(error.details[0].message);
 
     const code = await Group.findOne({ groupCode: req.body.groupCode });
+    
     if( code ) return res.status(400).send('Group Code already Exit');
-
     let group = new Group({
         groupCode: req.body.groupCode,
         groupName: req.body.groupName

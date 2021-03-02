@@ -66,7 +66,12 @@ const Clock = ({ testId, time, duration, endTest }) => {
       <h3>Remaining Time</h3>
       <div className="stopwatch-card">
         <p>
-          <Timer endTest={endTest} testId={testId} duration={duration} time={time} />
+          <Timer
+            endTest={endTest}
+            testId={testId}
+            duration={duration}
+            time={time}
+          />
         </p>
         {/* <i className="fas fa-clock fa-4x"></i> */}
         <div className="buttons">

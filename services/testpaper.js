@@ -102,7 +102,8 @@ const getDetailedTest = async (req, res) => {
 
 const getTest = async (req, res) => {
   const paper = await TestPaper.findById(req.params.id).select(
-    "title subject duration isSnapshots questions startTime isAudioRec"
+    // " title subject duration isSnapshots questions startTime isAudioRec"
+    "-pdf"
   );
   if (!paper) res.status(404).send("Testpaper does not exists");
   res.send(paper);
@@ -467,8 +468,9 @@ const getRegisteredStudents = async (req, res) => {
   const testPaper = await TestPaper.findById(testId).select("paperType");
   if (!testPaper) return res.status(404).send("Paper Not Found");
 
+  console.log(testPaper)
   let data = [];
-  if (testPaper.paperType === "GROUP") {
+  if (testPaper.paperType === "GROUP" || testPaper.paperType === "ASSIGNMENT")  {
     data = await Group.findOne({ tests: { $in: [testId] } })
       .select("students")
       .populate({

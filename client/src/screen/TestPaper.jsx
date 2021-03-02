@@ -63,8 +63,8 @@ const TestPaper = ({ history }) => {
     async function responseSheet() {
       const res = await responseSheetOfStudent({ testId, studentId });
 
-      if (typeof res !== 'string') {
-        let response = res.responses.map(r => [...r.chosenOption]);
+      if (typeof res !== 'string' && res.responses !== null) {
+        let response = res && res.responses.map(r => [...r.chosenOption]);
         response = [].concat(...response);
         setSaveAnswer(response);
       }
@@ -184,9 +184,10 @@ const TestPaper = ({ history }) => {
     await testEnd({ testId, studentId });
 
     if (paper.category === 'MCQ') {
-      history.push(
-        `/student/test/result?testId=${testId}&studentId=${studentId}`
-      );
+      // history.push(
+      //   `/student/test/result?testId=${testId}&studentId=${studentId}`
+      // );
+      history.push(`/student/test/submitted`);
     } else {
       await resultGeneratePdf(testId, studentId);
       console.log(paper.category);

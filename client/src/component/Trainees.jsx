@@ -14,20 +14,31 @@ import {
   responseSheetOfStudent,
 } from './../actions/responseSheetAction';
 import { editResultScore, getScore } from './../actions/generateResultAction';
+import { toast } from 'react-toastify';
+
 const Trainees = ({ id }) => {
   const [show, setShow] = useState(false);
   const [pos, setIndex] = useState(0);
   const [marks, setMarks] = useState(0);
   const dispatch = useDispatch();
+
   const { loading, registeredStudent: students } = useSelector(
     state => state.registeredStudentList
   );
   let { paper } = useSelector(state => state.singleTestPaper);
-  let { notConductedTestPapers } = useSelector(state => state.getTestPaper);
+  let { notConductedTestPapers, notConductedAssignment } = useSelector(
+    state => state.getTestPaper
+  );
 
   //const scores = useRef([]);
   const [scores, setScores] = useState([]);
 
+  let conductedPaper = null;
+  if (notConductedTestPapers)
+    conductedPaper = notConductedTestPapers && notConductedTestPapers;
+  else conductedPaper = notConductedAssignment;
+
+  console.log(conductedPaper);
   useEffect(() => {
     dispatch(getAllRegisteredStudent(id));
     dispatch(getSinglePaper(id));
@@ -99,8 +110,14 @@ const Trainees = ({ id }) => {
               </>
             )}
             {paper && paper.category === 'MCQ' && <th>PERFORMANCE</th>}
-            <th>SNAPSHOT</th>
-            <th>Audio Recording</th>
+            {paper &&
+              (paper.paperType === 'ORGANISATION' ||
+                paper.paperType === 'GROUP') && (
+                <>
+                  <th>SNAPSHOT</th>
+                  <th>Audio Recording</th>
+                </>
+              )}
           </tr>
         </thead>
         <tbody>
@@ -128,8 +145,8 @@ const Trainees = ({ id }) => {
                     <td>
                       <Button
                         disabled={
-                          notConductedTestPapers &&
-                          notConductedTestPapers.map(
+                          conductedPaper &&
+                          conductedPaper.map(
                             p => p.id === id && !paper.isTestConducted
                           )
                         }
@@ -141,6 +158,12 @@ const Trainees = ({ id }) => {
                     </td>
                     <td>
                       <Button
+                        disabled={
+                          conductedPaper &&
+                          conductedPaper.map(
+                            p => p.id === id && !paper.isTestConducted
+                          )
+                        }
                         variant="outline-danger"
                         onClick={() => downloadPdf(stud._id, stud.name)}
                       >
@@ -154,10 +177,12 @@ const Trainees = ({ id }) => {
                     <Button
                       variant="outline-danger"
                       disabled={
-                        notConductedTestPapers &&
-                        notConductedTestPapers.map(
+                        conductedPaper &&
+                        conductedPaper.filter(
                           p => p._id === id && !p.isTestConducted
-                        )
+                        ).length
+                          ? true
+                          : false
                       }
                       onClick={() => resultWindowHandler(stud._id)}
                     >
@@ -165,34 +190,40 @@ const Trainees = ({ id }) => {
                     </Button>
                   </td>
                 )}
-                <td>
-                  <Button
-                    variant="outline-danger"
-                    disabled={
-                      notConductedTestPapers &&
-                      notConductedTestPapers.map(
-                        p => p._id === id && !p.isTestConducted
-                      )
-                    }
-                    onClick={() => snapshotHandler(stud._id)}
-                  >
-                    SnapShot
-                  </Button>
-                </td>
-                <td>
-                  <Button
-                    variant="outline-danger"
-                    disabled={
-                      notConductedTestPapers &&
-                      notConductedTestPapers.map(
-                        p => p._id === id && !p.isTestConducted
-                      )
-                    }
-                    onClick={() => audioHandler(stud._id)}
-                  >
-                    Audio
-                  </Button>
-                </td>
+                {paper &&
+                  (paper.paperType === 'ORGANISATION' ||
+                    paper.paperType === 'GROUP') && (
+                    <>
+                      <td>
+                        <Button
+                          variant="outline-danger"
+                          disabled={
+                            conductedPaper &&
+                            conductedPaper.map(
+                              p => p._id === id && !p.isTestConducted
+                            )
+                          }
+                          onClick={() => snapshotHandler(stud._id)}
+                        >
+                          SnapShot
+                        </Button>
+                      </td>
+                      <td>
+                        <Button
+                          variant="outline-danger"
+                          disabled={
+                            conductedPaper &&
+                            conductedPaper.map(
+                              p => p._id === id && !p.isTestConducted
+                            )
+                          }
+                          onClick={() => audioHandler(stud._id)}
+                        >
+                          Audio
+                        </Button>
+                      </td>
+                    </>
+                  )}
               </tr>
             ))}
         </tbody>

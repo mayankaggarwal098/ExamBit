@@ -12,7 +12,7 @@ const LineChart = ({ LineData }) => {
             {
               ticks: {
                 min: 0,
-                max: 110,
+                max: 100,
               },
               scaleLabel: {
                 display: true,

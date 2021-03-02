@@ -1,15 +1,15 @@
-import * as res_sheet from "../constants/responseSheetConstant";
-import http from "../utils/httpService";
-import errorHandler from "../errorHandler";
-import { toast } from "react-toastify";
-import Token from "../utils/Token";
+import * as res_sheet from '../constants/responseSheetConstant';
+import http from '../utils/httpService';
+import errorHandler from '../errorHandler';
+import { toast } from 'react-toastify';
+import Token from '../utils/Token';
 
 export const responseSheetOfStudent = async ({ studentId, testId }) => {
   try {
     // dispatch({ type: res_sheet.STUDENT_RESPONSE_SHEET_REQUEST });
 
     const { data } = await http.post(
-      "/api/student/responseSheet",
+      '/api/student/responseSheet',
       {
         studentId,
         testId,
@@ -35,7 +35,7 @@ export const responseSheetOfStudent = async ({ studentId, testId }) => {
 export const getResponsePdf = async (studentId, testId) => {
   try {
     const { data } = await http.post(
-      "/api/student/responseSheet/pdf",
+      '/api/student/responseSheet/pdf',
       {
         studentId,
         testId,
@@ -49,12 +49,12 @@ export const getResponsePdf = async (studentId, testId) => {
   }
 };
 
-export const addAnswerForGivenQuestion = async (body) => {
+export const addAnswerForGivenQuestion = async body => {
   try {
     // dispatch({ type: res_sheet.STUDENT_ANSWER_REQUEST });
 
     const { data } = await http.post(
-      "/api/student/updateResponse",
+      '/api/student/updateResponse',
       body,
       Token()
     );
@@ -76,7 +76,7 @@ export const addAnswerForGivenQuestion = async (body) => {
 export const uploadPdf = async (testId, studentId, pdf) => {
   try {
     const { data } = await http.post(
-      "/api/student/pdf/upload",
+      '/api/student/pdf/upload',
       {
         testId,
         studentId,
@@ -94,7 +94,7 @@ export const uploadPdf = async (testId, studentId, pdf) => {
 export const checkGivenTestForStudent = async (testId, studentId) => {
   try {
     const { data } = await http.post(
-      "/api/student/test/complete",
+      '/api/student/test/complete',
       { testId, studentId },
       Token()
     );

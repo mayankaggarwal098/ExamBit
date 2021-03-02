@@ -32,7 +32,9 @@ const Profile = () => {
     let label1 = [];
 
     groupRecord.map(g => {
-      let percentage = (g.score / g.testId.maxMarks) * 100;
+      let percentage;
+      if (g.score === -1) percentage = 0;
+      else percentage = (g.score / g.testId.maxMarks) * 100;
       data1.push(percentage);
       label1.push(g.testId.startTime.substr(0, 10));
     });
@@ -44,7 +46,9 @@ const Profile = () => {
     let label2 = [];
 
     organisationRecord.map(o => {
-      let percentage = (o.score / o.maxMarks) * 100;
+      let percentage;
+      if (o.score === -1) percentage = 0;
+      else percentage = (o.score / o.maxMarks) * 100;
       data2.push(percentage);
       label2.push(o.testId.startTime.substr(0, 10));
     });
@@ -55,7 +59,7 @@ const Profile = () => {
   return (
     <Container className="my-3">
       <div className="shadow-lg p-3 mb-5 bg-white rounded">
-        <p>STUDENT PROFILE</p>
+        <p>USER PROFILE</p>
         <Row>
           <Col md={4}>
             <ListGroup variant="flush">
@@ -103,7 +107,7 @@ const Profile = () => {
                       fill: false,
                       borderColor: '#742774',
                       lineTension: 0,
-                      pointBorderWidth: 4,
+                      pointBorderWidth: 2,
                     },
                   ],
                 }}

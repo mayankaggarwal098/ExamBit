@@ -76,6 +76,7 @@ export const editResultScore = async (testId, studentId, score) => {
     );
     // console.log(data);
     toast.success(data);
+    getRanksOfStudent();
     //return data;
   } catch (ex) {
     errorHandler(ex);

@@ -170,6 +170,7 @@ export const getAllRegisteredStudent = testId => async dispatch => {
 export const studentsPrevPaper = async () => {
   try {
     const { data } = await http.get('/api/student/previous-paper', Token());
+
     return data;
   } catch (ex) {
     errorHandler(ex);
@@ -180,9 +181,9 @@ export const studentTestPaperList = () => async dispatch => {
   try {
     dispatch({ type: student_reg.STUDENT_TEST_LIST_REQUEST });
 
-    const { data } = await http.get('/api/student/alltest', Token());
+    let { data } = await http.get('/api/student/alltest', Token());
 
-    console.log(data);
+    data = [].concat(data).sort((a, b) => (a.createdAt < b.createdAt ? 1 : -1));
     const paper1 = data.filter(
       p => !p.isTestConducted && p.paperType !== 'ASSIGNMENT'
     );
