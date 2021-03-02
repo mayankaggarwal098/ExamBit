@@ -8,7 +8,7 @@ const Login = ({ history }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const { loading, userInfo, error } = useSelector(state => state.userLogin);
+  const { userInfo } = useSelector(state => state.userLogin);
   const location = useLocation();
   const redirect = location.search ? location.search.slice(10, 89) : '/';
   const dispatch = useDispatch();

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { Col, Container, Row, Table, Button } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { studentTestPaperList } from '../actions/studentRegistrationAction';
@@ -37,35 +37,6 @@ const StudentUpcomingAssignment = () => {
         all={true}
         testPapers={notGivenAssignment}
       />
-      {/* <Table hover bordered striped responsive style={{ textAlign: 'center' }}>
-        <thead>
-          <th>SNo.</th>
-          <th>Title</th>
-          <th>Subject</th>
-          <th>No. of Ques</th>
-          <th>Test Date</th>
-          <th>Duration(MIN)</th>
-          <th>Result</th>
-        </thead>
-        <tbody>
-          {prevPaper &&
-            prevPaper.map((p, index) => (
-              <tr key={index + 1}>
-                <td>{index + 1}</td>
-                <td>{p.testId.title}</td>
-                <td>{p.testId.subject}</td>
-                <td>{p.testId.questions.length}</td>
-                <td>{p.testId.startTime.substring(0, 10)}</td>
-                <td>{p.testId.duration}</td>
-                <td>
-                  <Button variant="outline-primary" className="btn-block">
-                    Result
-                  </Button>
-                </td>
-              </tr>
-            ))}
-        </tbody>
-      </Table> */}
     </Container>
   );
 };

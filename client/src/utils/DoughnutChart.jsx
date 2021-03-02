@@ -1,5 +1,5 @@
 import React from 'react';
-import { Doughnut, Pie } from 'react-chartjs-2';
+import { Doughnut } from 'react-chartjs-2';
 
 const DoughnutChart = ({ DoughnutData }) => {
   return (
@@ -7,7 +7,6 @@ const DoughnutChart = ({ DoughnutData }) => {
       width={200}
       height={70}
       options={{
-        // maintainAspectRatio: true,
         responsive: true,
       }}
       data={DoughnutData}

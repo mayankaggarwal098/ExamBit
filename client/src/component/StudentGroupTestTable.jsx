@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Table, Button } from 'react-bootstrap';
 import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
@@ -8,15 +8,6 @@ const StudentTestTable = ({ testPapers, isShow, all }) => {
 
   const studentId = userInfo && userInfo._id;
   const history = useHistory();
-
-  // const checkTestGiven = async testId => {
-  //   try {
-  //     const flag = await checkGivenTestForStudent(testId, studentId);
-  //     return flag;
-  //   } catch (ex) {
-  //     errorHandler(ex);
-  //   }
-  // };
 
   const resultHandler = testId => {
     history.push(

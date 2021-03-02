@@ -1,15 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { Row, Col, Button, Container } from 'react-bootstrap';
-import { getNotConductedTestPaper } from '../actions/testAction';
 
 import Loader from '../utils/Loader';
 import TestTable from '../component/TestTable';
 import { getNotConductedAssignment } from './../actions/testAction';
 
 const AssignmentNotConductedList = () => {
-  const { loading, error, notConductedAssignment } = useSelector(
+  const { loading, notConductedAssignment } = useSelector(
     state => state.getTestPaper
   );
 

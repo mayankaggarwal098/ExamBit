@@ -1,14 +1,13 @@
-import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { ListGroup, Button, Col, Row } from "react-bootstrap";
-import { downloadResult } from "../actions/studentRegistrationAction";
-import { getScoreOfAllStudents } from "../actions/testAction";
-import BarCharts from "../utils/BarCharts";
-import DoughnutChart from "../utils/DoughnutChart";
-import download from "downloadjs";
-import { bgcolor, bordercolor } from "../utils/Color";
-//import { saveAs } from "file-saver";
-import { base64StringToBlob } from "blob-util";
+import React, { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
+import { ListGroup, Button, Col, Row } from 'react-bootstrap';
+import { downloadResult } from '../actions/studentRegistrationAction';
+import { getScoreOfAllStudents } from '../actions/testAction';
+import BarCharts from '../utils/BarCharts';
+import DoughnutChart from '../utils/DoughnutChart';
+import download from 'downloadjs';
+import { bgcolor, bordercolor } from '../utils/Color';
+import { base64StringToBlob } from 'blob-util';
 
 const Statistics = ({ id }) => {
   const [scorelable, setScorelable] = useState([]);
@@ -19,8 +18,7 @@ const Statistics = ({ id }) => {
   const [statData, setStatData] = useState([0, 0, 0, 0, 0, 0]);
   const [totalStudents, setTotalStudents] = useState(0);
 
-  const dispatch = useDispatch();
-  const { paper } = useSelector((state) => state.singleTestPaper);
+  const { paper } = useSelector(state => state.singleTestPaper);
   useEffect(() => {
     if (paper) getStudentsMarks();
   }, [paper]);
@@ -91,36 +89,18 @@ const Statistics = ({ id }) => {
     }
   };
 
-  const downloadResultHandler = async (id) => {
+  const downloadResultHandler = async id => {
     const str = await downloadResult(id);
     var blob = base64StringToBlob(
       str,
-      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+      'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
     );
-    //console.log(blob);
+
     download(
       blob,
-      "Result.xlsx",
-      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+      'Result.xlsx',
+      'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
     );
-    // // console.log(buff);
-    // var blob = new Blob([buff], {
-    //   type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-    // });
-    // //console.log(blob);
-    // const reader = new FileReader();
-    // reader.readAsDataURL(blob);
-    // reader.onloadend = async function () {
-    //   const base64String = reader.result;
-    //   console.log("Base64 String - ", base64String);
-    //   // download(
-    //   //   base64String,
-    //   //   "Testpaper.xlsx",
-    //   //   "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-    //   // );
-    // };
-
-    // saveAs(buff, "fileName.xlsx");
   };
   return (
     <>
@@ -137,7 +117,7 @@ const Statistics = ({ id }) => {
               </Button>
             </Col>
             <Col md={10}>
-              <p style={{ fontSize: "20px" }}>
+              <p style={{ fontSize: '20px' }}>
                 Dowload the test result excel sheet
               </p>
             </Col>
@@ -151,7 +131,7 @@ const Statistics = ({ id }) => {
               labels: scorelable,
               datasets: [
                 {
-                  label: "Scores",
+                  label: 'Scores',
                   data: scoredata,
                   backgroundColor: bgColor,
                   borderColor: borColor,
@@ -162,39 +142,22 @@ const Statistics = ({ id }) => {
           />
         </ListGroup.Item>
         <ListGroup.Item>
-          <Row style={{ position: "center" }}>
-            {/* <Col md={5}>
-              <p>Pass/Fail</p>
-              <PieChart
-                PieData={{
-                  labels: ['Fail', 'Pass'],
-                  datasets: [
-                    {
-                      label: 'Pass/Fail',
-                      data: passData,
-                      backgroundColor: [bgcolor[0], bgcolor[1]],
-                      borderColor: [bordercolor[0], bordercolor[1]],
-                      borderWidth: 1,
-                    },
-                  ],
-                }}
-              />
-            </Col> */}
+          <Row style={{ position: 'center' }}>
             <Col>
               <p>Percentage Wise Category</p>
               <DoughnutChart
                 DoughnutData={{
                   labels: [
-                    "91% to 100%",
-                    "81% to 90%",
-                    "71% to 80%",
-                    "61% to 70%",
-                    "50% to 60%",
-                    "Below 50%",
+                    '91% to 100%',
+                    '81% to 90%',
+                    '71% to 80%',
+                    '61% to 70%',
+                    '50% to 60%',
+                    'Below 50%',
                   ],
                   datasets: [
                     {
-                      label: "Percentage wise category",
+                      label: 'Percentage wise category',
                       data: statData,
                       backgroundColor: [
                         bgcolor[0],

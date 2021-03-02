@@ -1,20 +1,13 @@
-import React, { useState, useEffect, useRef } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { Button, Table, Modal, Form } from "react-bootstrap";
-import Loader from "../utils/Loader";
-import { getAllRegisteredStudent } from "../actions/studentRegistrationAction";
-import {
-  getSinglePaper,
-  getTestCategory,
-  testEnd,
-} from "../actions/testAction";
-import download from "downloadjs";
-import {
-  getResponsePdf,
-  responseSheetOfStudent,
-} from "./../actions/responseSheetAction";
-import { editResultScore, getScore } from "./../actions/generateResultAction";
-import { toast } from "react-toastify";
+import React, { useState, useEffect, useRef } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { Button, Table, Modal, Form } from 'react-bootstrap';
+import Loader from '../utils/Loader';
+import { getAllRegisteredStudent } from '../actions/studentRegistrationAction';
+import { getSinglePaper } from '../actions/testAction';
+import download from 'downloadjs';
+import { getResponsePdf } from './../actions/responseSheetAction';
+import { editResultScore, getScore } from './../actions/generateResultAction';
+import { toast } from 'react-toastify';
 
 const Trainees = ({ id }) => {
   const [show, setShow] = useState(false);
@@ -23,14 +16,13 @@ const Trainees = ({ id }) => {
   const dispatch = useDispatch();
 
   const { loading, registeredStudent: students } = useSelector(
-    (state) => state.registeredStudentList
+    state => state.registeredStudentList
   );
-  let { paper } = useSelector((state) => state.singleTestPaper);
+  let { paper } = useSelector(state => state.singleTestPaper);
   let { notConductedTestPapers, notConductedAssignment } = useSelector(
-    (state) => state.getTestPaper
+    state => state.getTestPaper
   );
 
-  //const scores = useRef([]);
   const [scores, setScores] = useState([]);
 
   let conductedPaper = null;
@@ -38,7 +30,6 @@ const Trainees = ({ id }) => {
     conductedPaper = notConductedTestPapers && notConductedTestPapers;
   else conductedPaper = notConductedAssignment;
 
-  console.log(conductedPaper);
   useEffect(() => {
     dispatch(getAllRegisteredStudent(id));
     dispatch(getSinglePaper(id));
@@ -49,34 +40,33 @@ const Trainees = ({ id }) => {
     const score = await getScore(id);
     setScores(score);
   };
-  // console.log(scores.current.length);
-  const resultWindowHandler = (studentId) => {
+
+  const resultWindowHandler = studentId => {
     window.open(`/student/test/result?testId=${id}&studentId=${studentId}`);
   };
-  const snapshotHandler = (studentId) => {
+  const snapshotHandler = studentId => {
     window.open(`/student/test/snapshots?testId=${id}&studentId=${studentId}`);
   };
-  const audioHandler = (studentId) => {
+  const audioHandler = studentId => {
     window.open(`/student/test/audio?testId=${id}&studentId=${studentId}`);
   };
 
   const downloadPdf = async (studentId, studentName) => {
     const pdf = await getResponsePdf(studentId, id);
-    //console.log(pdf);
-    if (pdf === "Not Attempt" || pdf.length === 0) {
-      toast.error("Student has not attempt this test");
+    if (pdf === 'Not Attempt' || pdf.length === 0) {
+      toast.error('Student has not attempt this test');
     } else {
-      download(pdf, `${studentName}_responsesheet.pdf`, "application/pdf");
+      download(pdf, `${studentName}_responsesheet.pdf`, 'application/pdf');
     }
   };
 
-  const editScore = async (studentId) => {
-    console.log(studentId);
+  const editScore = async studentId => {
+    //console.log(studentId);
     await editResultScore(id, studentId, marks);
     getAllScore();
     setShow(false);
   };
-  const set = (index) => {
+  const set = index => {
     setShow(true);
     setIndex(index);
   };
@@ -95,21 +85,21 @@ const Trainees = ({ id }) => {
         bordered
         striped
         responsive
-        style={{ textAlign: "center", marginTop: "10px" }}
+        style={{ textAlign: 'center', marginTop: '10px' }}
       >
         <thead>
           <tr>
             <th>SNo.</th>
             <th>STUDENT NAME</th>
             <th>EMAIL ID</th>
-            {paper && paper.category === "PDF" && (
+            {paper && paper.category === 'PDF' && (
               <>
                 <th>Obtained Marks</th>
                 <th>Edit/Give Marks</th>
                 <th>Response Sheet</th>
               </>
             )}
-            {paper && paper.category === "MCQ" && <th>PERFORMANCE</th>}
+            {paper && paper.category === 'MCQ' && <th>PERFORMANCE</th>}
 
             <th>SNAPSHOT</th>
             <th>Audio Recording</th>
@@ -122,12 +112,12 @@ const Trainees = ({ id }) => {
                 <td>{index + 1}</td>
                 <td>{stud.name}</td>
                 <td>{stud.email}</td>
-                {paper && paper.category === "PDF" && (
+                {paper && paper.category === 'PDF' && (
                   <>
                     <td>
                       {scores.length === 0
                         ? `Not Checked`
-                        : scores.map((result) => {
+                        : scores.map(result => {
                             if (result.studentId === stud._id) {
                               if (result.score === -1) {
                                 return `Not Checked`;
@@ -142,7 +132,7 @@ const Trainees = ({ id }) => {
                         disabled={
                           conductedPaper &&
                           conductedPaper.map(
-                            (p) => p.id === id && !paper.isTestConducted
+                            p => p.id === id && !paper.isTestConducted
                           )
                         }
                         variant="outline-danger"
@@ -156,7 +146,7 @@ const Trainees = ({ id }) => {
                         disabled={
                           conductedPaper &&
                           conductedPaper.map(
-                            (p) => p.id === id && !paper.isTestConducted
+                            p => p.id === id && !paper.isTestConducted
                           )
                         }
                         variant="outline-danger"
@@ -167,14 +157,14 @@ const Trainees = ({ id }) => {
                     </td>
                   </>
                 )}
-                {paper && paper.category === "MCQ" && (
+                {paper && paper.category === 'MCQ' && (
                   <td>
                     <Button
                       variant="outline-danger"
                       disabled={
                         conductedPaper &&
                         conductedPaper.filter(
-                          (p) => p._id === id && !p.isTestConducted
+                          p => p._id === id && !p.isTestConducted
                         ).length
                           ? true
                           : false
@@ -192,7 +182,7 @@ const Trainees = ({ id }) => {
                     disabled={
                       conductedPaper &&
                       conductedPaper.map(
-                        (p) => p._id === id && !p.isTestConducted
+                        p => p._id === id && !p.isTestConducted
                       )
                     }
                     onClick={() => snapshotHandler(stud._id)}
@@ -206,7 +196,7 @@ const Trainees = ({ id }) => {
                     disabled={
                       conductedPaper &&
                       conductedPaper.map(
-                        (p) => p._id === id && !p.isTestConducted
+                        p => p._id === id && !p.isTestConducted
                       )
                     }
                     onClick={() => audioHandler(stud._id)}
@@ -234,7 +224,7 @@ const Trainees = ({ id }) => {
                   placeholder="Enter Marks"
                   type="text"
                   value={marks}
-                  onChange={(e) => setMarks(e.target.value)}
+                  onChange={e => setMarks(e.target.value)}
                 />
               </Form.Group>
               <Button

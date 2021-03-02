@@ -18,7 +18,7 @@ const Profile = () => {
 
   const getRecord = async () => {
     let studentRecord = await getStudentRecord(studentId);
-    console.log(studentRecord);
+
     studentRecord =
       studentRecord && studentRecord.filter(st => st.testId !== null);
     const groupRecord =
@@ -48,7 +48,7 @@ const Profile = () => {
     organisationRecord.map(o => {
       let percentage;
       if (o.score === -1) percentage = 0;
-      else percentage = (o.score / o.maxMarks) * 100;
+      else percentage = (o.score / o.testId.maxMarks) * 100;
       data2.push(percentage);
       label2.push(o.testId.startTime.substr(0, 10));
     });
@@ -107,7 +107,7 @@ const Profile = () => {
                       fill: false,
                       borderColor: '#742774',
                       lineTension: 0,
-                      pointBorderWidth: 2,
+                      pointBorderWidth: 4,
                     },
                   ],
                 }}

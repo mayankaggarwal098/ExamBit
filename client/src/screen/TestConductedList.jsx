@@ -6,7 +6,7 @@ import TestTable from '../component/TestTable';
 import Loader from '../utils/Loader';
 
 const TestConductedList = () => {
-  const { loading, error, conductedTestPapers } = useSelector(
+  const { loading, conductedTestPapers } = useSelector(
     state => state.getTestPaper
   );
 

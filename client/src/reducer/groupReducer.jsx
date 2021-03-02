@@ -1,4 +1,5 @@
 import * as group from '../constants/groupConstant';
+
 export const groupListReducer = (state = {}, action) => {
   switch (action.type) {
     case group.GROUP_LIST_REQUEST:

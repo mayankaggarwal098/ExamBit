@@ -17,11 +17,6 @@ const QuestionCreate = ({ history }) => {
 
   const { questions } = useSelector(state => state.questionList);
 
-  // useEffect( () => {
-  //     if( questionAdded ){
-  //         history.push('/questions');
-  //     }
-  // },[ questionAdded, history]);
   const submitHandler = e => {
     e.preventDefault();
     const options = [opt1, opt2, opt3, opt4];

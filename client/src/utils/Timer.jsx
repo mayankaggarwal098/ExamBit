@@ -13,8 +13,6 @@ const Timer = ({ testId, time, duration, endTest, paperType }) => {
     d = sec;
   } else {
     sec = t2.diff(t1, 'second');
-    //   let min = t2.diff(t1, 'minute');
-    //   let hours = t2.diff(t1, 'hour');
     d = duration * 60 - sec;
   }
 

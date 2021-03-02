@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
 import { Form, Button, Container, Row, Col } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { userRegister } from '../actions/userAction';
@@ -11,17 +10,6 @@ const Register = ({ history }) => {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [category, setCategory] = useState('');
-
-  // const { loading, success, error } = useSelector( state => state.register )
-
-  const dispatch = useDispatch();
-
-  // useEffect( () => {
-
-  //     if( success ){
-  //         history.push('/login');
-  //     }
-  // }, [history, success]);
 
   const submitHandler = e => {
     e.preventDefault();

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { Row, Col, Button, Container } from 'react-bootstrap';
@@ -8,7 +8,7 @@ import Loader from '../utils/Loader';
 import TestTable from '../component/TestTable';
 
 const TestNotConductedList = () => {
-  const { loading, error, notConductedTestPapers } = useSelector(
+  const { loading, notConductedTestPapers } = useSelector(
     state => state.getTestPaper
   );
 

@@ -1,13 +1,11 @@
-import React, { useState, useEffect } from "react";
-import { Container } from "react-bootstrap";
-import { useLocation } from "react-router-dom";
-import { getAllAudioRec } from "../actions/audio";
-import { getAllImages } from "../actions/snapshots";
+import React, { useState, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
+import { getAllAudioRec } from '../actions/audio';
 
 const Audio = () => {
   const query = new URLSearchParams(useLocation().search);
-  const testId = query.get("testId");
-  const studentId = query.get("studentId");
+  const testId = query.get('testId');
+  const studentId = query.get('studentId');
   const [audio, setAudio] = useState([]);
   useEffect(() => {
     async function getAudioRec() {
@@ -18,7 +16,7 @@ const Audio = () => {
   }, []);
 
   return (
-    <div style={{ margin: "5px", textAlign: "center" }}>
+    <div style={{ margin: '5px', textAlign: 'center' }}>
       {audio &&
         audio.map((i, j) => (
           <div>

@@ -107,11 +107,7 @@ const SupervisorGroup = () => {
               </Button>
             </Form>
           </Modal.Body>
-          <Modal.Footer>
-            {/* <Button variant="outline-primary" onClick={() => setShow(false)}>
-              Close
-            </Button> */}
-          </Modal.Footer>
+          <Modal.Footer></Modal.Footer>
         </Modal>
       )}
     </Container>

@@ -21,13 +21,6 @@ export const resultGenerate = ({ testId, studentId }) => async dispatch => {
     toast.success('Result Generated');
   } catch (ex) {
     errorHandler(ex);
-    // dispatch({
-    //   type: gen_result.GENERATE_RESULT_FAIL,
-    //   payload:
-    //     ex.response && ex.response.data.message
-    //       ? ex.response.data.message
-    //       : ex.message,
-    // });
   }
 };
 
@@ -41,7 +34,7 @@ export const resultGeneratePdf = async (testId, studentId) => {
       },
       Token()
     );
-    console.log(data);
+    //console.log(data);
   } catch (ex) {
     errorHandler(ex);
   }
@@ -56,7 +49,6 @@ export const getScore = async testId => {
       },
       Token()
     );
-    //console.log(data);
     return data;
   } catch (ex) {
     errorHandler(ex);
@@ -74,10 +66,8 @@ export const editResultScore = async (testId, studentId, score) => {
       },
       Token()
     );
-    // console.log(data);
     toast.success(data);
     getRanksOfStudent();
-    //return data;
   } catch (ex) {
     errorHandler(ex);
   }

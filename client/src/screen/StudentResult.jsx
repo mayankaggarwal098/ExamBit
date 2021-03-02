@@ -39,12 +39,11 @@ const StudentResult = () => {
     setIndex(index);
   };
   const downloadQuestionPaper = () => {
-    console.log(paper.pdf);
+    //console.log(paper.pdf);
     download(paper.pdf, 'Testpaper.pdf', 'application/pdf');
   };
   const downloadResponseSheet = async () => {
     const pdf = await getResponsePdf(student._id, paper._id);
-    //console.log(paper.pdf);
     download(pdf, `responsesheet.pdf`, 'application/pdf');
   };
   return (
@@ -70,12 +69,7 @@ const StudentResult = () => {
               </td>
               <td>{student.email}</td>
             </tr>
-            {/* <tr>
-              <td>
-                <strong>MOBILE NO. </strong>
-              </td>
-              <td>{student.phoneNum}</td>
-            </tr> */}
+
             <tr>
               <td>
                 <strong>MARKS(out of {paper && paper.maxMarks})</strong>

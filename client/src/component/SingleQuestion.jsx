@@ -44,21 +44,7 @@ const SingleQuestion = ({ show, question, setShow }) => {
               </>
             ))}
           </ListGroup.Item>
-          {/* <ListGroup.Item>
-            <strong>
-              <b>Answer:</b>{' '}
-            </strong>
-            {ques[pos].options.map((opt, index) => (
-              <>
-                {opt.isAnswer && (
-                  <>
-                    <strong>Option{index + 1}</strong>: {opt.optionBody}
-                    ,&nbsp;
-                  </>
-                )}
-              </>
-            ))}
-          </ListGroup.Item> */}
+
           <ListGroup.Item>
             <strong>
               <b>EXPLAINATION</b>

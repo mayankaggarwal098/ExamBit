@@ -1,20 +1,10 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React from 'react';
 import { ListGroup, Row, Col, Button } from 'react-bootstrap';
 import download from 'downloadjs';
-import { useDispatch, useSelector } from 'react-redux';
-import {
-  getSinglePaper,
-  getTestCategory,
-  testEnd,
-} from '../actions/testAction';
+import { useSelector } from 'react-redux';
 const QuestionPaper = ({ testPaperSheet, pos }) => {
   let { paper } = useSelector(state => state.singleTestPaper);
-  const dispatch = useDispatch();
-  useEffect(() => {
-    // dispatch(getSinglePaper(testPaperSheet[pos]._id));
-  }, []);
   const downloadPdf = () => {
-    //console.log(paper.pdf);
     download(paper.pdf, 'Testpaper.pdf', 'application/pdf');
   };
   return (

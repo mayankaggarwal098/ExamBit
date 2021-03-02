@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { Container } from 'react-bootstrap';
 import { useLocation } from 'react-router-dom';
 import { getAllImages } from '../actions/snapshots';
 

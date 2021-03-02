@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { Table, Row, Col, Button, Container } from 'react-bootstrap';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import {
   removeSupervisor,
   supervisorReqList,

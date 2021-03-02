@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Button, Modal, Row, Col } from 'react-bootstrap';
+import { Button, Modal } from 'react-bootstrap';
 import { useSelector } from 'react-redux';
 import { useLocation } from 'react-router-dom';
 import { checkTestStart, startTestTime } from '../actions/testAction';
@@ -31,7 +31,7 @@ const Instruction = ({ history }) => {
 
   const submitHandler = async id => {
     const start = await checkTestStart(testId);
-    console.log(start);
+    //console.log(start);
     if (start) {
       history.push(
         `/student/test/start?testId=${testId}&studentId=${studentId}`

@@ -3,24 +3,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Nav, Navbar, Container, NavDropdown } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
 import { logout } from '../actions/userAction';
-import { useEffect } from 'react';
-import { useState } from 'react';
 
 const Header = () => {
-  // const [url, setUrl] = useState(null);
   const dispatch = useDispatch();
-  //if (url == "/student/test/start")
-  // let path = window.location.pathname;
-  // console.log(path);
-  // console.log(url);
-  //if (url === "/student/test") console.log(1);
   const { path } = useSelector(state => state.urlPath);
 
-  // useEffect(() => {
-  //   if (!url || url !== path) {
-  //     setUrl(path);
-  //   }
-  // }, [url, path]);
   const { userInfo } = useSelector(state => state.userLogin);
 
   const logOutHandler = () => {

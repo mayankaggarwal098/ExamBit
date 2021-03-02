@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Row, Col, Button, Container } from 'react-bootstrap';
-import { getConductedTestPaper } from '../actions/testAction';
 import TestTable from '../component/TestTable';
 import Loader from '../utils/Loader';
 import { getConductedAssignment } from './../actions/testAction';

@@ -1,4 +1,3 @@
-import * as res_sheet from '../constants/responseSheetConstant';
 import http from '../utils/httpService';
 import errorHandler from '../errorHandler';
 import { toast } from 'react-toastify';
@@ -6,8 +5,6 @@ import Token from '../utils/Token';
 
 export const responseSheetOfStudent = async ({ studentId, testId }) => {
   try {
-    // dispatch({ type: res_sheet.STUDENT_RESPONSE_SHEET_REQUEST });
-
     const { data } = await http.post(
       '/api/student/responseSheet',
       {
@@ -17,18 +14,10 @@ export const responseSheetOfStudent = async ({ studentId, testId }) => {
       Token()
     );
 
-    // dispatch({ type: res_sheet.STUDENT_RESPONSE_SHEET_SUCCESS });
     toast.success(data);
     return data;
   } catch (ex) {
     errorHandler(ex);
-    // dispatch({
-    //   type: res_sheet.STUDENT_RESPONSE_SHEET_FAIL,
-    //   payload:
-    //     error.response && error.response.data.message
-    //       ? error.response.data.message
-    //       : error.message,
-    // });
   }
 };
 
@@ -42,7 +31,7 @@ export const getResponsePdf = async (studentId, testId) => {
       },
       Token()
     );
-    console.log(data);
+    //console.log(data);
     return data;
   } catch (ex) {
     errorHandler(ex);
@@ -51,25 +40,14 @@ export const getResponsePdf = async (studentId, testId) => {
 
 export const addAnswerForGivenQuestion = async body => {
   try {
-    // dispatch({ type: res_sheet.STUDENT_ANSWER_REQUEST });
-
     const { data } = await http.post(
       '/api/student/updateResponse',
       body,
       Token()
     );
-
-    // dispatch({ type: res_sheet.STUDENT_ANSWER_SUCCESS });
     toast.success(data);
   } catch (ex) {
     errorHandler(ex);
-    // dispatch({
-    //   type: res_sheet.STUDENT_ANSWER_FAIL,
-    //   payload:
-    //     error.response && error.response.data.message
-    //       ? error.response.data.message
-    //       : error.message,
-    // });
   }
 };
 
@@ -98,7 +76,7 @@ export const checkGivenTestForStudent = async (testId, studentId) => {
       { testId, studentId },
       Token()
     );
-    console.log(data);
+    //console.log(data);
     return data;
   } catch (ex) {
     errorHandler(ex);

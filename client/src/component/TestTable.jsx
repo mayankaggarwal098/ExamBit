@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { Table, Button, Container, Modal, Tab, Tabs } from 'react-bootstrap';
@@ -105,14 +105,7 @@ const TestTable = ({
                   <td>{test.subject}</td>
                   <td>{test.title}</td>
                   <td>{test.duration}</td>
-                  <td>
-                    {/* {test.isTestConducted ? (
-                      <i className="fas fa-check" style={{ color: 'green' }}></i>
-                    ) : (
-                      <i className="fa fa-times" style={{ color: 'red' }}></i>
-                    )} */}
-                    {test.createdAt.substring(0, 10)}
-                  </td>
+                  <td>{test.createdAt.substring(0, 10)}</td>
                   {!test.isTestConducted && (
                     <>
                       {!isAssignment && (
@@ -228,11 +221,6 @@ const TestTable = ({
           dialogClassName="my-modal"
           aria-labelledby="example-custom-modal-styling-title"
         >
-          {/* <Modal.Header closeButton>
-            <Modal.Title id="example-custom-modal-styling-title">
-              TestID: {testPaperSheet[pos]._id}
-            </Modal.Title>
-          </Modal.Header> */}
           <Modal.Body>
             <Tabs defaultActiveKey="details">
               <Tab
@@ -249,7 +237,6 @@ const TestTable = ({
               </Tab>
               <Tab
                 eventKey="trainee"
-                // disabled={!testPaperSheet[pos].isTestConducted}
                 title={<i className="fas fa-user"> Students</i>}
               >
                 <Trainees id={testPaperSheet[pos]._id} />

@@ -1,7 +1,6 @@
-import axios from "axios";
-import { toast } from "react-toastify";
+import axios from 'axios';
 
-axios.interceptors.response.use(null, (error) => {
+axios.interceptors.response.use(null, error => {
   const expectedError =
     error.response &&
     error.response.status >= 400 &&
