@@ -7,9 +7,6 @@ const TestPaper = require("../models/testpaper");
 const { validateEditTest, validateCreateTest } = require("./validation");
 
 const createEditTest = async (req, res) => {
-  // if (req.user.category !== "SUPERVISOR") {
-  //   return res.status(401).send("Permission not granted");
-  // }
   const {
     title,
     category,
@@ -41,7 +38,7 @@ const createEditTest = async (req, res) => {
         isSnapshots,
         startTime,
         isAudioRec,
-        maxMarks
+        maxMarks,
       }
     );
     if (!paper) return res.status(404).send("Testpaper does not exists");
@@ -58,14 +55,13 @@ const createEditTest = async (req, res) => {
       subject,
       questions: selectedQuestions,
       duration,
-      // createdBy: req.user._id,
       isRegistrationAvailable:
         paperType === "GROUP" || paperType === "ASSIGNMENT" ? true : false,
       isSnapshots,
       startTime,
       paperType,
       isAudioRec,
-      maxMarks
+      maxMarks,
     });
 
     paper = await paper.save();
@@ -86,7 +82,6 @@ const createEditTest = async (req, res) => {
 
 const getDetailedTest = async (req, res) => {
   const paper = await TestPaper.findById(req.params.id)
-    // .populate("createdBy", "name")
     .populate("questions", "questionBody")
     .populate({
       path: "questions",
@@ -101,31 +96,12 @@ const getDetailedTest = async (req, res) => {
 };
 
 const getTest = async (req, res) => {
-  const paper = await TestPaper.findById(req.params.id).select(
-    // " title subject duration isSnapshots questions startTime isAudioRec"
-    "-pdf"
-  );
+  const paper = await TestPaper.findById(req.params.id).select("-pdf");
   if (!paper) res.status(404).send("Testpaper does not exists");
   res.send(paper);
 };
 
 const getAllTests = async (req, res) => {
-  // const papers = await TestPaper.find({
-  //   createdBy: req.user._id,
-  //   isTestConducted: false,
-  //   //  paperType: { $not: { $regex: "ASSIGNMENT" } },
-  // })
-  //   .populate("questions", "questionBody")
-  //   .populate({
-  //     path: "questions",
-  //     populate: {
-  //       path: "options",
-  //       //model: Options,
-  //     },
-  //   })
-  //   .select("-createdBy -pdf")
-  //   .sort("-createdAt");
-  // res.send(papers);
   const testPaper = await User.findById(req.user._id)
     .select("testId group")
     .populate({
@@ -144,7 +120,6 @@ const getAllTests = async (req, res) => {
         },
       },
     })
-    // .select("-pdf")
     .populate({
       path: "group",
       select: {
@@ -468,9 +443,9 @@ const getRegisteredStudents = async (req, res) => {
   const testPaper = await TestPaper.findById(testId).select("paperType");
   if (!testPaper) return res.status(404).send("Paper Not Found");
 
-  console.log(testPaper)
+  console.log(testPaper);
   let data = [];
-  if (testPaper.paperType === "GROUP" || testPaper.paperType === "ASSIGNMENT")  {
+  if (testPaper.paperType === "GROUP" || testPaper.paperType === "ASSIGNMENT") {
     data = await Group.findOne({ tests: { $in: [testId] } })
       .select("students")
       .populate({

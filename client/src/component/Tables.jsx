@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from 'react';
-import { Table, Button } from 'react-bootstrap';
-import { useParams } from 'react-router-dom';
-import errorHandler from '../errorHandler';
-import Loader from '../utils/Loader';
-import { getGroupStudents } from '../actions/groupAction';
-import { useSelector } from 'react-redux';
+import React, { useEffect, useState } from "react";
+import { Table, Button } from "react-bootstrap";
+import { useParams } from "react-router-dom";
+import errorHandler from "../errorHandler";
+import Loader from "../utils/Loader";
+import { getGroupStudents } from "../actions/groupAction";
+import { useSelector } from "react-redux";
 
 const Tables = () => {
   const [students, setStudents] = useState([]);
@@ -12,7 +12,7 @@ const Tables = () => {
 
   const { id: groupId } = useParams();
 
-  const { userInfo } = useSelector(state => state.userLogin);
+  const { userInfo } = useSelector((state) => state.userLogin);
   useEffect(() => {
     getStudents();
   }, []);
@@ -43,7 +43,7 @@ const Tables = () => {
             <th>S.No</th>
             <th>Name</th>
             <th>Email</th>
-            {userInfo.category === 'SUPERVISOR' && <th>Remove</th>}
+            {/* {userInfo.category === 'SUPERVISOR' && <th>Remove</th>} */}
           </tr>
         </thead>
         <tbody>
@@ -53,13 +53,13 @@ const Tables = () => {
                 <td>{index + 1}</td>
                 <td>{stud.name}</td>
                 <td>{stud.email}</td>
-                {userInfo.category === 'SUPERVISOR' && (
+                {/* {userInfo.category === 'SUPERVISOR' && (
                   <td>
                     <Button variant="outline-primary" className="btn-sm">
                       <i className="fas fa-trash"></i>
                     </Button>
                   </td>
-                )}
+                )} */}
               </tr>
             ))}
         </tbody>

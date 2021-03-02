@@ -1,4 +1,3 @@
-//const Joi = require("joi");
 const Joi = require("joi");
 Joi.objectId = require("joi-objectid")(Joi);
 
@@ -23,8 +22,6 @@ function validateStudent(student) {
   const schema = Joi.object({
     email: Joi.string().max(50).required().email(),
     password: Joi.string().min(5).required(),
-    // name: Joi.string().max(50).required(),
-    // phoneNum: Joi.string().max(13).required(),
     testId: Joi.objectId().required(),
     link: Joi.any(),
   });
