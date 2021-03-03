@@ -8,7 +8,7 @@ Supervisor can create group and students can join the groups,Supervisor can also
 ![Features Image](https://github.com/mayankaggarwal098/ExamBit/blob/master/ScreenShots/Features.png)
 
 
-> You can view screenshot of project in ScreenShots folder.
+ You can view screenshot of project in ScreenShots folder.
 
 ## How to run ?
 
