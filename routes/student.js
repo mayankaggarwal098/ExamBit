@@ -14,5 +14,4 @@ router.post("/test/category", auth, student.getTestCategory);
 router.post("/pdf/upload", auth, student.uploadPdfResponse);
 router.post("/responseSheet/pdf", auth, student.getResponsePdf);
 router.get("/alltest", auth, student.getStudentAllTest);
-//router.post("/test/pdf", student.getPdf);
 module.exports = router;

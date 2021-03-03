@@ -1,13 +1,13 @@
-import React, { useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { Row, Col, Button, Container } from 'react-bootstrap';
-import TestTable from '../component/TestTable';
-import Loader from '../utils/Loader';
-import { getConductedAssignment } from './../actions/testAction';
+import React, { useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { Row, Col, Button, Container } from "react-bootstrap";
+import TestTable from "../component/TestTable";
+import Loader from "../utils/Loader";
+import { getConductedAssignment } from "./../actions/testAction";
 
 const AssignmentConductedList = () => {
-  const { loading, error, conductedAssignment } = useSelector(
-    state => state.getTestPaper
+  const { loading, conductedAssignment } = useSelector(
+    (state) => state.getTestPaper
   );
 
   const dispatch = useDispatch();
@@ -22,7 +22,7 @@ const AssignmentConductedList = () => {
       <Container>
         <Row className="align-items-center">
           <Col>
-            <h3 style={{ color: 'black' }}>All Assignments</h3>
+            <h3 style={{ color: "black" }}>All Assignments</h3>
           </Col>
           <Col className="text-right">
             <Button

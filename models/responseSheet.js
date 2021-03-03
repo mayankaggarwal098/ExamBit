@@ -28,10 +28,7 @@ const responseSheetSchema = new mongoose.Schema({
   pdf: {
     type: String,
   },
-  // startTime: {
-  //   type: Date,
-  //   required: true,
-  // },
+
   isCompleted: {
     type: Boolean,
     default: false,

@@ -7,7 +7,6 @@ const optionSchema = new mongoose.Schema({
   },
   isAnswer: {
     type: Boolean,
-    //required: true,
     default: false,
   },
 });

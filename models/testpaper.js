@@ -1,4 +1,3 @@
-const { string } = require("joi");
 const mongoose = require("mongoose");
 
 const testSchema = new mongoose.Schema(
@@ -15,12 +14,10 @@ const testSchema = new mongoose.Schema(
       {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Question",
-        // required: true,
       },
     ],
     pdf: {
       type: String,
-      //required: true,
     },
     subject: {
       type: String,
@@ -32,34 +29,26 @@ const testSchema = new mongoose.Schema(
     },
     isTestBegins: {
       type: Boolean,
-      // required: true,
+
       default: false,
     },
-    // createdBy: {
-    //   type: mongoose.Schema.Types.ObjectId,
-    //   ref: "User",
-    //   required: true,
-    // },
+
     isRegistrationAvailable: {
       type: Boolean,
-      //  required: true,
+
       default: false,
     },
     isTestConducted: {
       type: Boolean,
-      //   required: true,
+
       default: false,
     },
-    // isResultGenerated: {
-    //   type: Boolean,
-    //   //   required: true,
-    //   default: false,
-    // },
+
     isSnapshots: {
       type: Boolean,
       default: false,
     },
-    //New Properties added which determine the paper type( interview or group test)
+
     paperType: {
       type: String,
       required: true,
@@ -74,8 +63,8 @@ const testSchema = new mongoose.Schema(
     },
     maxMarks: {
       type: Number,
-      required: true
-    }
+      required: true,
+    },
   },
   {
     timestamps: { createdAt: true, updatedAt: false },

@@ -14,23 +14,17 @@ const resultSchema = new mongoose.Schema({
   responseSheet: {
     type: ObjectId,
     ref: "ResponseSheet",
-    // required: true,
   },
   subResult: [
     {
       type: ObjectId,
       ref: "SubResult",
-      //  required: true,
     },
   ],
   score: {
     type: Number,
     required: true,
   },
-  // maxMarks: {
-  //   type: Number,
-  //   required: true,
-  // },
 });
 
 const Result = mongoose.model("Result", resultSchema);

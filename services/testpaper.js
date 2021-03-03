@@ -1,7 +1,5 @@
-const Question = require("../models/question");
-const Result = require("../models/result");
-const { Group, validateGroup } = require("../models/group");
-const { Student } = require("../models/studentRegistered");
+const { Group } = require("../models/group");
+
 const { User } = require("../models/user");
 const TestPaper = require("../models/testpaper");
 const { validateEditTest, validateCreateTest } = require("./validation");
@@ -142,7 +140,7 @@ const getAllTests = async (req, res) => {
         },
       },
     });
-  //.sort("-createdAt");
+
   if (!testPaper) return res.status(404).send("Tests Not Found");
 
   let organisationtest = testPaper.testId.map((t) => t);
@@ -173,7 +171,7 @@ const getAllAssignments = async (req, res) => {
         },
       },
     })
-    // .select("-pdf")
+
     .populate({
       path: "group",
       select: {
@@ -208,21 +206,6 @@ const getAllAssignments = async (req, res) => {
 };
 
 const getAllTestsConducted = async (req, res) => {
-  // const papers = await TestPaper.find({
-  //   createdBy: req.user._id,
-  //   isTestConducted: true,
-  // })
-  //   .populate("questions", "questionBody")
-  //   .populate({
-  //     path: "questions",
-  //     populate: {
-  //       path: "options",
-  //       //model: Options,
-  //     },
-  //   })
-  //   .select("-createdBy -pdf")
-  //   .sort("-createdAt");
-  // res.send(papers);
   const testPaper = await User.findById(req.user._id)
     .select("testId group")
     .populate({
@@ -241,7 +224,7 @@ const getAllTestsConducted = async (req, res) => {
         },
       },
     })
-    // .select("-pdf")
+
     .populate({
       path: "group",
       select: {
@@ -273,27 +256,11 @@ const getAllTestsConducted = async (req, res) => {
     let grouptest = testPaper.group.map((t) => t.tests);
     grouptest = [].concat(...grouptest);
     organisationtest = [...grouptest, ...organisationtest];
-    //res.send([...grouptest, ...organisationtest]);
-  } //else
-  console.log(organisationtest);
+  }
+  //console.log(organisationtest);
   res.send(organisationtest);
 };
 const getAllAssignmentsConducted = async (req, res) => {
-  // const papers = await TestPaper.find({
-  //   createdBy: req.user._id,
-  //   isTestConducted: true,
-  // })
-  //   .populate("questions", "questionBody")
-  //   .populate({
-  //     path: "questions",
-  //     populate: {
-  //       path: "options",
-  //       //model: Options,
-  //     },
-  //   })
-  //   .select("-createdBy -pdf")
-  //   .sort("-createdAt");
-  // res.send(papers);
   const testPaper = await User.findById(req.user._id)
     .select("testId group")
     .populate({
@@ -312,7 +279,7 @@ const getAllAssignmentsConducted = async (req, res) => {
         },
       },
     })
-    // .select("-pdf")
+
     .populate({
       path: "group",
       select: {
@@ -359,12 +326,11 @@ const beginTest = async (req, res) => {
   const paper = await TestPaper.findOneAndUpdate(
     { _id: req.body.id, isTestConducted: false },
     { isTestBegins: true, isRegistrationAvailable: false }
-    // { new: true }
   );
   if (!paper) {
     return res.status(404).send("Unable to start test");
   }
-  //res.send(paper);
+
   res.send("Test Starts");
 };
 
@@ -373,28 +339,15 @@ const endTest = async (req, res) => {
     { _id: req.body.id, isTestBegins: 1 },
     {
       isTestBegins: false,
-      isTestConducted: true, // isResultGenerated: true
+      isTestConducted: true,
     }
-    // { new: true }
   );
   if (!paper) {
     return res.status(404).send("Unable to end test");
   }
-  //res.send(paper);
+
   res.send("Test has ended");
 };
-
-// const maxMarks = async (req, res) => {
-//   const paper = await TestPaper.findById(req.body.testId).populate("questions");
-//   if (!paper) {
-//     return res.status(401).send("Invalid Test Paper Id");
-//   }
-//   let marks = 0;
-//   paper.questions.map((m) => {
-//     marks += m.weightage;
-//   });
-//   res.send(marks);
-// };
 
 const checkTestStart = async (req, res) => {
   const { id } = req.body;
@@ -417,33 +370,16 @@ const changeRegistrationStatus = async (req, res) => {
   if (!paper) {
     return res.status(404).send("Unable to change Registration status");
   }
-  // await TestPaper.findByIdAndUpdate(
-  //   { _id: id },
-  //   { isRegistrationAvailable: status }
-  // );
+
   res.send("Registration status changed");
 };
-
-// const getRegisteredStudents = async (req, res) => {
-//   const { testId } = req.body;
-//   //const students = await Student.find({ testId }).sort("-createdAt");
-//   const students = await User.find({
-//     testId: { $in: [testId] },
-//     category: "STUDENT",
-//   }).sort("-createdAt");
-//   // if (students.length === 0) {
-//   //   return res.status(400).send("Invalid Test Id");
-//   // }
-
-//   res.send(students);
-// };
 
 const getRegisteredStudents = async (req, res) => {
   const { testId } = req.body;
   const testPaper = await TestPaper.findById(testId).select("paperType");
   if (!testPaper) return res.status(404).send("Paper Not Found");
 
-  console.log(testPaper);
+  //console.log(testPaper);
   let data = [];
   if (testPaper.paperType === "GROUP" || testPaper.paperType === "ASSIGNMENT") {
     data = await Group.findOne({ tests: { $in: [testId] } })
@@ -464,10 +400,6 @@ const getRegisteredStudents = async (req, res) => {
     }).select("name email");
     res.send(data);
   }
-
-  // if (students.length === 0) {
-  //   return res.status(400).send("Invalid Test Id");
-  // }
 };
 
 module.exports = {

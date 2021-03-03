@@ -21,15 +21,6 @@ const getAllReqSupervisor = async (req, res) => {
   res.send(supervisor);
 };
 
-// const getSupervisor = async (req, res) => {
-//   const supervisor = await User.findOne({
-//     _id: req.params.id,
-//     category: "SUPERVISOR",
-//   }).select("-password -category");
-//   if (!supervisor) return res.status(400).send("Invalid Supervisor Id");
-//   res.send(supervisor);
-// };
-
 const removeSupervisor = async (req, res) => {
   const supervisor = await User.findOne({
     _id: req.params.id,
@@ -52,9 +43,8 @@ const updateSupervisorPerm = async (req, res) => {
 
 const deleteMedia = async (req, res) => {
   const date = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000);
-  console.log(date);
+  //console.log(date);
   const snapshots = await Snapshots.deleteMany({ createdAt: { $lt: date } });
-  //console.log(snapshots);
   const audioRec = await AudioRec.deleteMany({ createdAt: { $lt: date } });
 
   res.send("Snapshots and Audio Recordings Deleted Successfully");
@@ -62,7 +52,7 @@ const deleteMedia = async (req, res) => {
 
 module.exports = {
   removeSupervisor,
-  //getSupervisor,
+
   getAllAuthSupervisor,
   getAllReqSupervisor,
   updateSupervisorPerm,

@@ -22,14 +22,18 @@ const userSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
-    group: [{
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'Group'
-    }],
-    testId:[{
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'TestPaper'
-    }]
+    group: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Group",
+      },
+    ],
+    testId: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "TestPaper",
+      },
+    ],
   },
   {
     timestamps: { createdAt: true, updatedAt: false },
@@ -38,10 +42,6 @@ const userSchema = new mongoose.Schema(
 
 const User = mongoose.model("User", userSchema);
 
-// exports.User = User;
-// exports.validateSignup = validateUserSignup;
-// exports.validateSignin = validateUserSignin;
-
 module.exports = {
-  User
-}
+  User,
+};

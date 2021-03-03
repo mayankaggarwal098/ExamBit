@@ -1,9 +1,7 @@
-const {User} = require("../models/user");
-const { jwtPrivateKey, SENDGRID_API_KEY, EMAIL } = require("../config/keys");
-const mongoose = require("mongoose");
+const { User } = require("../models/user");
+
 const bcrypt = require("bcrypt");
-const jwt = require("jsonwebtoken");
-//const auth = require("../middleware/auth");
+
 const express = require("express");
 const { validateSignup } = require("../services/validation");
 const router = express.Router();
@@ -13,7 +11,7 @@ router.post("/", async (req, res) => {
   if (error) return res.status(400).send(error.details[0].message);
 
   const { name, email, password, category } = req.body;
-  
+
   let user = await User.findOne({ email: req.body.email });
   if (user) return res.status(409).send("User already registered");
 

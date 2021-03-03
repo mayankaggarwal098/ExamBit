@@ -14,8 +14,8 @@ const result = require("./routes/result");
 const admin = require("./routes/admin");
 const snapshots = require("./routes/snapshots");
 const audio = require("./routes/audio");
-const pdf = require("./services/pdf");
-const groups = require("./routes/group")
+
+const groups = require("./routes/group");
 const PORT = process.env.PORT || 3900;
 mongoose
   .connect(MONOGOURI, { useUnifiedTopology: true, useNewUrlParser: true })
@@ -40,7 +40,7 @@ app.use("/api/result", result);
 app.use("/api/supervisor", admin);
 app.use("/api/snapshot", snapshots);
 app.use("/api/audio", audio);
-app.use("/api/pdf", pdf);
+
 app.use("/api/groups", groups);
 //createadmin();
 

@@ -1,9 +1,9 @@
-const {User} = require("../models/user");
-const { jwtPrivateKey, SENDGRID_API_KEY, EMAIL } = require("../config/keys");
-const mongoose = require("mongoose");
+const { User } = require("../models/user");
+const { jwtPrivateKey } = require("../config/keys");
+
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-//const auth = require("../middleware/auth");
+
 const express = require("express");
 const { validateSignin } = require("../services/validation");
 const router = express.Router();
@@ -29,7 +29,7 @@ router.post("/", async (req, res) => {
     _id: user._id,
     name: user.name,
     email: user.email,
-    category: user.category
+    category: user.category,
   });
 });
 
