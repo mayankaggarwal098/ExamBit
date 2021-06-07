@@ -28,7 +28,7 @@ const responseSheetSchema = new mongoose.Schema({
   pdf: {
     type: String,
   },
-
+  //True when student submit the test
   isCompleted: {
     type: Boolean,
     default: false,

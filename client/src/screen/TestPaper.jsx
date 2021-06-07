@@ -67,7 +67,7 @@ const TestPaper = ({ history }) => {
 
     async function responseSheet() {
       const res = await responseSheetOfStudent({ testId, studentId });
-
+      //automatic fills option after reloading
       if (typeof res !== "string" && res.responses !== null) {
         let response = res && res.responses.map((r) => [...r.chosenOption]);
         response = [].concat(...response);

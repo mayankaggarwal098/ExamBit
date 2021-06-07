@@ -1,5 +1,6 @@
-import React from 'react';
-import { Line } from 'react-chartjs-2';
+//Student Profile
+import React from "react";
+import { Line } from "react-chartjs-2";
 
 const LineChart = ({ LineData }) => {
   return (
@@ -16,7 +17,7 @@ const LineChart = ({ LineData }) => {
               },
               scaleLabel: {
                 display: true,
-                labelString: 'Percentage',
+                labelString: "Percentage",
               },
             },
           ],

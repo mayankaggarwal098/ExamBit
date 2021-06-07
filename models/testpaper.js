@@ -48,7 +48,7 @@ const testSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
-
+    //organiztion,group or assignment
     paperType: {
       type: String,
       required: true,

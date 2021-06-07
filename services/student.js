@@ -198,6 +198,7 @@ const getResponsePdf = async (req, res) => {
 };
 
 const getStudentAllTest = async (req, res) => {
+  //Retreive all organization tests and group tests
   const testPaper = await User.findById(req.user._id)
     .select("testId group")
     .populate({

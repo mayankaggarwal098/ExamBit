@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-
+//Response of a student for a particular question
 const responseSchema = new mongoose.Schema({
   questionId: {
     type: mongoose.Schema.Types.ObjectId,
@@ -18,8 +18,8 @@ const responseSchema = new mongoose.Schema({
   },
   testId: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'TestPaper'
-  }
+    ref: "TestPaper",
+  },
 });
 
 const Response = mongoose.model("Response", responseSchema);

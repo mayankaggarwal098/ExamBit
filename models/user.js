@@ -14,6 +14,7 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    //admin,supervisor or student
     category: {
       type: String,
       required: true,

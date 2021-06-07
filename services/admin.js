@@ -42,7 +42,7 @@ const updateSupervisorPerm = async (req, res) => {
 };
 
 const deleteMedia = async (req, res) => {
-  const date = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000);
+  const date = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000); //30 days
   //console.log(date);
   const snapshots = await Snapshots.deleteMany({ createdAt: { $lt: date } });
   const audioRec = await AudioRec.deleteMany({ createdAt: { $lt: date } });

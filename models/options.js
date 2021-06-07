@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-
+//particular option in a question
 const optionSchema = new mongoose.Schema({
   optionBody: {
     type: String,
