@@ -78,37 +78,39 @@ const TestPaper = ({ history }) => {
     responseSheet();
   }, []);
   useEffect(() => {
-    if (paper && paper.isSnapshots === true) {
-      checkCameraPerm();
-      intervalId.current = setInterval(async function () {
-        const image = webcamRef.current.getScreenshot({
-          height: 420,
-          width: 480,
-        });
-        if (image) await uploadImage(testId, studentId, image);
+    if (paper && paper._id === testId) {
+      if (paper && paper.isSnapshots === true) {
+        checkCameraPerm();
+        intervalId.current = setInterval(async function () {
+          const image = webcamRef.current.getScreenshot({
+            height: 420,
+            width: 480,
+          });
+          if (image) await uploadImage(testId, studentId, image);
 
-        //console.log(intervalId);
-        // console.log(image);
-      }, snapInterval);
-      // intervalId2.current = setInterval(function () {
-      //   const img = webcamRef2.current.getScreenshot();
-      //   if (img) {
-      //     clearInterval(intervalId2.current);
-      //   } else {
-      //     window.alert("Allow permission to camera");
-      //     //console.log("allow permission to camer");
-      //   }
-      //   console.log("checking", img);
-      // }, 5000);
-    }
-    if (paper && paper.isAudioRec === true) {
-      checkMicPerm();
-      audioIntervalId.current = setInterval(function () {
-        setRecord(true);
-        setTimeout(function () {
-          setRecord(false);
-        }, audioRecLength);
-      }, audioRecInterval);
+          //console.log(intervalId);
+          // console.log(image);
+        }, snapInterval);
+        // intervalId2.current = setInterval(function () {
+        //   const img = webcamRef2.current.getScreenshot();
+        //   if (img) {
+        //     clearInterval(intervalId2.current);
+        //   } else {
+        //     window.alert("Allow permission to camera");
+        //     //console.log("allow permission to camer");
+        //   }
+        //   console.log("checking", img);
+        // }, 5000);
+      }
+      if (paper && paper.isAudioRec === true) {
+        checkMicPerm();
+        audioIntervalId.current = setInterval(function () {
+          setRecord(true);
+          setTimeout(function () {
+            setRecord(false);
+          }, audioRecLength);
+        }, audioRecInterval);
+      }
     }
   }, [paper]);
 
@@ -237,7 +239,7 @@ const TestPaper = ({ history }) => {
           <ReactMic record={record} onStop={onStop} />
         </div>
       )}
-      {paper && paper.isSnapshots && (
+      {paper && paper.isSnapshots && paper._id === testId && (
         <>
           <Webcam
             audio={false}
